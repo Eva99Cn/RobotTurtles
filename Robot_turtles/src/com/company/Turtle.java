@@ -18,16 +18,16 @@ public class Turtle {
 	public void goForward(){
 		switch(direction) {
 		case 't':
-			
+			pos[x,y] = pos[x,y+1];
 			break;
 		case 'l':
-			direction = 'b';
+			pos[x,y] = pos[x-1,y];
 			break;
 		case 'b':
-			direction = 'r';
+			pos[x,y] = pos[x,y-1];
 			break;
 		case 'r':
-			direction = 't';
+			pos[x,y] = pos[x+1,y];
 			break;
 		}
 	}
@@ -65,7 +65,25 @@ public class Turtle {
 			break;
 		}
 	}
+	
+	// On change la valeur isTaken de la gemme correspondante pour indiquer qu'il a été prise
+	// Le faire avant que la tortue change de place sinon la tortue va écraser la gemme 
 	public void takeGem() {
-		if(pos[][]==)
+		if(pos[x,y]=='b') {
+			
+		}
+		else if (pos[x,y]=='g') {
+			
+		}
+		else if (pos[x,y]=='r') {
+			
+		}
+		else if (pos[x,y]=='p') {
+			
+		}
+		else {
+			
+		}
+		
 	}
 }
