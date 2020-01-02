@@ -6,18 +6,30 @@ import java.util.Collections;
 
 
 public class Obstacle {
-    public char obstacleType;
-    public int[] wallPos;
-    private char stoneWall='S';
-    private char iceWall='I';
-    private char woodenBox='W';
-    public int numberOfStoneWall=3;
-    public int numberOfIceWall =2;
+    private ArrayList<Character> walls = new ArrayList<>();
+
+
+
+    private  ArrayList<int[]> wallPos = new ArrayList<>();
+
     public Obstacle(){
+        walls.add('I');
+        walls.add('I');
+        walls.add('S');
+        walls.add('S');
+        walls.add('S');
+
+        wallPos.add(new int[]{10,1});
+        wallPos.add(new int[]{11,1});
+        wallPos.add(new int[]{12,1});
+        wallPos.add(new int[]{13,1});
+        wallPos.add(new int[]{14,1});
+
+
     }
     public boolean destroyable(char obstacleType){
         boolean ans = false;
-        if(obstacleType==iceWall){
+        if(obstacleType=='I'){
             ans= true;
         }
         else{
@@ -28,7 +40,7 @@ public class Obstacle {
     }
     public boolean movableWall(char wall){
         boolean ans=false;
-        if(wall==woodenBox){
+        if(wall=='W'){
             ans= true;
         }
         else{
@@ -38,27 +50,35 @@ public class Obstacle {
         return ans;
     }
 
-    public int getNumberOfIceWall() {
-        return numberOfIceWall;
-    }
-
-    public int getNumberOfStoneWall() {
-        return numberOfStoneWall;
-    }
 
     public void reduceNumberOfStoneWall(){
-        numberOfStoneWall--;
+        for (int i=0;i<walls.size();i++){
+            if (walls.get(i)=='S'){
+                walls.remove(i);
+                break;
+            }
+        }
     }
     public void reduceNumberOfIceWall(){
-        numberOfIceWall--;
+        for (int i=0;i<walls.size();i++){
+            if (walls.get(i)=='S'){
+                walls.remove(i);
+                break;
+            }
+        }
     }
 
-    public char getIceWall() {
-        return iceWall;
+    public ArrayList<Character> getWalls() {
+        return walls;
     }
-    public char getStoneWall(){
-        return stoneWall;
+    public ArrayList<int[]> getWallPos() {
+        return wallPos;
     }
+
+    public void setWallPos(ArrayList<int[]> wallPos) {
+        this.wallPos = wallPos;
+    }
+
 }
 
 

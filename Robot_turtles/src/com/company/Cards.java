@@ -14,13 +14,8 @@ public class Cards extends Panneau {
     private char purpleCard = 'p';
     private char laserCard = 'l';
     private int deckshuffleLength= 37;
-    public ImageIcon imgCard;
-    public ImageIcon imgYellowCard;
-    public ImageIcon imgPurpleCard;
-    public ImageIcon imgLaserCard;
-    public ImageIcon imgBackCard;
-    public ArrayList<Character> deckshuffle = new ArrayList<Character>();
-    public ArrayDeque<Character> deck = new ArrayDeque<>();
+    private ArrayList<Character> deckshuffle = new ArrayList<Character>();
+    private ArrayDeque<Character> deck = new ArrayDeque<>();
     private static int numberBlueCard= 18;
 
 
@@ -408,23 +403,12 @@ private void laserToWall(Player player){
                 }
             }
 
-        public void cardToDiscard(Player player){
-            Scanner scanner = new Scanner(System.in);
-            System.out.println("Choisit une carte à enlever");
-            char choix  = scanner.next().charAt(0);
+        public void cardToDiscard(char choice){
             for (int i=0;i<getPlayerHand().size();i++){
-                if (getPlayerHand().get(i)==choix){
+                if (getPlayerHand().get(i)==choice){
                     getPlayerHand().remove(i);
                     break;
                 }
-            }
-            System.out.println(
-                    "En enlever une autre ? " +
-                    "1 . Oui"+
-                    "2.Non");
-            int continuer  = scanner.nextInt();
-            if (continuer==1){
-                cardToDiscard(player);
             }
 
         }

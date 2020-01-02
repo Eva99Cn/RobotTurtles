@@ -15,8 +15,13 @@ public class Player extends Panneau {
     private boolean win;
     private boolean turn;
     public Obstacle obstacle;
+    private ArrayList<Wall> Walls = new ArrayList<>();
 
-
+    protected Wall iceWall ;
+    protected Wall iceWall2;
+    protected Wall stoneWall;
+    protected Wall stoneWall2;
+    protected  Wall stoneWall3;
 
     public ImageIcon imgPlayer;
 
@@ -33,6 +38,12 @@ public class Player extends Panneau {
         this.imgPlayer= new ImageIcon(getClass().getResource("/images/characters/"+turtleName+"-"+direction+".png"));
         turn= false;
         this.obstacle = new Obstacle();
+        iceWall = new Wall('I',new int[]{10,1});
+        iceWall2 = new Wall('I',new int[]{10,1});
+        stoneWall = new Wall('S',new int[]{10,2});
+        stoneWall2 = new Wall('S',new int[]{10,2});
+        stoneWall3= new Wall('S',new int[]{10,2});
+
 
 
     }
@@ -98,5 +109,49 @@ public class Player extends Panneau {
 
     public void setWin(boolean win) {
         this.win = win;
+    }
+
+    public Obstacle getObstacle() {
+        return obstacle;
+    }
+
+    public Wall getIceWall() {
+        return iceWall;
+    }
+
+    public void setIceWall(Wall iceWall) {
+        this.iceWall = iceWall;
+    }
+
+    public Wall getIceWall2() {
+        return iceWall2;
+    }
+
+    public void setIceWall2(Wall iceWall2) {
+        this.iceWall2 = iceWall2;
+    }
+
+    public Wall getStoneWall() {
+        return stoneWall;
+    }
+
+    public void setStoneWall(Wall stoneWall) {
+        this.stoneWall = stoneWall;
+    }
+
+    public Wall getStoneWall2() {
+        return stoneWall2;
+    }
+
+    public void setStoneWall2(Wall stoneWall2) {
+        this.stoneWall2 = stoneWall2;
+    }
+
+    public Wall getStoneWall3() {
+        return stoneWall3;
+    }
+
+    public void setStoneWall3(Wall stoneWall3) {
+        this.stoneWall3 = stoneWall3;
     }
 }
