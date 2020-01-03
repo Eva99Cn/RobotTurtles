@@ -19,7 +19,7 @@ public class Cards extends Panneau {
     private static int numberBlueCard= 18;
 
 
-    private ArrayList<Character> playerHand = new ArrayList<Character>();
+    private ArrayList<Character> playerHand = new ArrayList<>();
 
 
 
@@ -60,6 +60,7 @@ public class Cards extends Panneau {
             if (isValidPosition(position)&&emptySlot(position)){
                 plateau[player.getPosition()[0]][player.getPosition()[1]]=' ';
                 player.setPosition(position);
+                plateau[player.getPosition()[0]][player.getPosition()[1]]=player.getTurtleName();
             }
 
             else {
@@ -73,6 +74,7 @@ public class Cards extends Panneau {
             if (isValidPosition(position)&&emptySlot(position)){
                 plateau[player.getPosition()[0]][player.getPosition()[1]]=' ';
                 player.setPosition(position);
+                plateau[player.getPosition()[0]][player.getPosition()[1]]=player.getTurtleName();
             }
 
 
@@ -87,6 +89,7 @@ public class Cards extends Panneau {
             if (isValidPosition(position)&&emptySlot(position)){
                 plateau[player.getPosition()[0]][player.getPosition()[1]]=' ';
                 player.setPosition(position);
+                plateau[player.getPosition()[0]][player.getPosition()[1]]=player.getTurtleName();
             }
 
             else {
@@ -98,6 +101,7 @@ public class Cards extends Panneau {
             if (isValidPosition(position)&&emptySlot(position)){
                 plateau[player.getPosition()[0]][player.getPosition()[1]]=' ';
                 player.setPosition(position);
+                plateau[player.getPosition()[0]][player.getPosition()[1]]=player.getTurtleName();
             }
             else {
                 getObject(position,player);
@@ -186,8 +190,10 @@ if (numberOfPlayers==2||numberOfPlayers==4) {
         }
         public static void purpleEffect(Player player) {
             if (numberOfPurpleCard > 0) {
+
                 if (player.getDirection() == 'E') {
                     player.setDirection('S');
+                    System.out.println(player.getDirection());
 
 
                 } else if (player.getDirection() == 'N') {
@@ -200,6 +206,8 @@ if (numberOfPlayers==2||numberOfPlayers==4) {
                     player.setDirection('O');
 
                 }
+                System.out.println(player.getDirection());
+
                 numberOfPurpleCard--;
 
             }

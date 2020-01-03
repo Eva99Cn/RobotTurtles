@@ -14,7 +14,6 @@ public class Player extends Panneau {
     private int startingPoint[];
     private boolean win;
     private boolean turn;
-    public Obstacle obstacle;
     private ArrayList<Wall> Walls = new ArrayList<>();
 
     protected Wall iceWall ;
@@ -22,6 +21,9 @@ public class Player extends Panneau {
     protected Wall stoneWall;
     protected Wall stoneWall2;
     protected  Wall stoneWall3;
+    protected int numberofStoneWall;
+    protected int numberofIceWall;
+
 
     public ImageIcon imgPlayer;
 
@@ -37,12 +39,13 @@ public class Player extends Panneau {
         this.startingPoint = startingPoint;
         this.imgPlayer= new ImageIcon(getClass().getResource("/images/characters/"+turtleName+"-"+direction+".png"));
         turn= false;
-        this.obstacle = new Obstacle();
-        iceWall = new Wall('I',new int[]{10,1});
-        iceWall2 = new Wall('I',new int[]{10,1});
-        stoneWall = new Wall('S',new int[]{10,2});
-        stoneWall2 = new Wall('S',new int[]{10,2});
-        stoneWall3= new Wall('S',new int[]{10,2});
+        this.numberofIceWall=2;
+        this.numberofStoneWall=3;
+        this.iceWall = new Wall('I',new int[]{99,1});
+        this.iceWall2 = new Wall('I',new int[]{99,1});
+        this.stoneWall = new Wall('S',new int[]{99,2});
+        this.stoneWall2 = new Wall('S',new int[]{99,2});
+        this.stoneWall3= new Wall('S',new int[]{99,2});
 
 
 
@@ -111,47 +114,49 @@ public class Player extends Panneau {
         this.win = win;
     }
 
-    public Obstacle getObstacle() {
-        return obstacle;
-    }
+
 
     public Wall getIceWall() {
         return iceWall;
     }
 
-    public void setIceWall(Wall iceWall) {
-        this.iceWall = iceWall;
-    }
+
 
     public Wall getIceWall2() {
         return iceWall2;
     }
 
-    public void setIceWall2(Wall iceWall2) {
-        this.iceWall2 = iceWall2;
-    }
+
 
     public Wall getStoneWall() {
         return stoneWall;
     }
 
-    public void setStoneWall(Wall stoneWall) {
-        this.stoneWall = stoneWall;
-    }
 
     public Wall getStoneWall2() {
         return stoneWall2;
     }
 
-    public void setStoneWall2(Wall stoneWall2) {
-        this.stoneWall2 = stoneWall2;
-    }
 
     public Wall getStoneWall3() {
         return stoneWall3;
     }
 
-    public void setStoneWall3(Wall stoneWall3) {
-        this.stoneWall3 = stoneWall3;
+
+
+    public int getNumberofStoneWall() {
+        return numberofStoneWall;
+    }
+
+    public void reduceNumberofStoneWall() {
+        this.numberofStoneWall = numberofStoneWall--;
+    }
+
+    public int getNumberofIceWall() {
+        return numberofIceWall;
+    }
+
+    public void reduceNumberofIceWall() {
+        this.numberofIceWall = numberofIceWall--;
     }
 }

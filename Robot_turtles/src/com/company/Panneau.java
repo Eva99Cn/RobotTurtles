@@ -232,6 +232,7 @@ public class Panneau extends JPanel implements ActionListener {
 
     /* TODO : A revoir turn */
     private Player turn(){
+        printBoard();
         Player ans = null;
         JLabel playerLabel =new JLabel();
         if(numberOfPlayers==2){
@@ -270,11 +271,19 @@ public class Panneau extends JPanel implements ActionListener {
 
     private static void initializeBoard()
     {
-        for (int i=0;i<=7;i++){
-            for (int j=0;j<=7;j++){
-                plateau[i][j]=' ';
+
+            for (int i = 0; i <= 7; i++) {
+                for (int j = 0; j <= 7; j++) {
+                    plateau[i][j] = ' ';
+                }
             }
-        }
+        if(numberOfPlayers==2||numberOfPlayers==3) {
+            for (int i = 0; i <= 7; i++) {
+                    plateau[i][7] = 'S';
+                }
+            }
+
+
     }
 
     private static void updateBoard(int[] position,char object){
@@ -365,24 +374,24 @@ public class Panneau extends JPanel implements ActionListener {
     }
 
     private void executeProgram(){
-
-        for (int i=0;i<player.getDeck().getHiddenCards().size();i++){
-            System.out.println(player.getDirection());
-            if (player.getDeck().getHiddenCards().pop()=='b'){
+        int departSize = player.getDeck().getHiddenCards().size();
+        for (int i=0;i<departSize;i++){
+            char playerCard = player.getDeck().getHiddenCards().pop();
+            if (playerCard=='b'){
                 player.getDeck().blueEffect(player);
                 repaint();
             }
-            else if(player.getDeck().getHiddenCards().pop()=='p'){
+            else if(playerCard=='p'){
                 player.getDeck().purpleEffect(player);
                 repaint();
 
             }
-            else if(player.getDeck().getHiddenCards().pop()=='y'){
+            else if(playerCard=='y'){
                 player.getDeck().yellowEffect(player);
                 repaint();
 
             }
-            else if(player.getDeck().getHiddenCards().pop()=='l'){
+            else if(playerCard=='l'){
                 player.getDeck().laserEffect(player);
 
             }
@@ -399,8 +408,16 @@ public class Panneau extends JPanel implements ActionListener {
     }
 
     private void buildWall() {
-        button1.setText("Mur de pierre");
-        button2.setText("Mur de glace");
+        if(player.getNumberofStoneWall()>0){
+        button1.setText("Mur de pierre");}
+        else{
+            button1.setText("");
+        }
+        if(player.getNumberofStoneWall()>0){
+        button2.setText("Mur de glace");}
+        else{
+            button2.setText("");
+        }
         button3.setText("Défausser");
         button4.setText("Finir le tour");
 
@@ -432,19 +449,29 @@ public class Panneau extends JPanel implements ActionListener {
 
     }
 
+    private static boolean isEmpty(int posX, int posY) {
+        boolean ans=true;
+        if(plateau[posX][posY]!=' '){
+            ans=false;
+        }
+        return ans;
+    }
 
 
 
 
 
-    private static boolean blocked(int posX, int posY) {
+    private static boolean blocked(int posY, int posX) {
         boolean ans = false;
-        int counter = 0;
-        boolean t = false;
+
+
         char plateauBis[][] = plateau;
         plateauBis[posX][posY] = 't';
-        if (numberOfPlayers == 2) {
+        if (numberOfPlayers >= 2) {
             if (checkSurrounding(plateauBis, gem1.getGemPosition()) && checktempWall(plateauBis, gem1.getGemPosition())) {
+                ans = true;
+            }
+            if (checkSurrounding(plateauBis, gem2.getGemPosition()) && checktempWall(plateauBis, gem2.getGemPosition())) {
                 ans = true;
             }
             if (checkSurrounding(plateauBis, player1.getPosition()) && checktempWall(plateauBis, player1.getPosition())) {
@@ -455,18 +482,6 @@ public class Panneau extends JPanel implements ActionListener {
             }
         }
         if (numberOfPlayers==3){
-            if (checkSurrounding(plateauBis, gem1.getGemPosition()) && checktempWall(plateauBis, gem1.getGemPosition())) {
-                ans = true;
-            }
-            if (checkSurrounding(plateauBis, gem2.getGemPosition()) && checktempWall(plateauBis, gem2.getGemPosition())) {
-                ans = true;
-            }
-            if (checkSurrounding(plateauBis, player1.getPosition()) && checktempWall(plateauBis, player1.getPosition())) {
-                ans = true;
-            }
-            if (checkSurrounding(plateauBis, player2.getPosition()) && checktempWall(plateauBis, player2.getPosition())) {
-                ans = true;
-            }
             if (checkSurrounding(plateauBis, player3.getPosition()) && checktempWall(plateauBis, player3.getPosition())) {
                 ans = true;
             }
@@ -474,26 +489,6 @@ public class Panneau extends JPanel implements ActionListener {
         }
 
         if (numberOfPlayers == 4) {
-            //On vérifie que les joyaux ne sont pas bloqués
-            if (checkSurrounding(plateauBis, gem1.getGemPosition()) && checktempWall(plateauBis, gem1.getGemPosition())) {
-                ans = true;
-            }
-            if (checkSurrounding(plateauBis, gem2.getGemPosition()) && checktempWall(plateauBis, gem2.getGemPosition())) {
-                ans = true;
-            }
-            if (checkSurrounding(plateauBis, gem3.getGemPosition()) && checktempWall(plateauBis, gem3.getGemPosition())) {
-                ans = true;
-            }
-            //On vérifie que les joueurs ne sont pas bloqués
-            if (checkSurrounding(plateauBis, player1.getPosition()) && checktempWall(plateauBis, player1.getPosition())) {
-                ans = true;
-            }
-            if (checkSurrounding(plateauBis, player2.getPosition()) && checktempWall(plateauBis, player2.getPosition())) {
-                ans = true;
-            }
-            if (checkSurrounding(plateauBis, player3.getPosition()) && checktempWall(plateauBis, player3.getPosition())) {
-                ans = true;
-            }
             if (checkSurrounding(plateauBis, player4.getPosition()) && checktempWall(plateauBis, player4.getPosition())) {
                 ans = true;
             }
@@ -505,6 +500,7 @@ public class Panneau extends JPanel implements ActionListener {
 
 
 
+//creation d'un mur temporaire
 
     public static boolean checktempWall(char[][] plateauBis, int[] pos) {
         boolean t = false;
@@ -541,7 +537,7 @@ public class Panneau extends JPanel implements ActionListener {
         boolean ans = false;
         for (int i = pos[1] - 1; i < pos[1] + 2; i++) {
             if (pos[1] - 1 >= 0 && pos[1] + 1 < 7 && pos[0] - 1 >= 0) {
-                if (plateauBis[pos[0] - 1][i] == 'I' || plateauBis[pos[0] - 1][i] == 'S') {
+                if (plateauBis[pos[0] - 1][i]!=' ') {
                     counter++;
                 }
             } else {
@@ -552,7 +548,7 @@ public class Panneau extends JPanel implements ActionListener {
         //ligne du bas
         for (int i = pos[1] - 1; i < pos[1] + 2; i++) {
             if (pos[1] - 1 >= 0 && pos[1] + 1 < 7 && pos[0] + 1 < 8) {
-                if (plateauBis[pos[0] + 1][i] == 'I' || plateauBis[pos[0] + 1][i] == 'S') {
+                if (plateauBis[pos[0] + 1][i] !=' ') {
                     counter++;
                 }
             } else {
@@ -561,7 +557,7 @@ public class Panneau extends JPanel implements ActionListener {
         }
 
             if(pos[1] - 1 >= 0) {
-                if (plateauBis[pos[0]][pos[1] - 1] == 'I' || plateauBis[pos[0]][pos[1] - 1] == 'S') {
+                if (plateauBis[pos[0]][pos[1] - 1]!=' ') {
                     counter++;
                 }
             }
@@ -570,7 +566,7 @@ public class Panneau extends JPanel implements ActionListener {
             }
 
             if(pos[1] + 1 < 8){
-        if (plateauBis[pos[0]][pos[1]+1]=='I'||plateauBis[pos[0]][pos[1]+1]=='S'){
+        if (plateauBis[pos[0]][pos[1]+1]!=' '){
             counter++;
         }}
             else {
@@ -732,60 +728,64 @@ public class Panneau extends JPanel implements ActionListener {
                 public void mouseClicked(MouseEvent e) {
                     int x = e.getX();
                     int y = e.getY();
-                    int xpos=player.getStoneWall().getWallPos()[0],ypos=player.getStoneWall().getWallPos()[1];
+                    int xpos = 99;
+                    int ypos=1;
+                    if(player.getNumberofStoneWall()==3){
+                    xpos=player.getStoneWall().getWallPos()[0];
+                    ypos=player.getStoneWall().getWallPos()[1];}
+                    else if(player.getNumberofStoneWall()==2){
+                        xpos=player.getStoneWall2().getWallPos()[0];
+                        ypos=player.getStoneWall2().getWallPos()[1];}
+                    else if(player.getNumberofStoneWall()==1){
+                        xpos=player.getStoneWall3().getWallPos()[0];
+                        ypos=player.getStoneWall3().getWallPos()[1];}
 
-                    System.out.println(x+","+y);
-                    if(x>85&&x<170){
-                        xpos=0;
-                    }
-                    else if (x>170&&x<256){
-                        xpos=1;
-                    }
-                    else if (x>256&&x<339){
-                        xpos=2;
-                    }
-                    else if (x>339&&x<425){
-                        xpos=3;
-                    }
-                    else if (x>425&&x<511){
-                        xpos=4;
-                    }
-                    else if (x>511&&x<594){
-                        xpos=5;
-                    }
-                    else if (x>594&&x<683){
-                        xpos=6;
-                    }
-                    else if (x>683&&x<766){
-                        xpos=7;
-                    }
-
-                    if (y>86&&y<166){
-                        ypos=0;
-                    }
-                    else if (y>166&&y<255){
-                        ypos=1;
-                    }
-                    else if (y>255&&y<341){
-                        ypos=2;
-                    }
-                    else if (y>341&&y<423){
-                        ypos=3;
-                    }
-                    else if (y>423&&y<506){
-                        ypos=4;
-                    }
-                    else if (y>506&&y<597){
-                        ypos=5;
-                    }
-                    else if (y>597&&y<678){
-                        ypos=6;
-                    }
-                    else if (y>678&&y<766){
-                        ypos=7;
+                    if (x > 85 && x < 170) {
+                        ypos = 0;
+                    } else if (x > 170 && x < 256) {
+                        ypos = 1;
+                    } else if (x > 256 && x < 339) {
+                        ypos = 2;
+                    } else if (x > 339 && x < 425) {
+                        ypos = 3;
+                    } else if (x > 425 && x < 511) {
+                        ypos = 4;
+                    } else if (x > 511 && x < 594) {
+                        ypos = 5;
+                    } else if (x > 594 && x < 683) {
+                        ypos = 6;
+                    } else if (x > 683 && x < 766) {
+                        ypos = 7;
                     }
 
-                    player.getStoneWall().setWallPos(new int[]{xpos, ypos});
+                    if (y > 86 && y < 166) {
+                        xpos = 0;
+                    } else if (y > 166 && y < 255) {
+                        xpos = 1;
+                    } else if (y > 255 && y < 341) {
+                        xpos = 2;
+                    } else if (y > 341 && y < 423) {
+                        xpos = 3;
+                    } else if (y > 423 && y < 506) {
+                        xpos = 4;
+                    } else if (y > 506 && y < 597) {
+                        xpos = 5;
+                    } else if (y > 597 && y < 678) {
+                        xpos = 6;
+                    } else if (y > 678 && y < 766) {
+                        xpos = 7;
+                    }
+
+                    if(isEmpty(xpos,ypos)){
+                        plateau[xpos][ypos]='S';
+                        if(player.getNumberofStoneWall()==3){
+                        player.getStoneWall().setWallPos(new int[]{xpos, ypos});}
+                    else if(player.getNumberofStoneWall()==2){
+                        player.getStoneWall2().setWallPos(new int[]{xpos, ypos});}
+                    else if(player.getNumberofStoneWall()==1){
+                    player.getStoneWall3().setWallPos(new int[]{xpos, ypos});}
+                    player.reduceNumberofStoneWall();
+                    }
                     repaint();
                 }
 
@@ -804,61 +804,63 @@ public class Panneau extends JPanel implements ActionListener {
                 public void mouseClicked(MouseEvent e) {
                     int x = e.getX();
                     int y = e.getY();
-                    int xpos=player.getIceWall().getWallPos()[0],ypos=player.getIceWall().getWallPos()[1];
+                    int xpos = 99;
+                    int ypos=1;
+                    if(player.getNumberofIceWall()==2){
+                        xpos=player.getIceWall().getWallPos()[0];
+                        ypos=player.getIceWall().getWallPos()[1];}
+                    else if(player.getNumberofIceWall()==1){
+                        xpos=player.getIceWall2().getWallPos()[0];
+                        ypos=player.getIceWall2().getWallPos()[1];}
 
-                    System.out.println(x+","+y);
-                    if(x>85&&x<170){
-                        xpos=0;
-                    }
-                    else if (x>170&&x<256){
-                        xpos=1;
-                    }
-                    else if (x>256&&x<339){
-                        xpos=2;
-                    }
-                    else if (x>339&&x<425){
-                        xpos=3;
-                    }
-                    else if (x>425&&x<511){
-                        xpos=4;
-                    }
-                    else if (x>511&&x<594){
-                        xpos=5;
-                    }
-                    else if (x>594&&x<683){
-                        xpos=6;
-                    }
-                    else if (x>683&&x<766){
-                        xpos=7;
+
+                    System.out.println(x + "," + y);
+                    if (x > 85 && x < 170) {
+                        ypos = 0;
+                    } else if (x > 170 && x < 256) {
+                        ypos = 1;
+                    } else if (x > 256 && x < 339) {
+                        ypos = 2;
+                    } else if (x > 339 && x < 425) {
+                        ypos = 3;
+                    } else if (x > 425 && x < 511) {
+                        ypos = 4;
+                    } else if (x > 511 && x < 594) {
+                        ypos = 5;
+                    } else if (x > 594 && x < 683) {
+                        ypos = 6;
+                    } else if (x > 683 && x < 766) {
+                        ypos = 7;
                     }
 
-                    if (y>86&&y<166){
-                        ypos=0;
+                    if (y > 86 && y < 166) {
+                        xpos = 0;
+                    } else if (y > 166 && y < 255) {
+                        xpos = 1;
+                    } else if (y > 255 && y < 341) {
+                        xpos = 2;
+                    } else if (y > 341 && y < 423) {
+                        xpos = 3;
+                    } else if (y > 423 && y < 506) {
+                        xpos = 4;
+                    } else if (y > 506 && y < 597) {
+                        xpos = 5;
+                    } else if (y > 597 && y < 678) {
+                        xpos = 6;
+                    } else if (y > 678 && y < 766) {
+                        xpos = 7;
                     }
-                    else if (y>166&&y<255){
-                        ypos=1;
+                    if (!blocked(xpos, ypos)&&isEmpty(xpos,ypos)) {
+                        plateau[xpos][ypos]='I';
+                        if (player.getNumberofIceWall() == 2) {
+                            player.getIceWall().setWallPos(new int[]{xpos, ypos});
+                        }
+                     else if (player.getNumberofIceWall() == 1) {
+                        player.getIceWall2().setWallPos(new int[]{xpos, ypos});
                     }
-                    else if (y>255&&y<341){
-                        ypos=2;
-                    }
-                    else if (y>341&&y<423){
-                        ypos=3;
-                    }
-                    else if (y>423&&y<506){
-                        ypos=4;
-                    }
-                    else if (y>506&&y<597){
-                        ypos=5;
-                    }
-                    else if (y>597&&y<678){
-                        ypos=6;
-                    }
-                    else if (y>678&&y<766){
-                        ypos=7;
-                    }
-                    player.getIceWall().setWallPos(new int[]{xpos, ypos});
+                        player.reduceNumberofIceWall();
 
-                    System.out.println( player.getIceWall().getWallPos()[0]);
+                    }
                     repaint();
                 }
 
@@ -877,40 +879,50 @@ public class Panneau extends JPanel implements ActionListener {
     private void paintPlayersWalls(int CASE_DIM,Graphics2D g2){
 
         if(numberOfPlayers>=2) {
-            imgIceWall.paintIcon(null, g2, (player1.getIceWall().getWallPos()[0] + 1) * CASE_DIM, (player1.getIceWall().getWallPos()[1] + 1) * CASE_DIM);
-            imgIceWall.paintIcon(null, g2, (player1.getIceWall2().getWallPos()[0] + 1) * CASE_DIM, (player.getIceWall2().getWallPos()[1] + 1) * CASE_DIM);
+            imgIceWall.paintIcon(null, g2, (player1.getIceWall().getWallPos()[1] + 1) * CASE_DIM, (player1.getIceWall().getWallPos()[0] + 1) * CASE_DIM);
+            imgIceWall.paintIcon(null, g2, (player1.getIceWall2().getWallPos()[1] + 1) * CASE_DIM, (player1.getIceWall2().getWallPos()[0] + 1) * CASE_DIM);
 
-            imgStoneWall.paintIcon(null, g2, (player1.getStoneWall().getWallPos()[0] + 1) * CASE_DIM, (player1.getStoneWall().getWallPos()[1] + 1) * CASE_DIM);
-            imgStoneWall.paintIcon(null, g2, (player1.getStoneWall2().getWallPos()[0] + 1) * CASE_DIM, (player1.getStoneWall2().getWallPos()[1] + 1) * CASE_DIM);
-            imgStoneWall.paintIcon(null, g2, (player1.getStoneWall3().getWallPos()[0] + 1) * CASE_DIM, (player1.getStoneWall3().getWallPos()[1] + 1) * CASE_DIM);
+            imgStoneWall.paintIcon(null, g2, (player1.getStoneWall().getWallPos()[1] + 1) * CASE_DIM, (player1.getStoneWall().getWallPos()[0] + 1) * CASE_DIM);
+            imgStoneWall.paintIcon(null, g2, (player1.getStoneWall2().getWallPos()[1] + 1) * CASE_DIM, (player1.getStoneWall2().getWallPos()[0] + 1) * CASE_DIM);
+            imgStoneWall.paintIcon(null, g2, (player1.getStoneWall3().getWallPos()[1] + 1) * CASE_DIM, (player1.getStoneWall3().getWallPos()[0] + 1) * CASE_DIM);
 
-            imgIceWall.paintIcon(null, g2, (player2.getIceWall().getWallPos()[0] + 1) * CASE_DIM, (player2.getIceWall().getWallPos()[1] + 1) * CASE_DIM);
-            imgIceWall.paintIcon(null, g2, (player2.getIceWall2().getWallPos()[0] + 1) * CASE_DIM, (player2.getIceWall2().getWallPos()[1] + 1) * CASE_DIM);
+            imgIceWall.paintIcon(null, g2, (player2.getIceWall().getWallPos()[1] + 1) * CASE_DIM, (player2.getIceWall().getWallPos()[0] + 1) * CASE_DIM);
+            imgIceWall.paintIcon(null, g2, (player2.getIceWall2().getWallPos()[1] + 1) * CASE_DIM, (player2.getIceWall2().getWallPos()[0] + 1) * CASE_DIM);
 
-            imgStoneWall.paintIcon(null, g2, (player2.getStoneWall().getWallPos()[0] + 1) * CASE_DIM, (player2.getStoneWall().getWallPos()[1] + 1) * CASE_DIM);
-            imgStoneWall.paintIcon(null, g2, (player2.getStoneWall2().getWallPos()[0] + 1) * CASE_DIM, (player2.getStoneWall2().getWallPos()[1] + 1) * CASE_DIM);
-            imgStoneWall.paintIcon(null, g2, (player2.getStoneWall3().getWallPos()[0] + 1) * CASE_DIM, (player2.getStoneWall3().getWallPos()[1] + 1) * CASE_DIM);
+            imgStoneWall.paintIcon(null, g2, (player2.getStoneWall().getWallPos()[1] + 1) * CASE_DIM, (player2.getStoneWall().getWallPos()[0] + 1) * CASE_DIM);
+            imgStoneWall.paintIcon(null, g2, (player2.getStoneWall2().getWallPos()[1] + 1) * CASE_DIM, (player2.getStoneWall2().getWallPos()[0] + 1) * CASE_DIM);
+            imgStoneWall.paintIcon(null, g2, (player2.getStoneWall3().getWallPos()[1] + 1) * CASE_DIM, (player2.getStoneWall3().getWallPos()[0] + 1) * CASE_DIM);
 
         }
-        if (numberOfPlayers==3){
-            imgIceWall.paintIcon(null, g2, (player3.getIceWall().getWallPos()[0] + 1) * CASE_DIM, (player3.getIceWall().getWallPos()[1] + 1) * CASE_DIM);
-            imgIceWall.paintIcon(null, g2, (player3.getIceWall2().getWallPos()[0] + 1) * CASE_DIM, (player3.getIceWall2().getWallPos()[1] + 1) * CASE_DIM);
+        if (numberOfPlayers>=3){
+            imgIceWall.paintIcon(null, g2, (player3.getIceWall().getWallPos()[1] + 1) * CASE_DIM, (player3.getIceWall().getWallPos()[0] + 1) * CASE_DIM);
+            imgIceWall.paintIcon(null, g2, (player3.getIceWall2().getWallPos()[1] + 1) * CASE_DIM, (player3.getIceWall2().getWallPos()[0] + 1) * CASE_DIM);
 
-            imgStoneWall.paintIcon(null, g2, (player3.getStoneWall().getWallPos()[0] + 1) * CASE_DIM, (player3.getStoneWall().getWallPos()[1] + 1) * CASE_DIM);
-            imgStoneWall.paintIcon(null, g2, (player3.getStoneWall2().getWallPos()[0] + 1) * CASE_DIM, (player3.getStoneWall2().getWallPos()[1] + 1) * CASE_DIM);
-            imgStoneWall.paintIcon(null, g2, (player3.getStoneWall3().getWallPos()[0] + 1) * CASE_DIM, (player3.getStoneWall3().getWallPos()[1] + 1) * CASE_DIM);
+            imgStoneWall.paintIcon(null, g2, (player3.getStoneWall().getWallPos()[1] + 1) * CASE_DIM, (player3.getStoneWall().getWallPos()[0] + 1) * CASE_DIM);
+            imgStoneWall.paintIcon(null, g2, (player3.getStoneWall2().getWallPos()[1] + 1) * CASE_DIM, (player3.getStoneWall2().getWallPos()[0] + 1) * CASE_DIM);
+            imgStoneWall.paintIcon(null, g2, (player3.getStoneWall3().getWallPos()[1] + 1) * CASE_DIM, (player3.getStoneWall3().getWallPos()[0] + 1) * CASE_DIM);
 
         }
         if(numberOfPlayers==4){
-            imgIceWall.paintIcon(null, g2, (player4.getIceWall().getWallPos()[0] + 1) * CASE_DIM, (player4.getIceWall().getWallPos()[1] + 1) * CASE_DIM);
-            imgIceWall.paintIcon(null, g2, (player4.getIceWall2().getWallPos()[0] + 1) * CASE_DIM, (player.getIceWall2().getWallPos()[1] + 1) * CASE_DIM);
+            imgIceWall.paintIcon(null, g2, (player4.getIceWall().getWallPos()[1] + 1) * CASE_DIM, (player4.getIceWall().getWallPos()[0] + 1) * CASE_DIM);
+            imgIceWall.paintIcon(null, g2, (player4.getIceWall2().getWallPos()[1] + 1) * CASE_DIM, (player.getIceWall2().getWallPos()[0] + 1) * CASE_DIM);
 
-            imgStoneWall.paintIcon(null, g2, (player4.getStoneWall().getWallPos()[0] + 1) * CASE_DIM, (player4.getStoneWall().getWallPos()[1] + 1) * CASE_DIM);
-            imgStoneWall.paintIcon(null, g2, (player4.getStoneWall2().getWallPos()[0] + 1) * CASE_DIM, (player4.getStoneWall2().getWallPos()[1] + 1) * CASE_DIM);
-            imgStoneWall.paintIcon(null, g2, (player4.getStoneWall3().getWallPos()[0] + 1) * CASE_DIM, (player4.getStoneWall3().getWallPos()[1] + 1) * CASE_DIM);
+            imgStoneWall.paintIcon(null, g2, (player4.getStoneWall().getWallPos()[1] + 1) * CASE_DIM, (player4.getStoneWall().getWallPos()[0] + 1) * CASE_DIM);
+            imgStoneWall.paintIcon(null, g2, (player4.getStoneWall2().getWallPos()[1] + 1) * CASE_DIM, (player4.getStoneWall2().getWallPos()[0] + 1) * CASE_DIM);
+            imgStoneWall.paintIcon(null, g2, (player4.getStoneWall3().getWallPos()[1] + 1) * CASE_DIM, (player4.getStoneWall3().getWallPos()[0] + 1) * CASE_DIM);
+        }
+
+
+        }
+
+        private void printBoard(){
+        for (int i=0;i<8;i++){
+            for (int j=0;j<8;j++){
+                System.out.print(plateau[i][j]);
+            }
+            System.out.println('\n');
         }
         }
-
 
 
 
