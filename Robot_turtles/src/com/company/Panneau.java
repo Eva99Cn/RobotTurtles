@@ -40,6 +40,8 @@ public class Panneau extends JPanel implements ActionListener {
     public static char[][] plateau;
     //Pile de défausse
     public static ArrayList<Player> players = new ArrayList<>();
+    public static ArrayList<Wall> walls = new ArrayList<>();
+
     public static ArrayList<Gem> gems = new ArrayList<>();
     public static Player player1;
     public static Player player2;
@@ -293,19 +295,12 @@ public class Panneau extends JPanel implements ActionListener {
 
 
 
-    private void completeProgram(Player player){
+
+
+    private void addToProgram(){
         if ((player.getDeck().getPlayerHand()).size() < 5) {
             (player.getDeck()).fiveCardToPlayerHand();
         }
-        button1.setText("Ajouter des cartes");
-        button2.setText("Défausser");
-        button3.setText("Finir le tour");
-        gamePanel.revalidate();
-        gamePanel.repaint();
-
-    }
-
-    private void addToProgram(){
         for (int i=0;i<player.getDeck().getPlayerHand().size();i++) {
             if (player.getDeck().getPlayerHand().get(i) == 'b') {
                 JLabel blueCard = new JLabel(imgBlueCard);
@@ -367,6 +362,11 @@ public class Panneau extends JPanel implements ActionListener {
                 });
             }
         }
+        button3.setText("");
+        button1.setText("Défausser");
+        button2.setText("Finir le tour");
+        gamePanel.revalidate();
+        gamePanel.repaint();
 
 
 
@@ -374,6 +374,9 @@ public class Panneau extends JPanel implements ActionListener {
     }
 
     private void executeProgram(){
+        if ((player.getDeck().getPlayerHand()).size() < 5) {
+            (player.getDeck()).fiveCardToPlayerHand();
+        }
         int departSize = player.getDeck().getHiddenCards().size();
         for (int i=0;i<departSize;i++){
             char playerCard = player.getDeck().getHiddenCards().pop();
@@ -408,6 +411,9 @@ public class Panneau extends JPanel implements ActionListener {
     }
 
     private void buildWall() {
+        if ((player.getDeck().getPlayerHand()).size() < 5) {
+            (player.getDeck()).fiveCardToPlayerHand();
+        }
         if(player.getNumberofStoneWall()>0){
         button1.setText("Mur de pierre");}
         else{
@@ -603,27 +609,20 @@ public class Panneau extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        if(e.getActionCommand().equals("Ajouter au programme")){
-           completeProgram(player);
-        }
 
-        else if(e.getActionCommand().equals("Executer le programme")){
 
-            executeProgram();
-
-        }
-        else if(e.getActionCommand().equals("Construire un mur")){
+         if(e.getActionCommand().equals("Construire un mur")){
            buildWall();
            gamePanel.add(button4);
         }
 
-        if(e.getActionCommand().equals("Ajouter des cartes")){
+        else if(e.getActionCommand().equals("Ajouter au programme")){
          addToProgram();
         }
+         else if(e.getActionCommand().equals("Executer le programme")){
+             executeProgram();
+         }
         if(e.getActionCommand().equals("Défausser")){
-            if ((player.getDeck().getPlayerHand()).size() < 5) {
-                (player.getDeck()).fiveCardToPlayerHand();
-            }
             Component[] components = cards.getComponents();
 
             for (Component component : components) {
@@ -814,7 +813,6 @@ public class Panneau extends JPanel implements ActionListener {
                         ypos=player.getIceWall2().getWallPos()[1];}
 
 
-                    System.out.println(x + "," + y);
                     if (x > 85 && x < 170) {
                         ypos = 0;
                     } else if (x > 170 && x < 256) {
@@ -854,9 +852,11 @@ public class Panneau extends JPanel implements ActionListener {
                         plateau[xpos][ypos]='I';
                         if (player.getNumberofIceWall() == 2) {
                             player.getIceWall().setWallPos(new int[]{xpos, ypos});
+                            walls.add(player.getIceWall());
                         }
                      else if (player.getNumberofIceWall() == 1) {
                         player.getIceWall2().setWallPos(new int[]{xpos, ypos});
+                            walls.add(player.getIceWall2());
                     }
                         player.reduceNumberofIceWall();
 

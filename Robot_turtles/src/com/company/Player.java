@@ -76,6 +76,7 @@ public class Player extends Panneau {
     }
 
     public void setDirection(char direction) {
+
         this.imgPlayer= new ImageIcon(getClass().getResource("/images/characters/"+getTurtleName()+"-"+direction+".png"));
         this.direction = direction;
 
@@ -86,6 +87,8 @@ public class Player extends Panneau {
     }
 
     public void setPosition(int[] position) {
+        plateau[getPosition()[0]][getPosition()[1]]=' ';
+        plateau[position[0]][position[1]]=getTurtleName();
         this.position = position;
     }
 
@@ -103,6 +106,7 @@ public class Player extends Panneau {
 
 
     public int[] getStartingPoint() {
+
         return startingPoint;
     }
 

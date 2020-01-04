@@ -48,6 +48,7 @@ public class Cards extends Panneau {
             deck.push(deckshuffle.get(i));
 
         }
+        fiveCardToPlayerHand();
 
     }
 
@@ -55,41 +56,34 @@ public class Cards extends Panneau {
 
     public static void blueEffect(Player player){
         if(numberBlueCard>0){
+            int x = player.getPosition()[0];
+            int y =player.getPosition()[1];
         if (player.getDirection()=='E') {
-            int[] position= new int[]{player.getPosition()[0] += 0,player.getPosition()[1] += 1};
-            if (isValidPosition(position)&&emptySlot(position)){
-                plateau[player.getPosition()[0]][player.getPosition()[1]]=' ';
+            int[] position= new int[]{x,y+ 1};
+            if (isValidPosition(position)){
                 player.setPosition(position);
-                plateau[player.getPosition()[0]][player.getPosition()[1]]=player.getTurtleName();
             }
-
-            else {
+            else{
                 getObject(position,player);
             }
 
         }
         else if (player.getDirection() == 'S') {
-            int[] position= new int[]{player.getPosition()[0] += 1, player.getPosition()[1] += 0};
+            int[] position= new int[]{x+ 1,y};
 
-            if (isValidPosition(position)&&emptySlot(position)){
-                plateau[player.getPosition()[0]][player.getPosition()[1]]=' ';
+            if (isValidPosition(position)){
                 player.setPosition(position);
-                plateau[player.getPosition()[0]][player.getPosition()[1]]=player.getTurtleName();
             }
-
-
-            else {
+            else{
                 getObject(position,player);
             }
 
 
         } else if (player.getDirection() == 'O') {
-            int[] position= new int[]{player.getPosition()[0], player.getPosition()[1] -= 1};
+            int[] position= new int[]{x, y-1};
 
-            if (isValidPosition(position)&&emptySlot(position)){
-                plateau[player.getPosition()[0]][player.getPosition()[1]]=' ';
+            if (isValidPosition(position)){
                 player.setPosition(position);
-                plateau[player.getPosition()[0]][player.getPosition()[1]]=player.getTurtleName();
             }
 
             else {
@@ -97,13 +91,11 @@ public class Cards extends Panneau {
             }
 
         } else if (player.getDirection() == 'N') {
-            int[] position= new int[]{player.getPosition()[0] -= 1, player.getPosition()[1]};
-            if (isValidPosition(position)&&emptySlot(position)){
-                plateau[player.getPosition()[0]][player.getPosition()[1]]=' ';
+            int[] position= new int[]{x- 1, y};
+            if (isValidPosition(position)){
                 player.setPosition(position);
-                plateau[player.getPosition()[0]][player.getPosition()[1]]=player.getTurtleName();
             }
-            else {
+           else {
                 getObject(position,player);
             }
             }
@@ -112,65 +104,48 @@ public class Cards extends Panneau {
     }
 
     private static boolean isValidPosition(int[] newPosition) {
-        return (newPosition[0] > -1) && (newPosition[0] < 8)
-                && (newPosition[1] > -1) && (newPosition[1] < 8);
-    }
-    private static boolean emptySlot(int[] newPosition){
-        boolean ans = false;
-        if ((plateau[newPosition[0]][newPosition[1]])!=' '){
-            ans = true;
+        boolean ans=true;
+        if(newPosition[0] < 0 || newPosition[0] > 7||newPosition[1] < 0||newPosition[1] > 7){
+            ans=false;
+
         }
+        else if ((plateau[newPosition[0]][newPosition[1]])!=' '){
+            ans = false;
+        }
+
+
         return ans;
     }
     //Fonction qui regarde ce qui ce trouve sur le chemin
     private static void getObject(int[] newPosition,Player player){
         //On regarde si la tortue heurte un mur
 
-if (numberOfPlayers==2||numberOfPlayers==4) {
-    if (!isValidPosition(newPosition)) {
-        uTurn(player);
-    } else if (newPosition == gem1.getGemPosition() || newPosition == gem2.getGemPosition()) {
+    if (newPosition == gem1.getGemPosition() || newPosition == gem2.getGemPosition()) {
         player.setWin(true);
-
     }
-    // On regarde si la tortue en heurte une autre
-    else if (!emptySlot(newPosition)){
-        if(plateau[newPosition[0]][newPosition[1]] == 'I'||plateau[newPosition[0]][newPosition[1]] == 'S'){
-            uTurn(player);
-        }
     else{
-            for (int i = 0; i < players.size(); i++) {
-                if (plateau[newPosition[0]][newPosition[1]] == players.get(i).getTurtleName()) {
-                    players.get(i).setPosition(players.get(i).getStartingPoint());
-                    player.setPosition(player.getStartingPoint());
-                    break;
-                }
+        uTurn(player);
+    }
+    if (numberOfPlayers ==3 ) {
+            if (newPosition == gem3.getGemPosition()) {
+                player.setWin(true);
             }
         }
-    }
-    if (numberOfPlayers==3) {
-        if (!isValidPosition(newPosition)) {
-            uTurn(player);
-        } else if (newPosition == gem1.getGemPosition() || newPosition == gem2.getGemPosition()) {
-            player.setWin(true);
 
-        } else if (newPosition == gem3.getGemPosition()) {
-            player.setWin(true);
 
-        }
-        // On regarde si la tortue en heurte une autre
-        else {
-            for (int i = 0; i < players.size(); i++) {
-                if (plateau[newPosition[0]][newPosition[1]] == players.get(i).getTurtleName()) {
-                    players.get(i).setPosition(players.get(i).getStartingPoint());
-                    player.setPosition(player.getStartingPoint());
-                    break;
-                }
-            }
+    // On regarde si la tortue en heurte une autre
+    for (int i = 0; i < players.size(); i++) {
+        if (plateau[newPosition[0]][newPosition[1]] == players.get(i).getTurtleName()) {
+            players.get(i).setPosition(players.get(i).getStartingPoint());
+            players.get(i).setDirection('S');
+            player.setPosition(player.getStartingPoint());
+            player.setDirection('S');
+            break;
         }
     }
+
     }
-    }
+
 
 
    public static void yellowEffect(Player player){
@@ -193,7 +168,7 @@ if (numberOfPlayers==2||numberOfPlayers==4) {
 
                 if (player.getDirection() == 'E') {
                     player.setDirection('S');
-                    System.out.println(player.getDirection());
+
 
 
                 } else if (player.getDirection() == 'N') {
@@ -213,13 +188,19 @@ if (numberOfPlayers==2||numberOfPlayers==4) {
             }
         }
     private static void uTurn(Player player){
+            int x = player.getPosition()[0];
+            int y =player.getPosition()[1];
+
+
         if (player.getDirection()=='E'){
             player.setDirection('O');
         }
         else if (player.getDirection()=='N'){
+
             player.setDirection('S');
         }
         else if (player.getDirection()=='O'){
+
             player.setDirection('E');
         }
         else if (player.getDirection()=='S'){
@@ -228,179 +209,129 @@ if (numberOfPlayers==2||numberOfPlayers==4) {
 
 
     }
-
-    public void laserEffect(Player player){
-        char direction = player.getDirection();
-        if (player.getDirection()=='E'){
-            for (int i=player.getPosition()[1];i>-1;i--){
-                int[] position= new int[]{player.getPosition()[0],player.getPosition()[i]};
-                if (plateau[player.getPosition()[0]][player.getPosition()[i]]!=' '){
-                    isPlayer(position);
-                    //isWall(position);
+    public void laserEffect(Player player) {
+        // Pour �viter de l'initialiser dans toute les boucles for
+        if (player.getDirection() == 'S') {
+            for (int i = player.getPosition()[0]+1; i <= 7; i++) { // On regarde chaque case en dessous
+                if (plateau[i][player.getPosition()[1]] == ' ') {  // Quand le laser tire dans le vide
                     break;
+                } else if (plateau[i][player.getPosition()[1]] == 'S') { // Quand le laser tire sur une pierre
+                    break;
+                } else if (plateau[i][player.getPosition()[1]] == 'W') { // Quand le laser tire sur le carton
+                    break;
+                } else if (plateau[i][player.getPosition()[1]] == 'I') {
+                    plateau[i][player.getPosition()[1]] = ' '; // La glace fond
+                    break;
+                } else {
 
+                    for (int j = 0; j < players.size(); j++) {
+                        if (plateau[i][player.getPosition()[1]] == players.get(j).getTurtleName()) {
+                            if (numberOfPlayers == 2) {
+                                uTurn(players.get(j));
+                                break;
+                            } else {
+                                players.get(j).setPosition(players.get(j).getStartingPoint());
+                                break;
+                            }
+                        }
+                    }
                 }
             }
-        }
-
-    }
-/*
-        public void laserEffect(Player player){
-        if (player.getDirection()=='E'){
-               for (int i=player.getPosition()[1];i<8;i++){
-                   int[] position= new int[]{player.getPosition()[0],player.getPosition()[i]};
-                   if (plateau[player.getPosition()[0]][player.getPosition()[i]]!=' '){
-
-
-
-                   }
-               }
-            }
-
-        else if(player.getDirection()=='O'){
-            for (int i=player.getPosition()[1];i>-1;i--){
-                   int[] position= new int[]{player.getPosition()[0],player.getPosition()[i]};
-                   if (plateau[player.getPosition()[0]][player.getPosition()[i]]!=' '){
-                       break;
-                   }
-        }
-        }
-        else if(player.getDirection()=='N'){
-            for (int i=player.getPosition()[0];i>-1;i--){
-            int[] position= new int[]{player.getPosition()[i],player.getPosition()[1]};
-            if (plateau[player.getPosition()[i]][player.getPosition()[0]]!=' '){
-               break;
-           }
-    }
-    }
-
-
-
-        }
-*/
-private void laserToWall(Player player){
-    char direction = player.getDirection();
-    // Pour �viter de l'initialiser dans toute les boucles for
-    if(player.getDirection()=='S') {
-        for(int i=player.getPosition()[0];i<=7;i++) { // On regarde chaque case en dessous
-            if(plateau[i][player.getPosition()[1]]==' ') {  // Quand le laser tire dans le vide
-                break;
-            }
-            else if (plateau[i][player.getPosition()[1]]=='S') { // Quand le laser tire sur une pierre
-                break;
-            }
-            else if(plateau[i][player.getPosition()[1]]=='W') { // Quand le laser tire sur le carton
-                break;
-            }
-            else if(plateau[i][player.getPosition()[1]]=='I') {
-                plateau[i][player.getPosition()[1]] = ' '; // La glace fond
-                break;
-            }
-
-            else {
-                laserToPlayer(player);
-                break;
-            }
-        }
-    }
-    else if (player.getDirection()=='N') {
-        for(int i=player.getPosition()[0];i>=0;i--) { // On regarde chaque case au dessus
-            if(plateau[i][player.getPosition()[1]]==' ') {  // Quand le laser tire dans le vide
-                break;
-            }
-            else if (plateau[i][player.getPosition()[1]]=='S') { // Quand le laser tire sur une pierre
-                break;
-            }
-            else if(plateau[i][player.getPosition()[1]]=='W') { // Quand le laser tire sur le carton
-                break;
-            }
-            else if(plateau[i][player.getPosition()[1]]=='I') {
-                plateau[i][player.getPosition()[1]] = ' '; // La glace fond
-                break;
-            }
-            else if(plateau[i][player.getPosition()[1]]=='b' || plateau[i][player.getPosition()[1]]=='p' || plateau[i][player.getPosition()[1]]=='r') {
-                uTurn(player); // Si �a touche un joyau
-                break;
-            }
-            else {
-                laserToPlayer(player);
-                break;
-            }
-        }
-    }
-    else if (player.getDirection()=='E') {
-        for(int i=player.getPosition()[1];i<=7;i++) { // On regarde chaque case � droite
-            if(plateau[player.getPosition()[0]][i]==' ') {  // Quand le laser tire dans le vide
-                break;
-            }
-            else if (plateau[player.getPosition()[0]][i]=='S') { // Quand le laser tire sur une pierre
-                break;
-            }
-            else if(plateau[player.getPosition()[0]][i]=='W') { // Quand le laser tire sur le carton
-                break;
-            }
-            else if(plateau[player.getPosition()[0]][i]=='I') {
-                plateau[player.getPosition()[0]][i] = ' '; // La glace fond
-                break;
-            }
-            else if(plateau[player.getPosition()[0]][i]=='b' || plateau[player.getPosition()[0]][i]=='p' || plateau[player.getPosition()[0]][i]=='r') {
-                uTurn(player); // Si �a touche un joyau
-                break;
-            }
-            else {
-                laserToPlayer(player);
-                break;
-            }
-        }
-    }
-    else if (player.getDirection()=='O') {
-        for(int i=player.getPosition()[1];i>=0;i--) { // On regarde chaque case � gauche
-            if(plateau[player.getPosition()[0]][i]==' ') {  // Quand le laser tire dans le vide
-                break;
-            }
-            else if (plateau[player.getPosition()[0]][i]=='S') { // Quand le laser tire sur une pierre
-                break;
-            }
-            else if(plateau[player.getPosition()[0]][i]=='W') { // Quand le laser tire sur le carton
-                break;
-            }
-            else if(plateau[player.getPosition()[0]][i]=='I') {
-                plateau[player.getPosition()[0]][i] = ' '; // La glace fond
-                break;
-            }
-            else if(plateau[player.getPosition()[0]][i]=='b' || plateau[player.getPosition()[0]][i]=='p' || plateau[player.getPosition()[0]][i]=='r') {
-                uTurn(player); // Si �a touche un joyau
-                break;
-            }
-            else {
-                laserToPlayer(player);
-                break;
-            }
-        }
-    }
-}
-        private static boolean isPlayer(int[] position){
-
-            for (int i =0;i<players.size();i++){
-                if ( plateau[position[0]][position[1]]== players.get(i).getTurtleName()){
-                    players.get(i).setPosition( players.get(i).getStartingPoint());
-
-                    players.get(i).setPosition( players.get(i).getStartingPoint());
+        } else if (player.getDirection() == 'N') {
+            for (int i = player.getPosition()[0]+1; i >= 0; i--) { // On regarde chaque case au dessus
+                if (plateau[i][player.getPosition()[1]] == ' ') {  // Quand le laser tire dans le vide
                     break;
+                } else if (plateau[i][player.getPosition()[1]] == 'S') { // Quand le laser tire sur une pierre
+                    break;
+                } else if (plateau[i][player.getPosition()[1]] == 'W') { // Quand le laser tire sur le carton
+                    break;
+                } else if (plateau[i][player.getPosition()[1]] == 'I') {
+                    plateau[i][player.getPosition()[1]] = ' '; // La glace fond
+                    break;
+                } else if (plateau[i][player.getPosition()[1]] == 'b' || plateau[i][player.getPosition()[1]] == 'p' || plateau[i][player.getPosition()[1]] == 'r') {
+                    uTurn(player); // Si �a touche un joyau
+                    break;
+                } else {
+//Laser sur un Joueur A REVOIR
+                    for (int j = 0; j < players.size(); j++) {
+                        if (plateau[i][player.getPosition()[1]] == players.get(j).getTurtleName()) {
+                            if (numberOfPlayers == 2) {
+                                uTurn(players.get(j));
+                                break;
+                            } else {
+                                players.get(j).setPosition(players.get(j).getStartingPoint());
+                                break;
+                            }
+                        }
+                    }
                 }
             }
+        } else if (player.getDirection() == 'E') {
+            for (int i = player.getPosition()[1]+1; i <= 7; i++) { // On regarde chaque case � droite
+                if (plateau[player.getPosition()[0]][i] == ' ') {  // Quand le laser tire dans le vide
+                    break;
+                } else if (plateau[player.getPosition()[0]][i] == 'S') { // Quand le laser tire sur une pierre
+                    break;
+                } else if (plateau[player.getPosition()[0]][i] == 'W') { // Quand le laser tire sur le carton
+                    break;
+                } else if (plateau[player.getPosition()[0]][i] == 'I') {
+                    plateau[player.getPosition()[0]][i] = ' '; // La glace fond
+                    break;
+                } else if (plateau[player.getPosition()[0]][i] == 'b' || plateau[player.getPosition()[0]][i] == 'p' || plateau[player.getPosition()[0]][i] == 'r') {
+                    uTurn(player); // Si �a touche un joyau
+                    break;
+                } else {
 
-            return false; //A changer
-        }
+                    for (int j = 0; j < players.size(); j++) {
+                        if (plateau[player.getPosition()[0]][i] == players.get(j).getTurtleName()) {
+                            if (numberOfPlayers == 2) {
+                                uTurn(players.get(j));
+                                break;
+                            } else {
+                                players.get(j).setPosition(players.get(j).getStartingPoint());
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        } else if (player.getDirection() == 'O') {
+            for (int i = player.getPosition()[1]+1; i >= 0; i--) { // On regarde chaque case � gauche
+                if (plateau[player.getPosition()[0]][i] == ' ') {  // Quand le laser tire dans le vide
+                    break;
+                } else if (plateau[player.getPosition()[0]][i] == 'S') { // Quand le laser tire sur une pierre
+                    break;
+                } else if (plateau[player.getPosition()[0]][i] == 'W') { // Quand le laser tire sur le carton
+                    break;
+                } else if (plateau[player.getPosition()[0]][i] == 'I') {
+                    plateau[player.getPosition()[0]][i] = ' '; // La glace fond
+                    break;
+                } else if (plateau[player.getPosition()[0]][i] == 'b' || plateau[player.getPosition()[0]][i] == 'p' || plateau[player.getPosition()[0]][i] == 'r') {
+                    uTurn(player); // Si �a touche un joyau
+                    break;
+                } else {
 
-    private void laserToPlayer(Player player){
-        if (numberOfPlayers==2){
-            uTurn(player);
-        }
-        else {
-            player.setPosition(player.getStartingPoint());
+                    for (int j = 0; j < players.size(); j++) {
+                        if (plateau[player.getPosition()[0]][i] == players.get(j).getTurtleName()) {
+                            if (numberOfPlayers == 2) {
+                                uTurn(players.get(j));
+                                break;
+                            } else {
+                                players.get(j).setPosition(players.get(j).getStartingPoint());
+                                break;
+                            }
+                        }
+                    }
+                }
+
+            }
         }
     }
+
+
+
+
+
 
 
 
