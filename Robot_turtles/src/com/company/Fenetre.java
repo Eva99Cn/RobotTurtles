@@ -22,7 +22,7 @@ public class Fenetre extends JFrame implements ActionListener {
     private JLabel bannerLabel;
     public Fenetre() {
 
-        window.setSize(1420, 800);
+        window.setSize(1300, 800);
         window.setLocationRelativeTo(null);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setResizable(false);
@@ -70,6 +70,7 @@ public class Fenetre extends JFrame implements ActionListener {
        if(e.getActionCommand().equals("2 Joueurs")) {
            numberOfPlayers=2;
            scene = new Panneau(numberOfPlayers);
+           scene.setLayout(null);
            window.setContentPane(scene);
 
            window.setVisible(true);}

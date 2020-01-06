@@ -15,7 +15,7 @@ public class Cards extends Panneau {
     private char laserCard = 'l';
     private int deckshuffleLength= 37;
     private ArrayList<Character> deckshuffle = new ArrayList<Character>();
-    private ArrayDeque<Character> deck = new ArrayDeque<>();
+    protected ArrayDeque<Character> deck = new ArrayDeque<>();
     private static int numberBlueCard= 18;
 
 
@@ -48,6 +48,7 @@ public class Cards extends Panneau {
             deck.push(deckshuffle.get(i));
 
         }
+
         fiveCardToPlayerHand();
 
     }
@@ -212,20 +213,23 @@ public class Cards extends Panneau {
     public void laserEffect(Player player) {
         // Pour �viter de l'initialiser dans toute les boucles for
         if (player.getDirection() == 'S') {
-            for (int i = player.getPosition()[0]+1; i <= 7; i++) { // On regarde chaque case en dessous
-                if (plateau[i][player.getPosition()[1]] == ' ') {  // Quand le laser tire dans le vide
-                    break;
-                } else if (plateau[i][player.getPosition()[1]] == 'S') { // Quand le laser tire sur une pierre
+            for (int i = player.getPosition()[0]; i <= 7; i++) { // On regarde chaque case en dessous
+                 if (plateau[i][player.getPosition()[1]] == 'S') { // Quand le laser tire sur une pierre
                     break;
                 } else if (plateau[i][player.getPosition()[1]] == 'W') { // Quand le laser tire sur le carton
                     break;
                 } else if (plateau[i][player.getPosition()[1]] == 'I') {
+                    for (int j=0;j<walls.size();j++){
+                        if (walls.get(j).getWallPos()[0]==i+1 &&walls.get(j).getWallPos()[1]==player.getPosition()[1]) {
+                            walls.get(j).setWallPos(new int[] {99,1});
+                        }
+                    }
                     plateau[i][player.getPosition()[1]] = ' '; // La glace fond
                     break;
                 } else {
 
                     for (int j = 0; j < players.size(); j++) {
-                        if (plateau[i][player.getPosition()[1]] == players.get(j).getTurtleName()) {
+                        if (plateau[i+1][player.getPosition()[1]] == players.get(j).getTurtleName()) {
                             if (numberOfPlayers == 2) {
                                 uTurn(players.get(j));
                                 break;
@@ -238,10 +242,8 @@ public class Cards extends Panneau {
                 }
             }
         } else if (player.getDirection() == 'N') {
-            for (int i = player.getPosition()[0]+1; i >= 0; i--) { // On regarde chaque case au dessus
-                if (plateau[i][player.getPosition()[1]] == ' ') {  // Quand le laser tire dans le vide
-                    break;
-                } else if (plateau[i][player.getPosition()[1]] == 'S') { // Quand le laser tire sur une pierre
+            for (int i = player.getPosition()[0]; i >= 0; i--) { // On regarde chaque case au dessus
+               if (plateau[i][player.getPosition()[1]] == 'S') { // Quand le laser tire sur une pierre
                     break;
                 } else if (plateau[i][player.getPosition()[1]] == 'W') { // Quand le laser tire sur le carton
                     break;
@@ -252,9 +254,9 @@ public class Cards extends Panneau {
                     uTurn(player); // Si �a touche un joyau
                     break;
                 } else {
-//Laser sur un Joueur A REVOIR
+//Laser sur un Joueur
                     for (int j = 0; j < players.size(); j++) {
-                        if (plateau[i][player.getPosition()[1]] == players.get(j).getTurtleName()) {
+                        if (plateau[i-1][player.getPosition()[1]] == players.get(j).getTurtleName()) {
                             if (numberOfPlayers == 2) {
                                 uTurn(players.get(j));
                                 break;
@@ -267,10 +269,8 @@ public class Cards extends Panneau {
                 }
             }
         } else if (player.getDirection() == 'E') {
-            for (int i = player.getPosition()[1]+1; i <= 7; i++) { // On regarde chaque case � droite
-                if (plateau[player.getPosition()[0]][i] == ' ') {  // Quand le laser tire dans le vide
-                    break;
-                } else if (plateau[player.getPosition()[0]][i] == 'S') { // Quand le laser tire sur une pierre
+            for (int i = player.getPosition()[1]; i <= 7; i++) { // On regarde chaque case � droite
+                if (plateau[player.getPosition()[0]][i] == 'S') { // Quand le laser tire sur une pierre
                     break;
                 } else if (plateau[player.getPosition()[0]][i] == 'W') { // Quand le laser tire sur le carton
                     break;
@@ -283,7 +283,7 @@ public class Cards extends Panneau {
                 } else {
 
                     for (int j = 0; j < players.size(); j++) {
-                        if (plateau[player.getPosition()[0]][i] == players.get(j).getTurtleName()) {
+                        if (plateau[player.getPosition()[0]][i+1] == players.get(j).getTurtleName()) {
                             if (numberOfPlayers == 2) {
                                 uTurn(players.get(j));
                                 break;
@@ -296,10 +296,8 @@ public class Cards extends Panneau {
                 }
             }
         } else if (player.getDirection() == 'O') {
-            for (int i = player.getPosition()[1]+1; i >= 0; i--) { // On regarde chaque case � gauche
-                if (plateau[player.getPosition()[0]][i] == ' ') {  // Quand le laser tire dans le vide
-                    break;
-                } else if (plateau[player.getPosition()[0]][i] == 'S') { // Quand le laser tire sur une pierre
+            for (int i = player.getPosition()[1]; i >= 0; i--) { // On regarde chaque case � gauche
+                if (plateau[player.getPosition()[0]][i] == 'S') { // Quand le laser tire sur une pierre
                     break;
                 } else if (plateau[player.getPosition()[0]][i] == 'W') { // Quand le laser tire sur le carton
                     break;
@@ -312,7 +310,7 @@ public class Cards extends Panneau {
                 } else {
 
                     for (int j = 0; j < players.size(); j++) {
-                        if (plateau[player.getPosition()[0]][i] == players.get(j).getTurtleName()) {
+                        if (plateau[player.getPosition()[0]][i-1] == players.get(j).getTurtleName()) {
                             if (numberOfPlayers == 2) {
                                 uTurn(players.get(j));
                                 break;
@@ -337,6 +335,7 @@ public class Cards extends Panneau {
 
 //Fonction pour remplir la main de l'utilisateur si il n'a que 5 cartes
         public void fiveCardToPlayerHand(){
+
                 for (int i=getPlayerHand().size();i<5;i++){
                     addPlayerHand(deck.pop());
                 }

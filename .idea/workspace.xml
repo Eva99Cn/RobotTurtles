@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="943346ec-a5c8-42c6-8e43-0f010f437f4d" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/Robot_turtles/out/production/Robot_turtles/com/company/Cards.class" beforeDir="false" afterPath="$PROJECT_DIR$/Robot_turtles/out/production/Robot_turtles/com/company/Cards.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Robot_turtles/out/production/Robot_turtles/com/company/Gem.class" beforeDir="false" afterPath="$PROJECT_DIR$/Robot_turtles/out/production/Robot_turtles/com/company/Gem.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Robot_turtles/out/production/Robot_turtles/com/company/Obstacle.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Robot_turtles/out/production/Robot_turtles/com/company/Panneau.class" beforeDir="false" afterPath="$PROJECT_DIR$/Robot_turtles/out/production/Robot_turtles/com/company/Panneau.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Robot_turtles/out/production/Robot_turtles/com/company/Player.class" beforeDir="false" afterPath="$PROJECT_DIR$/Robot_turtles/out/production/Robot_turtles/com/company/Player.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Robot_turtles/out/production/Robot_turtles/images/tiles/ICE.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Robot_turtles/out/production/Robot_turtles/images/tiles/WALL.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Robot_turtles/out/production/Robot_turtles/images/tiles/WoodBox.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Robot_turtles/src/com/company/Cards.java" beforeDir="false" afterPath="$PROJECT_DIR$/Robot_turtles/src/com/company/Cards.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Robot_turtles/src/com/company/Gem.java" beforeDir="false" afterPath="$PROJECT_DIR$/Robot_turtles/src/com/company/Gem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Robot_turtles/src/com/company/Obstacle.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Robot_turtles/src/com/company/Panneau.java" beforeDir="false" afterPath="$PROJECT_DIR$/Robot_turtles/src/com/company/Panneau.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Robot_turtles/src/com/company/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/Robot_turtles/src/com/company/Player.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Robot_turtles/src/images/tiles/ICE.png" beforeDir="false" afterPath="$PROJECT_DIR$/Robot_turtles/src/images/tiles/I.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Robot_turtles/src/images/tiles/WALL.png" beforeDir="false" afterPath="$PROJECT_DIR$/Robot_turtles/src/images/tiles/S.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Robot_turtles/src/images/tiles/WoodBox.png" beforeDir="false" afterPath="$PROJECT_DIR$/Robot_turtles/src/images/tiles/W.png" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/Robot_turtles" />
+  </component>
+  <component name="ProjectId" id="1W16LFqb46zb5YhmazVJXrBwlkT" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ServiceViewManager">
+    <option name="viewStates">
+      <list>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="943346ec-a5c8-42c6-8e43-0f010f437f4d" name="Default Changelist" comment="" />
+      <created>1578304695806</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1578304695806</updated>
+      <workItem from="1578304697833" duration="28000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="648" y="377" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog" timestamp="1578304717792">
+      <screen x="0" y="23" width="1440" height="877" />
+    </state>
+    <state x="648" y="377" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog/0.23.1440.877@0.23.1440.877" timestamp="1578304717792" />
+  </component>
+</project>

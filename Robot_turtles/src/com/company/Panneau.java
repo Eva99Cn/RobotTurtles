@@ -14,7 +14,11 @@ public class Panneau extends JPanel implements ActionListener {
     private JButton button2 = new JButton("Ajouter au programme");
     private JButton button3 = new JButton("Construire un mur");
     private JButton button4 = new JButton("");
+    private JButton button5 = new JButton("Valider");
 
+    private boolean iceWall;
+    private int xpos;
+    private int ypos;
 
     private ImageIcon icoBackground;
     private Image imgbackground;
@@ -31,8 +35,10 @@ public class Panneau extends JPanel implements ActionListener {
     private  ImageIcon  imgStoneWall= new ImageIcon(getClass().getResource("/images/tiles/S.png"));
 
 
+
     private static int turn=1;
     private boolean endGame=false;
+
 
     private JPanel rightPan = new JPanel();
     private JPanel cards =new JPanel();
@@ -131,16 +137,20 @@ public class Panneau extends JPanel implements ActionListener {
 
 
         }
-
-
-        this.add(gamePanel,BorderLayout.SOUTH);
-        this.add(rightPan,BorderLayout.WEST);
         gamePanel.setOpaque(true);
         gamePanel.setBackground(new Color(0,0,0,0));
         cards.setOpaque(true);
         cards.setBackground(new Color(0,0,0,0));
         rightPan.setOpaque(true);
         rightPan.setBackground(new Color(0,0,0,0));
+        gamePanel.setLocation(900,10);
+        gamePanel.setSize(200,200);
+        rightPan.setLocation(760,250);
+        rightPan.setSize(500,200);
+        this.add(gamePanel);
+        this.add(rightPan);
+
+        button5.addActionListener(this);
         button4.addActionListener(this);
         button3.addActionListener(this);
         button2.addActionListener(this);
@@ -148,6 +158,7 @@ public class Panneau extends JPanel implements ActionListener {
         gamePanel.add(button1);
         gamePanel.add(button2);
         gamePanel.add(button3);
+
 
         rightPan.add(cards);
 
@@ -237,10 +248,12 @@ public class Panneau extends JPanel implements ActionListener {
         printBoard();
         Player ans = null;
         JLabel playerLabel =new JLabel();
+        this.add(playerLabel);
+
         if(numberOfPlayers==2){
         if(turn%2==0){
             if(!player1.isWin()){
-                this.add(playerLabel);
+                playerLabel.setText("J2");
                 this.revalidate();
                 this.repaint();
                 ans = player2;}
@@ -253,7 +266,7 @@ public class Panneau extends JPanel implements ActionListener {
         }
         else {
             if(!player2.isWin()) {
-                this.add(playerLabel);
+                playerLabel.setText("J1");
                 this.revalidate();
                 this.repaint();
                 ans = player1;
@@ -267,8 +280,23 @@ public class Panneau extends JPanel implements ActionListener {
         }
 
         }
+        else if (numberOfPlayers==3){
+            int z = 1;
+            if(z==1){
+                if(!player2.isWin()){
+                    playerLabel.setText("J2");
+                    this.revalidate();
+                    this.repaint();
+                    ans = player1;}
+                }
+            }
+
+
+
+
         return ans;
     }
+
 
 
     private static void initializeBoard()
@@ -298,8 +326,10 @@ public class Panneau extends JPanel implements ActionListener {
 
 
     private void addToProgram(){
-        if ((player.getDeck().getPlayerHand()).size() < 5) {
-            (player.getDeck()).fiveCardToPlayerHand();
+        if(player.getDeck().deck.size()>0) {
+            if ((player.getDeck().getPlayerHand()).size() < 5) {
+                (player.getDeck()).fiveCardToPlayerHand();
+            }
         }
         for (int i=0;i<player.getDeck().getPlayerHand().size();i++) {
             if (player.getDeck().getPlayerHand().get(i) == 'b') {
@@ -374,8 +404,10 @@ public class Panneau extends JPanel implements ActionListener {
     }
 
     private void executeProgram(){
-        if ((player.getDeck().getPlayerHand()).size() < 5) {
-            (player.getDeck()).fiveCardToPlayerHand();
+        if(player.getDeck().deck.size()>0) {
+            if ((player.getDeck().getPlayerHand()).size() < 5) {
+                (player.getDeck()).fiveCardToPlayerHand();
+            }
         }
         int departSize = player.getDeck().getHiddenCards().size();
         for (int i=0;i<departSize;i++){
@@ -409,10 +441,15 @@ public class Panneau extends JPanel implements ActionListener {
         gamePanel.repaint();
 
     }
+/*TODO :A REVOIR
 
+
+* */
     private void buildWall() {
-        if ((player.getDeck().getPlayerHand()).size() < 5) {
-            (player.getDeck()).fiveCardToPlayerHand();
+        if(player.getDeck().deck.size()>0) {
+            if ((player.getDeck().getPlayerHand()).size() < 5) {
+                (player.getDeck()).fiveCardToPlayerHand();
+            }
         }
         if(player.getNumberofStoneWall()>0){
         button1.setText("Mur de pierre");}
@@ -426,32 +463,10 @@ public class Panneau extends JPanel implements ActionListener {
         }
         button3.setText("Défausser");
         button4.setText("Finir le tour");
+        gamePanel.add(button5);
 
         gamePanel.repaint();
-        /*
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("il vous reste " + player.obstacle.getNumberOfIceWall()+"mur de glace");
-        System.out.println("il vous reste "+ player.obstacle.getNumberOfStoneWall()+"mur de pierre" );
-        System.out.println("Quel mur veut tu placer\n");
-        char choix  = scanner.next().charAt(0);
-        System.out.println("Sur quelle ligne placer ton mur\n");
-        int posX = scanner.nextInt();
-        System.out.println("Sur quelle colonne placer ton mur\n");
-        int posY = scanner.nextInt();
-        if(!blocked(posX,posY)){
-            if (choix==player.obstacle.getStoneWall()){
-                player.obstacle.reduceNumberOfStoneWall();
-                plateau[posX][posY]= choix;
-            }
-            else {
-                    player.obstacle.reduceNumberOfIceWall();
-                }
-            }
 
-        else
-        {
-            System.out.println("Vous ne pouvez pas placer votre mur ici");
-        }*/
 
     }
 
@@ -464,10 +479,37 @@ public class Panneau extends JPanel implements ActionListener {
     }
 
 
+    public boolean surrending(int x,int y){
+        boolean ans = true;
+        int counter =0;
+        //ligne du haut
+        for (int i=y-1;i<3;i++){
+            if (plateau[x-1][i]=='S'||plateau[x-1][i]=='I'){
+                counter++;
+            }
+        }
+        //ligne du bas
+        for (int i=y-1;i<3;i++){
+            if (plateau[x+1][i]=='S'||plateau[x+1][i]=='I'){
+                counter++;
+            }
+        }
+        //case de gauche
+        if (plateau[x][y-1]=='S'||plateau[x][y-1]=='I'){
+            counter++;
+        }
+        //case de droite
+        if (plateau[x][y+1]=='S'||plateau[x][y+1]=='I'){
+            counter++;
+        }
+        if(counter==6){
+            ans=false;
+        }
+        return ans;
+    }
 
 
-
-    private static boolean blocked(int posY, int posX) {
+    private static boolean blocked(int posX, int posY) {
         boolean ans = false;
 
 
@@ -487,7 +529,7 @@ public class Panneau extends JPanel implements ActionListener {
                 ans = true;
             }
         }
-        if (numberOfPlayers==3){
+        if (numberOfPlayers>=3){
             if (checkSurrounding(plateauBis, player3.getPosition()) && checktempWall(plateauBis, player3.getPosition())) {
                 ans = true;
             }
@@ -698,6 +740,7 @@ public class Panneau extends JPanel implements ActionListener {
            button2.setText("Ajouter au programme");
            button3.setText("Construire un mur");
            gamePanel.remove(button4);
+           gamePanel.remove(button5);
 
             gamePanel.revalidate();
             gamePanel.repaint();
@@ -720,15 +763,16 @@ public class Panneau extends JPanel implements ActionListener {
         }
 
         if(e.getActionCommand().equals("Mur de pierre")){
-            this.addMouseListener(new MouseAdapter() {
+            iceWall=false;
 
+            this.addMouseListener(new MouseAdapter() {
 
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     int x = e.getX();
                     int y = e.getY();
-                    int xpos = 99;
-                    int ypos=1;
+                     xpos = 99;
+                     ypos=1;
                     if(player.getNumberofStoneWall()==3){
                     xpos=player.getStoneWall().getWallPos()[0];
                     ypos=player.getStoneWall().getWallPos()[1];}
@@ -776,16 +820,15 @@ public class Panneau extends JPanel implements ActionListener {
                     }
 
                     if(isEmpty(xpos,ypos)){
-                        plateau[xpos][ypos]='S';
                         if(player.getNumberofStoneWall()==3){
                         player.getStoneWall().setWallPos(new int[]{xpos, ypos});}
                     else if(player.getNumberofStoneWall()==2){
                         player.getStoneWall2().setWallPos(new int[]{xpos, ypos});}
                     else if(player.getNumberofStoneWall()==1){
                     player.getStoneWall3().setWallPos(new int[]{xpos, ypos});}
-                    player.reduceNumberofStoneWall();
-                    }
                     repaint();
+                    }
+
                 }
 
 
@@ -793,8 +836,9 @@ public class Panneau extends JPanel implements ActionListener {
 
         }
 
-        if(e.getActionCommand().equals("Mur de glace")){
 
+        if(e.getActionCommand().equals("Mur de glace")){
+            iceWall=true;
 
             this.addMouseListener(new MouseAdapter() {
 
@@ -803,8 +847,8 @@ public class Panneau extends JPanel implements ActionListener {
                 public void mouseClicked(MouseEvent e) {
                     int x = e.getX();
                     int y = e.getY();
-                    int xpos = 99;
-                    int ypos=1;
+                    xpos = 99;
+                    ypos=1;
                     if(player.getNumberofIceWall()==2){
                         xpos=player.getIceWall().getWallPos()[0];
                         ypos=player.getIceWall().getWallPos()[1];}
@@ -849,7 +893,6 @@ public class Panneau extends JPanel implements ActionListener {
                         xpos = 7;
                     }
                     if (!blocked(xpos, ypos)&&isEmpty(xpos,ypos)) {
-                        plateau[xpos][ypos]='I';
                         if (player.getNumberofIceWall() == 2) {
                             player.getIceWall().setWallPos(new int[]{xpos, ypos});
                             walls.add(player.getIceWall());
@@ -858,16 +901,31 @@ public class Panneau extends JPanel implements ActionListener {
                         player.getIceWall2().setWallPos(new int[]{xpos, ypos});
                             walls.add(player.getIceWall2());
                     }
-                        player.reduceNumberofIceWall();
-
+                        repaint();
                     }
-                    repaint();
+
                 }
 
 
             });
 
+
         }
+        if(e.getActionCommand().equals("Valider")){
+            if(iceWall){
+                plateau[xpos][ypos]='I';
+                player.reduceNumberofIceWall();
+
+            }
+            if(!iceWall){
+                plateau[xpos][ypos]='S';
+                player.reduceNumberofStoneWall();
+                System.out.println(player.getNumberofStoneWall());
+
+            }
+        }
+
+
 
 
 

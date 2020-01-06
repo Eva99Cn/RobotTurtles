@@ -21,8 +21,8 @@ public class Player extends Panneau {
     protected Wall stoneWall;
     protected Wall stoneWall2;
     protected  Wall stoneWall3;
-    protected int numberofStoneWall;
-    protected int numberofIceWall;
+    protected  int numberofStoneWall=3;
+    protected int numberofIceWall=2;
 
 
     public ImageIcon imgPlayer;
@@ -39,8 +39,6 @@ public class Player extends Panneau {
         this.startingPoint = startingPoint;
         this.imgPlayer= new ImageIcon(getClass().getResource("/images/characters/"+turtleName+"-"+direction+".png"));
         turn= false;
-        this.numberofIceWall=2;
-        this.numberofStoneWall=3;
         this.iceWall = new Wall('I',new int[]{99,1});
         this.iceWall2 = new Wall('I',new int[]{99,1});
         this.stoneWall = new Wall('S',new int[]{99,2});
@@ -153,7 +151,7 @@ public class Player extends Panneau {
     }
 
     public void reduceNumberofStoneWall() {
-        this.numberofStoneWall = numberofStoneWall--;
+        this.numberofStoneWall = numberofStoneWall-1;
     }
 
     public int getNumberofIceWall() {
@@ -161,6 +159,6 @@ public class Player extends Panneau {
     }
 
     public void reduceNumberofIceWall() {
-        this.numberofIceWall = numberofIceWall--;
+        this.numberofIceWall = numberofIceWall-1;
     }
 }

@@ -3,7 +3,7 @@ package com.company;
 import javax.swing.*;
 import java.util.ArrayList;
 
-public class Wall {
+public class Wall extends Panneau{
         protected char wallType;
         protected   int[] wallPos;
     protected   int numberLeft;
@@ -51,7 +51,18 @@ public class Wall {
         return wallPos;
     }
 
+
     public void setWallPos(int[] wallPos) {
         this.wallPos = wallPos;
     }
+
+    public boolean emptySlot(int x, int y){
+        boolean ans = true;
+        if(plateau[x][y]!=' '){
+            ans = false;
+        }
+        return ans;
+    }
+
+
 }
