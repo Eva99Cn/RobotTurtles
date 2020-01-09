@@ -14,7 +14,6 @@ public class Panneau extends JPanel implements ActionListener {
     private JButton button2 = new JButton("Ajouter au programme");
     private JButton button3 = new JButton("Construire un mur");
     private JButton button4 = new JButton("");
-    private JButton button5 = new JButton("Valider");
 
     private boolean iceWall;
     private int xpos;
@@ -93,7 +92,7 @@ public class Panneau extends JPanel implements ActionListener {
             Cards deckP3 = new Cards();
             player1 = new Player('B', 'S', new int[]{0, 0}, new int[]{0, 0}, deckP1);
             player2 = new Player('P', 'S', new int[]{0, 3}, new int[]{0, 3}, deckP2);
-            player3 = new Player('p', 'S', new int[]{0, 6}, new int[]{0, 6}, deckP3);
+            player3 = new Player('r', 'S', new int[]{0, 6}, new int[]{0, 6}, deckP3);
             gem1 = new Gem('b', new int[]{7, 0});
             gem2 = new Gem('p', new int[]{7, 3});
             gem3 = new Gem('r', new int[]{7, 6});
@@ -116,7 +115,7 @@ public class Panneau extends JPanel implements ActionListener {
             Cards deckP4 = new Cards();
             player1 = new Player('B', 'S', new int[]{0, 0}, new int[]{0, 0}, deckP1);
             player2 = new Player('P', 'S', new int[]{0, 2}, new int[]{0, 2}, deckP2);
-            player3 = new Player('p', 'S', new int[]{0, 5}, new int[]{0, 5}, deckP3);
+            player3 = new Player('r', 'S', new int[]{0, 5}, new int[]{0, 5}, deckP3);
             player4 = new Player('D', 'S', new int[]{0, 7}, new int[]{0, 7}, deckP4);
             gem1 = new Gem('b', new int[]{7, 1});
             gem2 = new Gem('p', new int[]{7, 6});
@@ -137,20 +136,22 @@ public class Panneau extends JPanel implements ActionListener {
 
 
         }
-        gamePanel.setOpaque(true);
-        gamePanel.setBackground(new Color(0,0,0,0));
-        cards.setOpaque(true);
-        cards.setBackground(new Color(0,0,0,0));
-        rightPan.setOpaque(true);
-        rightPan.setBackground(new Color(0,0,0,0));
+
+
+
         gamePanel.setLocation(900,10);
         gamePanel.setSize(200,200);
+        gamePanel.setOpaque(true);
+        gamePanel.setBackground(new Color(0,0,0,0));
         rightPan.setLocation(760,250);
         rightPan.setSize(500,200);
+        rightPan.setOpaque(true);
+        rightPan.setBackground(new Color(0,0,0,0));
+        cards.setOpaque(true);
+        cards.setBackground(new Color(0,0,0,0));
         this.add(gamePanel);
         this.add(rightPan);
 
-        button5.addActionListener(this);
         button4.addActionListener(this);
         button3.addActionListener(this);
         button2.addActionListener(this);
@@ -456,14 +457,13 @@ public class Panneau extends JPanel implements ActionListener {
         else{
             button1.setText("");
         }
-        if(player.getNumberofStoneWall()>0){
+        if(player.getNumberofIceWall()>0){
         button2.setText("Mur de glace");}
         else{
             button2.setText("");
         }
         button3.setText("Défausser");
         button4.setText("Finir le tour");
-        gamePanel.add(button5);
 
         gamePanel.repaint();
 
@@ -479,153 +479,17 @@ public class Panneau extends JPanel implements ActionListener {
     }
 
 
-    public boolean surrending(int x,int y){
-        boolean ans = true;
-        int counter =0;
-        //ligne du haut
-        for (int i=y-1;i<3;i++){
-            if (plateau[x-1][i]=='S'||plateau[x-1][i]=='I'){
-                counter++;
-            }
-        }
-        //ligne du bas
-        for (int i=y-1;i<3;i++){
-            if (plateau[x+1][i]=='S'||plateau[x+1][i]=='I'){
-                counter++;
-            }
-        }
-        //case de gauche
-        if (plateau[x][y-1]=='S'||plateau[x][y-1]=='I'){
-            counter++;
-        }
-        //case de droite
-        if (plateau[x][y+1]=='S'||plateau[x][y+1]=='I'){
-            counter++;
-        }
-        if(counter==6){
-            ans=false;
-        }
-        return ans;
-    }
-
-
     private static boolean blocked(int posX, int posY) {
-        boolean ans = false;
-
-
-        char plateauBis[][] = plateau;
-        plateauBis[posX][posY] = 't';
-        if (numberOfPlayers >= 2) {
-            if (checkSurrounding(plateauBis, gem1.getGemPosition()) && checktempWall(plateauBis, gem1.getGemPosition())) {
-                ans = true;
-            }
-            if (checkSurrounding(plateauBis, gem2.getGemPosition()) && checktempWall(plateauBis, gem2.getGemPosition())) {
-                ans = true;
-            }
-            if (checkSurrounding(plateauBis, player1.getPosition()) && checktempWall(plateauBis, player1.getPosition())) {
-                ans = true;
-            }
-            if (checkSurrounding(plateauBis, player2.getPosition()) && checktempWall(plateauBis, player2.getPosition())) {
-                ans = true;
-            }
-        }
-        if (numberOfPlayers>=3){
-            if (checkSurrounding(plateauBis, player3.getPosition()) && checktempWall(plateauBis, player3.getPosition())) {
-                ans = true;
-            }
-
-        }
-
-        if (numberOfPlayers == 4) {
-            if (checkSurrounding(plateauBis, player4.getPosition()) && checktempWall(plateauBis, player4.getPosition())) {
-                ans = true;
-            }
-        }
-
+        boolean ans=false;
 
         return ans;
     }
 
 
 
-//creation d'un mur temporaire
-
-    public static boolean checktempWall(char[][] plateauBis, int[] pos) {
-        boolean t = false;
-        //Vérification de la ligne du haut
-        for (int i = pos[1] - 1; i < pos[1] + 2; i++) {
-            if (pos[1] - 1>=0&&pos[1]+1<7&&pos[0]-1>=0) {
-                if (plateauBis[pos[0] - 1][i] == 't') {
-                    t = true;
-                }
-            }
-
-        }
-        //Vérification sur le coté gauche
-        if(pos[1] - 1 >= 0){
-        if (plateauBis[pos[0]][pos[1]-1]=='t') {
-
-                t = true;
-            }
-        }
-        //Vérification sur le coté droit
-        if(pos[1] + 1 < 8){
-        if (plateauBis[pos[0]][pos[1]+1]=='t'){
-            t = true;
-        }
-        }
-        return t;
-
-    }
 
 
 
-    public static boolean checkSurrounding(char[][] plateauBis, int[] pos){
-        int counter = 0;
-        boolean ans = false;
-        for (int i = pos[1] - 1; i < pos[1] + 2; i++) {
-            if (pos[1] - 1 >= 0 && pos[1] + 1 < 7 && pos[0] - 1 >= 0) {
-                if (plateauBis[pos[0] - 1][i]!=' ') {
-                    counter++;
-                }
-            } else {
-                counter++;
-            }
-        }
-
-        //ligne du bas
-        for (int i = pos[1] - 1; i < pos[1] + 2; i++) {
-            if (pos[1] - 1 >= 0 && pos[1] + 1 < 7 && pos[0] + 1 < 8) {
-                if (plateauBis[pos[0] + 1][i] !=' ') {
-                    counter++;
-                }
-            } else {
-                counter++;
-            }
-        }
-
-            if(pos[1] - 1 >= 0) {
-                if (plateauBis[pos[0]][pos[1] - 1]!=' ') {
-                    counter++;
-                }
-            }
-            else{
-                counter++;
-            }
-
-            if(pos[1] + 1 < 8){
-        if (plateauBis[pos[0]][pos[1]+1]!=' '){
-            counter++;
-        }}
-            else {
-                counter++;
-            }
-
-        if (counter>=7){
-            ans = true;
-        }
-        return ans;
-    }
 
 
     public void hasWon(){
@@ -740,7 +604,6 @@ public class Panneau extends JPanel implements ActionListener {
            button2.setText("Ajouter au programme");
            button3.setText("Construire un mur");
            gamePanel.remove(button4);
-           gamePanel.remove(button5);
 
             gamePanel.revalidate();
             gamePanel.repaint();
@@ -764,6 +627,8 @@ public class Panneau extends JPanel implements ActionListener {
 
         if(e.getActionCommand().equals("Mur de pierre")){
             iceWall=false;
+            button1.setText("Valider");
+            button2.setText("");
 
             this.addMouseListener(new MouseAdapter() {
 
@@ -839,6 +704,9 @@ public class Panneau extends JPanel implements ActionListener {
 
         if(e.getActionCommand().equals("Mur de glace")){
             iceWall=true;
+            button1.setText("");
+            button2.setText("Valider");
+
 
             this.addMouseListener(new MouseAdapter() {
 
@@ -912,9 +780,13 @@ public class Panneau extends JPanel implements ActionListener {
 
         }
         if(e.getActionCommand().equals("Valider")){
+            button1.setText("");
+            button2.setText("");
+
             if(iceWall){
                 plateau[xpos][ypos]='I';
                 player.reduceNumberofIceWall();
+                button1.setText("");
 
             }
             if(!iceWall){

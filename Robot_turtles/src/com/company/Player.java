@@ -21,8 +21,8 @@ public class Player extends Panneau {
     protected Wall stoneWall;
     protected Wall stoneWall2;
     protected  Wall stoneWall3;
-    protected  int numberofStoneWall=3;
-    protected int numberofIceWall=2;
+    protected  int numberofStoneWall;
+    protected int numberofIceWall;
 
 
     public ImageIcon imgPlayer;
@@ -44,7 +44,8 @@ public class Player extends Panneau {
         this.stoneWall = new Wall('S',new int[]{99,2});
         this.stoneWall2 = new Wall('S',new int[]{99,2});
         this.stoneWall3= new Wall('S',new int[]{99,2});
-
+        this.numberofStoneWall=3;
+        this.numberofIceWall=2;
 
 
     }

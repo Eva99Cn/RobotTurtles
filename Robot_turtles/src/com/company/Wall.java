@@ -6,7 +6,6 @@ import java.util.ArrayList;
 public class Wall extends Panneau{
         protected char wallType;
         protected   int[] wallPos;
-    protected   int numberLeft;
     public ImageIcon imgWall;
 
 
