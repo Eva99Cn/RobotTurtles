@@ -15,7 +15,7 @@ public class Panneau extends JPanel implements ActionListener {
     private JButton button3 = new JButton("Construire un mur");
     private JButton button4 = new JButton("");
 
-    private boolean iceWall;
+
     private int xpos;
     private int ypos;
 
@@ -55,6 +55,7 @@ public class Panneau extends JPanel implements ActionListener {
     public static Gem gem1;
     public static Gem gem2;
     public static Gem gem3;
+
 
 
 
@@ -462,9 +463,7 @@ public class Panneau extends JPanel implements ActionListener {
         else{
             button2.setText("");
         }
-        button3.setText("Défausser");
-        button4.setText("Finir le tour");
-
+        button3.setText("Finir le tour");
         gamePanel.repaint();
 
 
@@ -519,7 +518,6 @@ public class Panneau extends JPanel implements ActionListener {
 
          if(e.getActionCommand().equals("Construire un mur")){
            buildWall();
-           gamePanel.add(button4);
         }
 
         else if(e.getActionCommand().equals("Ajouter au programme")){
@@ -626,86 +624,93 @@ public class Panneau extends JPanel implements ActionListener {
         }
 
         if(e.getActionCommand().equals("Mur de pierre")){
-            iceWall=false;
-            button1.setText("Valider");
-            button2.setText("");
+            button2.setText("Défausser");
+            button1.setText("");
 
             this.addMouseListener(new MouseAdapter() {
 
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    int x = e.getX();
-                    int y = e.getY();
-                     xpos = 99;
-                     ypos=1;
-                    if(player.getNumberofStoneWall()==3){
-                    xpos=player.getStoneWall().getWallPos()[0];
-                    ypos=player.getStoneWall().getWallPos()[1];}
-                    else if(player.getNumberofStoneWall()==2){
-                        xpos=player.getStoneWall2().getWallPos()[0];
-                        ypos=player.getStoneWall2().getWallPos()[1];}
-                    else if(player.getNumberofStoneWall()==1){
-                        xpos=player.getStoneWall3().getWallPos()[0];
-                        ypos=player.getStoneWall3().getWallPos()[1];}
 
-                    if (x > 85 && x < 170) {
-                        ypos = 0;
-                    } else if (x > 170 && x < 256) {
+                        int x = e.getX();
+                        int y = e.getY();
+                        xpos = 99;
                         ypos = 1;
-                    } else if (x > 256 && x < 339) {
-                        ypos = 2;
-                    } else if (x > 339 && x < 425) {
-                        ypos = 3;
-                    } else if (x > 425 && x < 511) {
-                        ypos = 4;
-                    } else if (x > 511 && x < 594) {
-                        ypos = 5;
-                    } else if (x > 594 && x < 683) {
-                        ypos = 6;
-                    } else if (x > 683 && x < 766) {
-                        ypos = 7;
+                        if (player.getNumberofStoneWall() == 3) {
+                            xpos = player.getStoneWall().getWallPos()[0];
+                            ypos = player.getStoneWall().getWallPos()[1];
+                        } else if (player.getNumberofStoneWall() == 2) {
+                            xpos = player.getStoneWall2().getWallPos()[0];
+                            ypos = player.getStoneWall2().getWallPos()[1];
+                        } else if (player.getNumberofStoneWall() == 1) {
+                            xpos = player.getStoneWall3().getWallPos()[0];
+                            ypos = player.getStoneWall3().getWallPos()[1];
+                        }
+
+                        if (x > 85 && x < 170) {
+                            ypos = 0;
+                        } else if (x > 170 && x < 256) {
+                            ypos = 1;
+                        } else if (x > 256 && x < 339) {
+                            ypos = 2;
+                        } else if (x > 339 && x < 425) {
+                            ypos = 3;
+                        } else if (x > 425 && x < 511) {
+                            ypos = 4;
+                        } else if (x > 511 && x < 594) {
+                            ypos = 5;
+                        } else if (x > 594 && x < 683) {
+                            ypos = 6;
+                        } else if (x > 683 && x < 766) {
+                            ypos = 7;
+                        }
+
+                        if (y > 86 && y < 166) {
+                            xpos = 0;
+                        } else if (y > 166 && y < 255) {
+                            xpos = 1;
+                        } else if (y > 255 && y < 341) {
+                            xpos = 2;
+                        } else if (y > 341 && y < 423) {
+                            xpos = 3;
+                        } else if (y > 423 && y < 506) {
+                            xpos = 4;
+                        } else if (y > 506 && y < 597) {
+                            xpos = 5;
+                        } else if (y > 597 && y < 678) {
+                            xpos = 6;
+                        } else if (y > 678 && y < 766) {
+                            xpos = 7;
+                        }
+
+                        if (isEmpty(xpos, ypos)) {
+                            if (player.getNumberofStoneWall() == 3) {
+                                player.getStoneWall().setWallPos(new int[]{xpos, ypos});
+                            } else if (player.getNumberofStoneWall() == 2) {
+                                player.getStoneWall2().setWallPos(new int[]{xpos, ypos});
+                            } else if (player.getNumberofStoneWall() == 1) {
+                                player.getStoneWall3().setWallPos(new int[]{xpos, ypos});
+                            }
+                            repaint();
+                            plateau[xpos][ypos]='S';
+                            player.reduceNumberofStoneWall();
+                            System.out.println(player.getNumberofStoneWall());
+                            removeMouseListener(this);
+                        }
                     }
 
-                    if (y > 86 && y < 166) {
-                        xpos = 0;
-                    } else if (y > 166 && y < 255) {
-                        xpos = 1;
-                    } else if (y > 255 && y < 341) {
-                        xpos = 2;
-                    } else if (y > 341 && y < 423) {
-                        xpos = 3;
-                    } else if (y > 423 && y < 506) {
-                        xpos = 4;
-                    } else if (y > 506 && y < 597) {
-                        xpos = 5;
-                    } else if (y > 597 && y < 678) {
-                        xpos = 6;
-                    } else if (y > 678 && y < 766) {
-                        xpos = 7;
-                    }
-
-                    if(isEmpty(xpos,ypos)){
-                        if(player.getNumberofStoneWall()==3){
-                        player.getStoneWall().setWallPos(new int[]{xpos, ypos});}
-                    else if(player.getNumberofStoneWall()==2){
-                        player.getStoneWall2().setWallPos(new int[]{xpos, ypos});}
-                    else if(player.getNumberofStoneWall()==1){
-                    player.getStoneWall3().setWallPos(new int[]{xpos, ypos});}
-                    repaint();
-                    }
-
-                }
 
 
             });
+
 
         }
 
 
         if(e.getActionCommand().equals("Mur de glace")){
-            iceWall=true;
+            button2.setText("Défausser");
             button1.setText("");
-            button2.setText("Valider");
+
 
 
             this.addMouseListener(new MouseAdapter() {
@@ -713,89 +718,77 @@ public class Panneau extends JPanel implements ActionListener {
 
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    int x = e.getX();
-                    int y = e.getY();
-                    xpos = 99;
-                    ypos=1;
-                    if(player.getNumberofIceWall()==2){
-                        xpos=player.getIceWall().getWallPos()[0];
-                        ypos=player.getIceWall().getWallPos()[1];}
-                    else if(player.getNumberofIceWall()==1){
-                        xpos=player.getIceWall2().getWallPos()[0];
-                        ypos=player.getIceWall2().getWallPos()[1];}
 
-
-                    if (x > 85 && x < 170) {
-                        ypos = 0;
-                    } else if (x > 170 && x < 256) {
+                        int x = e.getX();
+                        int y = e.getY();
+                        xpos = 99;
                         ypos = 1;
-                    } else if (x > 256 && x < 339) {
-                        ypos = 2;
-                    } else if (x > 339 && x < 425) {
-                        ypos = 3;
-                    } else if (x > 425 && x < 511) {
-                        ypos = 4;
-                    } else if (x > 511 && x < 594) {
-                        ypos = 5;
-                    } else if (x > 594 && x < 683) {
-                        ypos = 6;
-                    } else if (x > 683 && x < 766) {
-                        ypos = 7;
-                    }
-
-                    if (y > 86 && y < 166) {
-                        xpos = 0;
-                    } else if (y > 166 && y < 255) {
-                        xpos = 1;
-                    } else if (y > 255 && y < 341) {
-                        xpos = 2;
-                    } else if (y > 341 && y < 423) {
-                        xpos = 3;
-                    } else if (y > 423 && y < 506) {
-                        xpos = 4;
-                    } else if (y > 506 && y < 597) {
-                        xpos = 5;
-                    } else if (y > 597 && y < 678) {
-                        xpos = 6;
-                    } else if (y > 678 && y < 766) {
-                        xpos = 7;
-                    }
-                    if (!blocked(xpos, ypos)&&isEmpty(xpos,ypos)) {
                         if (player.getNumberofIceWall() == 2) {
-                            player.getIceWall().setWallPos(new int[]{xpos, ypos});
-                            walls.add(player.getIceWall());
+                            xpos = player.getIceWall().getWallPos()[0];
+                            ypos = player.getIceWall().getWallPos()[1];
+                        } else if (player.getNumberofIceWall() == 1) {
+                            xpos = player.getIceWall2().getWallPos()[0];
+                            ypos = player.getIceWall2().getWallPos()[1];
                         }
-                     else if (player.getNumberofIceWall() == 1) {
-                        player.getIceWall2().setWallPos(new int[]{xpos, ypos});
-                            walls.add(player.getIceWall2());
-                    }
-                        repaint();
-                    }
 
-                }
+
+                        if (x > 85 && x < 170) {
+                            ypos = 0;
+                        } else if (x > 170 && x < 256) {
+                            ypos = 1;
+                        } else if (x > 256 && x < 339) {
+                            ypos = 2;
+                        } else if (x > 339 && x < 425) {
+                            ypos = 3;
+                        } else if (x > 425 && x < 511) {
+                            ypos = 4;
+                        } else if (x > 511 && x < 594) {
+                            ypos = 5;
+                        } else if (x > 594 && x < 683) {
+                            ypos = 6;
+                        } else if (x > 683 && x < 766) {
+                            ypos = 7;
+                        }
+
+                        if (y > 86 && y < 166) {
+                            xpos = 0;
+                        } else if (y > 166 && y < 255) {
+                            xpos = 1;
+                        } else if (y > 255 && y < 341) {
+                            xpos = 2;
+                        } else if (y > 341 && y < 423) {
+                            xpos = 3;
+                        } else if (y > 423 && y < 506) {
+                            xpos = 4;
+                        } else if (y > 506 && y < 597) {
+                            xpos = 5;
+                        } else if (y > 597 && y < 678) {
+                            xpos = 6;
+                        } else if (y > 678 && y < 766) {
+                            xpos = 7;
+                        }
+                        if (!blocked(xpos, ypos) && isEmpty(xpos, ypos)) {
+                            if (player.getNumberofIceWall() == 2) {
+                                player.getIceWall().setWallPos(new int[]{xpos, ypos});
+                                walls.add(player.getIceWall());
+                            } else if (player.getNumberofIceWall() == 1) {
+                                player.getIceWall2().setWallPos(new int[]{xpos, ypos});
+                                walls.add(player.getIceWall2());
+                            }
+                            repaint();
+                            plateau[xpos][ypos]='I';
+                            player.reduceNumberofIceWall();
+                            removeMouseListener(this);
+                        }
+
+                    }
 
 
             });
 
 
         }
-        if(e.getActionCommand().equals("Valider")){
-            button1.setText("");
-            button2.setText("");
 
-            if(iceWall){
-                plateau[xpos][ypos]='I';
-                player.reduceNumberofIceWall();
-                button1.setText("");
-
-            }
-            if(!iceWall){
-                plateau[xpos][ypos]='S';
-                player.reduceNumberofStoneWall();
-                System.out.println(player.getNumberofStoneWall());
-
-            }
-        }
 
 
 
