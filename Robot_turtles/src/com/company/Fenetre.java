@@ -1,13 +1,8 @@
 package com.company;
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.geom.Rectangle2D;
-import java.io.File;
-import java.io.IOException;
 
 public class Fenetre extends JFrame implements ActionListener {
     public static int numberOfPlayers;
@@ -15,13 +10,12 @@ public class Fenetre extends JFrame implements ActionListener {
     private JButton buttons2p = new JButton("2 Joueurs");
     private JButton buttons3p = new JButton("3 Joueurs");
     private JButton buttons4p = new JButton("4 Joueurs");
-    public static Panneau scene;
-    private ImageIcon logo= new ImageIcon(getClass().getResource("/images/logo.png"));
-    public boolean endGame =false;
+    public static Game scene;
     private JPanel bannerPanel;
     private JLabel bannerLabel;
     public Fenetre() {
 
+        //Création d'une fenêtre avec des boutons
         window.setSize(1300, 800);
         window.setLocationRelativeTo(null);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -69,7 +63,7 @@ public class Fenetre extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
        if(e.getActionCommand().equals("2 Joueurs")) {
            numberOfPlayers=2;
-           scene = new Panneau(numberOfPlayers);
+           scene = new Game(numberOfPlayers);
            scene.setLayout(null);
            window.setContentPane(scene);
 
@@ -78,14 +72,14 @@ public class Fenetre extends JFrame implements ActionListener {
 
        else if(e.getActionCommand().equals("3 Joueurs")){
            numberOfPlayers=3;
-           scene = new Panneau(numberOfPlayers);
+           scene = new Game(numberOfPlayers);
            scene.setLayout(null);
            window.setContentPane(scene);
             window.setVisible(true);
        }
        else if(e.getActionCommand().equals("4 Joueurs")){
            numberOfPlayers=4;
-           scene = new Panneau(numberOfPlayers);
+           scene = new Game(numberOfPlayers);
            scene.setLayout(null);
            window.setContentPane(scene);
             window.setVisible(true);

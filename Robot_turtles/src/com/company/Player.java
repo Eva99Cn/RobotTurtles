@@ -1,15 +1,12 @@
 package com.company;
 
 import javax.swing.*;
-import java.awt.*;
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 
-public class Player extends Panneau {
+public class Player extends Game {
     private char turtleName;
     private char direction;
     private int position[];
-    private int choice;
     private Cards deck;
     private int startingPoint[];
     private boolean win;
@@ -90,13 +87,7 @@ public class Player extends Panneau {
         this.position = position;
     }
 
-    public int getChoice() {
-        return choice;
-    }
 
-    public void setChoice(int choice) {
-        this.choice = choice;
-    }
 
     public Cards getDeck() {
         return deck;

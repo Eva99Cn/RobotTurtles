@@ -24,23 +24,10 @@ public class Gem extends Player {
         return gemPosition;
     }
 
-    public void setGemPosition(int[] gemPosition) {
-        this.gemPosition = gemPosition;
-    }
 
     public ImageIcon getImggem() {
         return imggem;
     }
 
-    public boolean gemTaken(Player player){
-       boolean ans = false;
-        if(player.getPosition()[0]==getGemPosition()[0]&&player.getPosition()[1]==getGemPosition()[1]){
-            ans = true;
-        }
-        else{
-            ans=false;
-        }
-    return ans;
-    }
 
 }

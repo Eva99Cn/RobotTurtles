@@ -6,7 +6,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import javax.swing.*;
 
-public class Panneau extends JPanel implements ActionListener {
+public class Game extends JPanel implements ActionListener {
 
     private static JPanel gamePanel = new JPanel();
 
@@ -58,7 +58,7 @@ public class Panneau extends JPanel implements ActionListener {
 
 
     public static Player player;
-    public Panneau(int numberOfPlayers) {
+    public Game(int numberOfPlayers) {
 
 
         //Plateau de jeu
@@ -172,7 +172,7 @@ public class Panneau extends JPanel implements ActionListener {
 
 
 
-    public Panneau() {
+    public Game() {
 
     }
 
@@ -766,10 +766,13 @@ public class Panneau extends JPanel implements ActionListener {
                         if (isEmpty(xpos, ypos)) {
                             if (player.getNumberofStoneWall() == 3) {
                                 player.getStoneWall().setWallPos(new int[]{xpos, ypos});
+                                walls.add(player.getStoneWall());
                             } else if (player.getNumberofStoneWall() == 2) {
                                 player.getStoneWall2().setWallPos(new int[]{xpos, ypos});
+                                walls.add(player.getStoneWall2());
                             } else if (player.getNumberofStoneWall() == 1) {
                                 player.getStoneWall3().setWallPos(new int[]{xpos, ypos});
+                                walls.add(player.getStoneWall3());
                             }
                             repaint();
                             plateau[xpos][ypos] = 'S';

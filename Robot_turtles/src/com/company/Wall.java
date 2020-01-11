@@ -1,9 +1,8 @@
 package com.company;
 
 import javax.swing.*;
-import java.util.ArrayList;
 
-public class Wall extends Panneau{
+public class Wall extends Game {
         protected char wallType;
         protected   int[] wallPos;
     public ImageIcon imgWall;
@@ -18,9 +17,9 @@ public class Wall extends Panneau{
         }
 
 
-        public boolean destroyable(char obstacleType){
+        public boolean destroyable(){
             boolean ans = false;
-            if(obstacleType=='I'){
+            if(wallType=='I'){
                 ans= true;
             }
             else{
@@ -45,7 +44,6 @@ public class Wall extends Panneau{
         return wallType;
     }
 
-
     public int[] getWallPos() {
         return wallPos;
     }
@@ -55,13 +53,6 @@ public class Wall extends Panneau{
         this.wallPos = wallPos;
     }
 
-    public boolean emptySlot(int x, int y){
-        boolean ans = true;
-        if(plateau[x][y]!=' '){
-            ans = false;
-        }
-        return ans;
-    }
 
 
 }

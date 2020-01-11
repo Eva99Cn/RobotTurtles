@@ -1,14 +1,10 @@
 package com.company;
 
-import com.sun.org.apache.bcel.internal.generic.ARETURN;
-
-import javax.swing.*;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Scanner;
 
-public class Cards extends Panneau {
+public class Cards extends Game {
     private char blueCard = 'b';
     private char yellowCard = 'y';
     private char purpleCard = 'p';
@@ -217,24 +213,29 @@ public class Cards extends Panneau {
 
 
     }
-    //Carte laser
+    //Carte laser A revoir
     public void laserEffect(Player player) {
         // Pour �viter de l'initialiser dans toute les boucles for
         if (player.getDirection() == 'S') {
             for (int i = player.getPosition()[0]; i <= 7; i++) { // On regarde chaque case en dessous
+
                  if (plateau[i][player.getPosition()[1]] == 'S') { // Quand le laser tire sur une pierre
                     break;
                 } else if (plateau[i][player.getPosition()[1]] == 'W') { // Quand le laser tire sur le carton
                     break;
                 } else if (plateau[i][player.getPosition()[1]] == 'I') {
                     for (int j=0;j<walls.size();j++){
-                        if (walls.get(j).getWallPos()[0]==i+1 &&walls.get(j).getWallPos()[1]==player.getPosition()[1]) {
+                        if (walls.get(j).getWallPos()[0]==i &&walls.get(j).getWallPos()[1]==player.getPosition()[1]) {
                             walls.get(j).setWallPos(new int[] {99,1});
                         }
                     }
                     plateau[i][player.getPosition()[1]] = ' '; // La glace fond
                     break;
-                } else {
+                }else if (plateau[i][player.getPosition()[1]] == 'b' || plateau[i][player.getPosition()[1]] == 'p' || plateau[i][player.getPosition()[1]] == 'r') {
+                     uTurn(player); // Si �a touche un joyau
+                     break;
+                 }
+                 else {
 
                     for (int j = 0; j < players.size(); j++) {
                         if (plateau[i+1][player.getPosition()[1]] == players.get(j).getTurtleName()) {
@@ -256,9 +257,14 @@ public class Cards extends Panneau {
                 } else if (plateau[i][player.getPosition()[1]] == 'W') { // Quand le laser tire sur le carton
                     break;
                 } else if (plateau[i][player.getPosition()[1]] == 'I') {
-                    plateau[i][player.getPosition()[1]] = ' '; // La glace fond
-                    break;
-                } else if (plateau[i][player.getPosition()[1]] == 'b' || plateau[i][player.getPosition()[1]] == 'p' || plateau[i][player.getPosition()[1]] == 'r') {
+                   for (int j=0;j<walls.size();j++){
+                       if (walls.get(j).getWallPos()[0]==i &&walls.get(j).getWallPos()[1]==player.getPosition()[1]) {
+                           walls.get(j).setWallPos(new int[] {99,1});
+                       }
+                   }
+                   plateau[i][player.getPosition()[1]] = ' '; // La glace fond
+                   break;
+               } else if (plateau[i][player.getPosition()[1]] == 'b' || plateau[i][player.getPosition()[1]] == 'p' || plateau[i][player.getPosition()[1]] == 'r') {
                     uTurn(player); // Si �a touche un joyau
                     break;
                 } else {
@@ -283,7 +289,12 @@ public class Cards extends Panneau {
                 } else if (plateau[player.getPosition()[0]][i] == 'W') { // Quand le laser tire sur le carton
                     break;
                 } else if (plateau[player.getPosition()[0]][i] == 'I') {
-                    plateau[player.getPosition()[0]][i] = ' '; // La glace fond
+                    for (int j=0;j<walls.size();j++){
+                        if (walls.get(j).getWallPos()[0]==player.getPosition()[0] &&walls.get(j).getWallPos()[1]==i) {
+                            walls.get(j).setWallPos(new int[] {99,1});
+                        }
+                    }
+                    plateau[i][player.getPosition()[1]] = ' '; // La glace fond
                     break;
                 } else if (plateau[player.getPosition()[0]][i] == 'b' || plateau[player.getPosition()[0]][i] == 'p' || plateau[player.getPosition()[0]][i] == 'r') {
                     uTurn(player); // Si �a touche un joyau
@@ -310,6 +321,11 @@ public class Cards extends Panneau {
                 } else if (plateau[player.getPosition()[0]][i] == 'W') { // Quand le laser tire sur le carton
                     break;
                 } else if (plateau[player.getPosition()[0]][i] == 'I') {
+                    for (int j=0;j<walls.size();j++){
+                        if (walls.get(j).getWallPos()[0]==player.getPosition()[0] &&walls.get(j).getWallPos()[1]==i) {
+                            walls.get(j).setWallPos(new int[] {99,1});
+                        }
+                    }
                     plateau[player.getPosition()[0]][i] = ' '; // La glace fond
                     break;
                 } else if (plateau[player.getPosition()[0]][i] == 'b' || plateau[player.getPosition()[0]][i] == 'p' || plateau[player.getPosition()[0]][i] == 'r') {
@@ -370,10 +386,7 @@ public class Cards extends Panneau {
 
         hiddenCards.add(card);
     }
-    public void removeHiddenCards() {
 
-        hiddenCards.removeFirst();
-    }
 
     public ArrayDeque<Character> getHiddenCards() {
         return hiddenCards;
