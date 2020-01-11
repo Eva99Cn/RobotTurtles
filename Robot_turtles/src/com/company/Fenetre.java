@@ -79,12 +79,14 @@ public class Fenetre extends JFrame implements ActionListener {
        else if(e.getActionCommand().equals("3 Joueurs")){
            numberOfPlayers=3;
            scene = new Panneau(numberOfPlayers);
+           scene.setLayout(null);
            window.setContentPane(scene);
             window.setVisible(true);
        }
        else if(e.getActionCommand().equals("4 Joueurs")){
            numberOfPlayers=4;
            scene = new Panneau(numberOfPlayers);
+           scene.setLayout(null);
            window.setContentPane(scene);
             window.setVisible(true);
        }

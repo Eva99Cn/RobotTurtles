@@ -24,6 +24,7 @@ public class Panneau extends JPanel implements ActionListener {
 
     private ImageIcon stoneWall= new ImageIcon(getClass().getResource("/images/tiles/S.png"));
     public static int numberOfPlayers;
+    private static int playersInGame;
 
     private  ImageIcon imgYellowCard= new ImageIcon(getClass().getResource("/images/cards/y.png"));
     private  ImageIcon  imgPurpleCard= new ImageIcon(getClass().getResource("/images/cards/p.png"));
@@ -33,10 +34,6 @@ public class Panneau extends JPanel implements ActionListener {
     private  ImageIcon  imgIceWall= new ImageIcon(getClass().getResource("/images/tiles/I.png"));
     private  ImageIcon  imgStoneWall= new ImageIcon(getClass().getResource("/images/tiles/S.png"));
 
-
-
-    private static int turn=1;
-    private boolean endGame=false;
 
 
     private JPanel rightPan = new JPanel();
@@ -55,15 +52,15 @@ public class Panneau extends JPanel implements ActionListener {
     public static Gem gem1;
     public static Gem gem2;
     public static Gem gem3;
+    private static int z=0;
 
 
 
 
-    public static Player player=player1;
+    public static Player player;
     public Panneau(int numberOfPlayers) {
 
 
-        //int[][] tilesPosition = new int[8][2];
         //Plateau de jeu
         plateau = new char[8][8];
 
@@ -92,7 +89,7 @@ public class Panneau extends JPanel implements ActionListener {
             Cards deckP2 = new Cards();
             Cards deckP3 = new Cards();
             player1 = new Player('B', 'S', new int[]{0, 0}, new int[]{0, 0}, deckP1);
-            player2 = new Player('P', 'S', new int[]{0, 3}, new int[]{0, 3}, deckP2);
+            player2 = new Player('P', 'S', new int[]{6, 3}, new int[]{0, 3}, deckP2);
             player3 = new Player('R', 'S', new int[]{0, 6}, new int[]{0, 6}, deckP3);
             gem1 = new Gem('b', new int[]{7, 0});
             gem2 = new Gem('p', new int[]{7, 3});
@@ -150,9 +147,9 @@ public class Panneau extends JPanel implements ActionListener {
         rightPan.setBackground(new Color(0,0,0,0));
         cards.setOpaque(true);
         cards.setBackground(new Color(0,0,0,0));
+
         this.add(gamePanel);
         this.add(rightPan);
-
         button4.addActionListener(this);
         button3.addActionListener(this);
         button2.addActionListener(this);
@@ -162,8 +159,10 @@ public class Panneau extends JPanel implements ActionListener {
         gamePanel.add(button3);
 
 
+
         rightPan.add(cards);
 
+        playersInGame=numberOfPlayers;
         player=turn();
         this.setVisible(true);
 
@@ -199,46 +198,55 @@ public class Panneau extends JPanel implements ActionListener {
         }
 
         //Initialisation du plateau en fonction du nombre de joueurs
-        switch (numberOfPlayers) {
-            case 2:
-                (player1.getImgPlayer()).paintIcon(null, g2, (player1.getPosition()[1]+1)* CASE_DIM, (player1.getPosition()[0]+1) * CASE_DIM);
-                (player2.getImgPlayer()).paintIcon(null, g2, (player2.getPosition()[1]+1)* CASE_DIM, (player2.getPosition()[0]+1)*CASE_DIM);
-                (gem1.getImggem()).paintIcon(null, g2, (gem1.getGemPosition()[1]+1) * CASE_DIM, (gem1.getGemPosition()[0]+1) * CASE_DIM);
-                (gem2.getImggem()).paintIcon(null, g2, (gem2.getGemPosition()[1]+1) * CASE_DIM, (gem2.getGemPosition()[0]+1) * CASE_DIM);
+        if(numberOfPlayers>=2) {
+            if (!player1.isWin()) {
+                (player1.getImgPlayer()).paintIcon(null, g2, (player1.getPosition()[1] + 1) * CASE_DIM, (player1.getPosition()[0] + 1) * CASE_DIM);
+            }
+            if (!player2.isWin()) {
+                (player2.getImgPlayer()).paintIcon(null, g2, (player2.getPosition()[1] + 1) * CASE_DIM, (player2.getPosition()[0] + 1) * CASE_DIM);
+            }
+            (gem1.getImggem()).paintIcon(null, g2, (gem1.getGemPosition()[1] + 1) * CASE_DIM, (gem1.getGemPosition()[0] + 1) * CASE_DIM);
+            (gem2.getImggem()).paintIcon(null, g2, (gem2.getGemPosition()[1] + 1) * CASE_DIM, (gem2.getGemPosition()[0] + 1) * CASE_DIM);
+            if (numberOfPlayers == 2 || numberOfPlayers == 3) {
                 for (int i = 0; i < 8; i++) {
                     stoneWall.paintIcon(null, g2, 8 * CASE_DIM, (i + 1) * CASE_DIM);
                 }
-
-
-                break;
-            case 3:
-                (player1.getImgPlayer()).paintIcon(null, g2, (player1.getPosition()[1]+1)* CASE_DIM, (player1.getPosition()[0]+1) * CASE_DIM);
-                (player2.getImgPlayer()).paintIcon(null, g2, (player2.getPosition()[1]+1)* CASE_DIM, (player2.getPosition()[0]+1)*CASE_DIM);
-                (player3.getImgPlayer()).paintIcon(null, g2, (player3.getPosition()[1]+1)* CASE_DIM, (player3.getPosition()[0]+1) * CASE_DIM);
-                (gem1.getImggem()).paintIcon(null, g2, (gem1.getGemPosition()[1]+1) * CASE_DIM, (gem1.getGemPosition()[0]+1) * CASE_DIM);
-                (gem2.getImggem()).paintIcon(null, g2, (gem2.getGemPosition()[1]+1) * CASE_DIM, (gem2.getGemPosition()[0]+1) * CASE_DIM);
-                (gem3.getImggem()).paintIcon(null, g2, (gem3.getGemPosition()[1]+1) * CASE_DIM, (gem3.getGemPosition()[0]+1) * CASE_DIM);
-                for (int i = 0; i < 8; i++) {
-                    stoneWall.paintIcon(null, g2, 8 * CASE_DIM, (i + 1) * CASE_DIM);
-                }
-
-
-                break;
-
-            case 4:
-
-                (player1.getImgPlayer()).paintIcon(null, g2, (player1.getPosition()[1]+1)* CASE_DIM, (player1.getPosition()[0]+1) * CASE_DIM);
-                (player2.getImgPlayer()).paintIcon(null, g2, (player2.getPosition()[1]+1)* CASE_DIM, (player2.getPosition()[0]+1)*CASE_DIM);
-                (player3.getImgPlayer()).paintIcon(null, g2, (player3.getPosition()[1]+1)* CASE_DIM, (player3.getPosition()[0]+1) * CASE_DIM);
-                (player4.getImgPlayer()).paintIcon(null, g2, (player4.getPosition()[1]+1)* CASE_DIM, (player4.getPosition()[0]+1)*CASE_DIM);
-                (gem1.getImggem()).paintIcon(null, g2, (gem1.getGemPosition()[1]+1) * CASE_DIM, (gem1.getGemPosition()[0]+1) * CASE_DIM);
-                (gem2.getImggem()).paintIcon(null, g2, (gem2.getGemPosition()[1]+1) * CASE_DIM, (gem2.getGemPosition()[0]+1) * CASE_DIM);
-                break;
+            }
         }
+                if(numberOfPlayers>=3) {
+                    if (!player3.isWin()) {
+                        (player3.getImgPlayer()).paintIcon(null, g2, (player3.getPosition()[1] + 1) * CASE_DIM, (player3.getPosition()[0] + 1) * CASE_DIM);
+                    }
+
+                    (gem1.getImggem()).paintIcon(null, g2, (gem1.getGemPosition()[1] + 1) * CASE_DIM, (gem1.getGemPosition()[0] + 1) * CASE_DIM);
+                    (gem2.getImggem()).paintIcon(null, g2, (gem2.getGemPosition()[1] + 1) * CASE_DIM, (gem2.getGemPosition()[0] + 1) * CASE_DIM);
+                    if(numberOfPlayers==3){
+                    (gem3.getImggem()).paintIcon(null, g2, (gem3.getGemPosition()[1] + 1) * CASE_DIM, (gem3.getGemPosition()[0] + 1) * CASE_DIM);}
+                }
+                if(numberOfPlayers>3){
+                    if(!player4.isWin()){
+                (player4.getImgPlayer()).paintIcon(null, g2, (player4.getPosition()[1]+1)* CASE_DIM, (player4.getPosition()[0]+1)*CASE_DIM);}
+
+                    }
         paintPlayersWalls(CASE_DIM,g2);
+        Font policeGame= new Font("Arial",Font.BOLD,20);
+        g2.setFont(policeGame);
+                if(player.getTurtleName()=='B'){
+                    g2.drawString("Au tour de Beep",200,50);
+                }
+                else if(player.getTurtleName()=='P'){
+                    g2.drawString("Au tour de Pangle",200,50);
+                }
+                else  if(player.getTurtleName()=='D'){
+                    g2.drawString("Au tour de Dot",200,50);
+                }
+
+                else  if(player.getTurtleName()=='R'){
+                    g2.drawString("Au tour de Pi",200,50);
+                }
 
 
-        if(endGame){
+        if(playersInGame==1){
             Font policeEnd = new Font("Arial",Font.BOLD,100);
             g2.setFont(policeEnd);
             g2.drawString("Fin de la partie",300,400);
@@ -249,131 +257,47 @@ public class Panneau extends JPanel implements ActionListener {
     private Player turn(){
         printBoard();
         Player ans = null;
-        JLabel playerLabel =new JLabel();
-        this.add(playerLabel);
 
+/*
         if(numberOfPlayers==2){
-        if(turn%2==0){
-            if(!player1.isWin()){
-                playerLabel.setText("J2");
-                this.revalidate();
-                this.repaint();
-                ans = player2;}
-            else{
-
-                endGame=true;
-                repaint();
-
-            }
-        }
-        else {
-            if(!player2.isWin()) {
-                playerLabel.setText("J1");
-                this.revalidate();
-                this.repaint();
-                ans = player1;
-            }
-            else{
-                endGame=true;
-                repaint();
-
-
-            }
-        }
-
-        }
-        else if (numberOfPlayers==3){
-            int z = 1;
-            if(z==1){
-                if(!player1.isWin()&&!player2.isWin()){
-                    playerLabel.setText("J3");
+            if(turn%2==0){
+                if(!player1.isWin()){
+                    playerLabel.setText("J2");
                     this.revalidate();
                     this.repaint();
-                    ans = player3;
-                }
-             else{
-                 endGame=true;
-                 repaint();
-                }
-            }
-         else if(z==2) {
-             if(!player1.isWin()&&!player3.isWin()) {
-                 playerLabel.setText("J2");
-                 this.revalidate();
-                 this.repaint();
-                 ans = player2;
-             }
-             else{
-                 endGame=true;
-                 repaint();
-             }
-            }
+                    ans = player2;}
+                else{
 
-         else if(z==3) {
-             if(!player2.isWin()&&!player3.isWin()) {
-                 playerLabel.setText("J1");
-                 this.revalidate();
-                 this.repaint();
-                 ans = player1;
-             }
-             else {
-                 endGame=true;
-                 repaint();
-             }
-            }
-        }
+                    endGame=true;
+                    repaint();
 
-        else if (numberOfPlayers==4) {
-            int n = 1;
-            if (n==1) {
-                if(!player1.isWin()&&!player2.isWin()&&!player3.isWin()){
-                    playerLabel.setText("J4");
+                }
+            }
+            else {
+                if(!player2.isWin()) {
+                    playerLabel.setText("J1");
                     this.revalidate();
                     this.repaint();
-                    ans = player4;
+                    ans = player1;
                 }
-             else {
-                 endGame=true;
-                 repaint();
+                else{
+                    endGame=true;
+                    repaint();
+
+
                 }
             }
-         else if (n==2) {
-             if(!player1.isWin()&&!player2.isWin()&&!player4.isWin()){
-                 playerLabel.setText("J3");
-                 this.revalidate();
-                 this.repaint();
-                 ans = player3;
-             }
-             else {
-                 endGame=true;
-                 repaint();
-             }
-            }
-         else if (n==3) {
-             if(!player1.isWin()&&!player3.isWin()&&!player4.isWin()){
-                 playerLabel.setText("J2");
-                 this.revalidate();
-                 this.repaint();
-                 ans = player2;
-             }
-             else {
-                 endGame=true;
-                 repaint();
-             }
-            }
-         else if (n==4) {
-             if(!player2.isWin()&&!player3.isWin()&&!player4.isWin()){
-                 playerLabel.setText("J1");
-                 this.revalidate();
-                 this.repaint();
-                 ans = player1;
-             }
-             else {
-                 endGame=true;
-                 repaint();
-             }
-            }
+
         }
+        else if (numberOfPlayers==3||numberOfPlayers==4){*/
+            if(z>playersInGame-1){
+                z=0;
+            }
+            ans =players.get(z);
+            repaint();
+
+            //}
+
 
         return ans;
     }
@@ -514,7 +438,7 @@ public class Panneau extends JPanel implements ActionListener {
 
 
         }
-        hasWon();
+
 
         button1.setText(" ");
         button2.setText("Défausser");
@@ -661,25 +585,6 @@ public class Panneau extends JPanel implements ActionListener {
 
 
 
-    public void hasWon(){
-        if(numberOfPlayers==2||numberOfPlayers==4) {
-            if (gem1.gemTaken(player)||gem2.gemTaken(player)) {
-                player.setWin(true);
-                System.out.println("Vous avez gagné");
-            } else {
-                player.setWin(false);
-            }
-        }
-        else{
-            if (gem1.gemTaken(player)||gem2.gemTaken(player)||gem3.gemTaken(player)) {
-                player.setWin(true);
-            } else {
-                player.setWin(false);
-            }
-        }
-
-    }
-
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -768,6 +673,12 @@ public class Panneau extends JPanel implements ActionListener {
             }
         }
         if(e.getActionCommand().equals("Finir le tour")){
+            if(player.isWin()){
+                this.remove(player);
+                plateau[player.getPosition()[0]][player.getPosition()[1]]=' ';
+                players.remove(z);
+                playersInGame--;
+            }
             button1.setText("Executer le programme");
            button2.setText("Ajouter au programme");
            button3.setText("Construire un mur");
@@ -776,8 +687,6 @@ public class Panneau extends JPanel implements ActionListener {
             gamePanel.revalidate();
             gamePanel.repaint();
             repaint();
-            System.out.println( player.getIceWall().getWallPos()[0]);
-
 
             Component[] components = cards.getComponents();
 
@@ -788,7 +697,7 @@ public class Panneau extends JPanel implements ActionListener {
             cards.revalidate();
             cards.repaint();
 
-            turn++;
+            z++;
             repaint();
             player=turn();
         }

@@ -121,17 +121,26 @@ public class Cards extends Panneau {
     private static void getObject(int[] newPosition,Player player){
         //On regarde si la tortue heurte un mur
 
-    if (newPosition == gem1.getGemPosition() || newPosition == gem2.getGemPosition()) {
+    if (newPosition[0] == gem1.getGemPosition()[0] || newPosition[1] == gem1.getGemPosition()[1]) {
         player.setWin(true);
     }
     else{
         uTurn(player);
     }
+    if (newPosition[0] == gem2.getGemPosition()[0] || newPosition[1] == gem2.getGemPosition()[1]) {
+            player.setWin(true);
+        }
+    else{
+        uTurn(player);
+    }
     if (numberOfPlayers ==3 ) {
-            if (newPosition == gem3.getGemPosition()) {
+            if (newPosition[0] == gem3.getGemPosition()[0] || newPosition[1] == gem3.getGemPosition()[1]) {
                 player.setWin(true);
             }
-        }
+            else {
+                uTurn(player);
+            }
+            }
 
 
     // On regarde si la tortue en heurte une autre
@@ -188,10 +197,8 @@ public class Cards extends Panneau {
 
             }
         }
+        //Fonction qui permet à la tortue de faire un demi-tour
     private static void uTurn(Player player){
-            int x = player.getPosition()[0];
-            int y =player.getPosition()[1];
-
 
         if (player.getDirection()=='E'){
             player.setDirection('O');
@@ -210,6 +217,7 @@ public class Cards extends Panneau {
 
 
     }
+    //Carte laser
     public void laserEffect(Player player) {
         // Pour �viter de l'initialiser dans toute les boucles for
         if (player.getDirection() == 'S') {
@@ -340,7 +348,7 @@ public class Cards extends Panneau {
                     addPlayerHand(deck.pop());
                 }
             }
-
+//Fonction pour faire défausser la main du joueur
         public void cardToDiscard(char choice){
             for (int i=0;i<getPlayerHand().size();i++){
                 if (getPlayerHand().get(i)==choice){

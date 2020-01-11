@@ -13,7 +13,6 @@ public class Player extends Panneau {
     private Cards deck;
     private int startingPoint[];
     private boolean win;
-    private boolean turn;
     private ArrayList<Wall> Walls = new ArrayList<>();
 
     protected Wall iceWall ;
@@ -38,7 +37,6 @@ public class Player extends Panneau {
         this.deck = deck;
         this.startingPoint = startingPoint;
         this.imgPlayer= new ImageIcon(getClass().getResource("/images/characters/"+turtleName+"-"+direction+".png"));
-        turn= false;
         this.iceWall = new Wall('I',new int[]{99,1});
         this.iceWall2 = new Wall('I',new int[]{99,1});
         this.stoneWall = new Wall('S',new int[]{99,2});
@@ -46,6 +44,7 @@ public class Player extends Panneau {
         this.stoneWall3= new Wall('S',new int[]{99,2});
         this.numberofStoneWall=3;
         this.numberofIceWall=2;
+        this.win=false;
 
 
     }
