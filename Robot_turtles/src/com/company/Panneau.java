@@ -93,7 +93,7 @@ public class Panneau extends JPanel implements ActionListener {
             Cards deckP3 = new Cards();
             player1 = new Player('B', 'S', new int[]{0, 0}, new int[]{0, 0}, deckP1);
             player2 = new Player('P', 'S', new int[]{0, 3}, new int[]{0, 3}, deckP2);
-            player3 = new Player('r', 'S', new int[]{0, 6}, new int[]{0, 6}, deckP3);
+            player3 = new Player('R', 'S', new int[]{0, 6}, new int[]{0, 6}, deckP3);
             gem1 = new Gem('b', new int[]{7, 0});
             gem2 = new Gem('p', new int[]{7, 3});
             gem3 = new Gem('r', new int[]{7, 6});
@@ -116,7 +116,7 @@ public class Panneau extends JPanel implements ActionListener {
             Cards deckP4 = new Cards();
             player1 = new Player('B', 'S', new int[]{0, 0}, new int[]{0, 0}, deckP1);
             player2 = new Player('P', 'S', new int[]{0, 2}, new int[]{0, 2}, deckP2);
-            player3 = new Player('r', 'S', new int[]{0, 5}, new int[]{0, 5}, deckP3);
+            player3 = new Player('R', 'S', new int[]{0, 5}, new int[]{0, 5}, deckP3);
             player4 = new Player('D', 'S', new int[]{0, 7}, new int[]{0, 7}, deckP4);
             gem1 = new Gem('b', new int[]{7, 1});
             gem2 = new Gem('p', new int[]{7, 6});
@@ -479,10 +479,101 @@ public class Panneau extends JPanel implements ActionListener {
 
 
     private static boolean blocked(int posX, int posY) {
-        boolean ans=false;
 
-        return ans;
+
+        try{
+            if(plateau[posX-1][posY]!=' ') {
+                if (isPlayerOrGem(posX - 1, posY)) {
+                    return checkElement(posX + 1, posY);
+                }
+            }
+
+            }
+        catch(IndexOutOfBoundsException e){ }
+        try{
+            if(plateau[posX+1][posY]!=' ') {
+                if(isPlayerOrGem(posX+1,posY)){
+                return checkElement(posX+1,posY);}
+            }
+        }
+        catch(IndexOutOfBoundsException e){ }
+        try{
+            if(plateau[posX][posY+1]!=' ') {
+                if(isPlayerOrGem(posX,posY+1)){
+                return checkElement(posX,posY+1);}
+            }
+        }
+        catch(IndexOutOfBoundsException e){ }
+        try{
+            if(plateau[posX][posY-1]!=' ') {
+                if(isPlayerOrGem(posX,posY-1)){
+                    return checkElement(posX,posY-1);
+                }
+            }
+        }
+        catch(IndexOutOfBoundsException e){
+
+        }
+
+        return false;
     }
+    private static boolean checkElement(int posX, int posY){
+    int counter=0;
+
+        try{
+            if(plateau[posX-1][posY]=='S'||plateau[posX-1][posY]=='I') {
+               counter++;
+            }
+        }
+        catch(IndexOutOfBoundsException e){
+            counter++;
+        }
+        try{
+            if(plateau[posX+1][posY]=='S'||plateau[posX+1][posY]=='I') {
+                counter++;
+            }
+        }
+        catch(IndexOutOfBoundsException e){
+            counter++;
+        }
+        try{
+            if(plateau[posX][posY+1]=='S'||plateau[posX][posY+1]=='I') {
+                counter++;
+            }
+        }
+        catch(IndexOutOfBoundsException e){
+                counter++;
+        }
+        try{
+            if(plateau[posX][posY-1]=='S'||plateau[posX][posY-1]=='I') {
+                counter++;
+            }
+        }
+        catch(IndexOutOfBoundsException e){
+                counter++;
+        }
+    if(counter==3){
+    return true;}
+    else{
+        return false;
+    }
+    }
+
+    private static boolean isPlayerOrGem(int x, int y){
+    for (int i=0;i<players.size();i++){
+    if (plateau[x][y]==players.get(i).getTurtleName()){
+        return true;
+    }
+    }
+    for (int j=0;j<gems.size();j++){
+        if (plateau[x][y]==gems.get(j).getGemcolor()){
+            return true;
+
+        }
+    }
+    return false;
+
+        }
 
 
 
@@ -632,57 +723,58 @@ public class Panneau extends JPanel implements ActionListener {
                 @Override
                 public void mouseClicked(MouseEvent e) {
 
-                        int x = e.getX();
-                        int y = e.getY();
-                        xpos = 99;
+                    int x = e.getX();
+                    int y = e.getY();
+                    xpos = 99;
+                    ypos = 1;
+                    if (player.getNumberofStoneWall() == 3) {
+                        xpos = player.getStoneWall().getWallPos()[0];
+                        ypos = player.getStoneWall().getWallPos()[1];
+                    } else if (player.getNumberofStoneWall() == 2) {
+                        xpos = player.getStoneWall2().getWallPos()[0];
+                        ypos = player.getStoneWall2().getWallPos()[1];
+                    } else if (player.getNumberofStoneWall() == 1) {
+                        xpos = player.getStoneWall3().getWallPos()[0];
+                        ypos = player.getStoneWall3().getWallPos()[1];
+                    }
+
+                    if (x > 85 && x < 170) {
+                        ypos = 0;
+                    } else if (x > 170 && x < 256) {
                         ypos = 1;
-                        if (player.getNumberofStoneWall() == 3) {
-                            xpos = player.getStoneWall().getWallPos()[0];
-                            ypos = player.getStoneWall().getWallPos()[1];
-                        } else if (player.getNumberofStoneWall() == 2) {
-                            xpos = player.getStoneWall2().getWallPos()[0];
-                            ypos = player.getStoneWall2().getWallPos()[1];
-                        } else if (player.getNumberofStoneWall() == 1) {
-                            xpos = player.getStoneWall3().getWallPos()[0];
-                            ypos = player.getStoneWall3().getWallPos()[1];
-                        }
+                    } else if (x > 256 && x < 339) {
+                        ypos = 2;
+                    } else if (x > 339 && x < 425) {
+                        ypos = 3;
+                    } else if (x > 425 && x < 511) {
+                        ypos = 4;
+                    } else if (x > 511 && x < 594) {
+                        ypos = 5;
+                    } else if (x > 594 && x < 683) {
+                        ypos = 6;
+                    } else if (x > 683 && x < 766) {
+                        ypos = 7;
+                    }
 
-                        if (x > 85 && x < 170) {
-                            ypos = 0;
-                        } else if (x > 170 && x < 256) {
-                            ypos = 1;
-                        } else if (x > 256 && x < 339) {
-                            ypos = 2;
-                        } else if (x > 339 && x < 425) {
-                            ypos = 3;
-                        } else if (x > 425 && x < 511) {
-                            ypos = 4;
-                        } else if (x > 511 && x < 594) {
-                            ypos = 5;
-                        } else if (x > 594 && x < 683) {
-                            ypos = 6;
-                        } else if (x > 683 && x < 766) {
-                            ypos = 7;
-                        }
+                    if (y > 86 && y < 166) {
+                        xpos = 0;
+                    } else if (y > 166 && y < 255) {
+                        xpos = 1;
+                    } else if (y > 255 && y < 341) {
+                        xpos = 2;
+                    } else if (y > 341 && y < 423) {
+                        xpos = 3;
+                    } else if (y > 423 && y < 506) {
+                        xpos = 4;
+                    } else if (y > 506 && y < 597) {
+                        xpos = 5;
+                    } else if (y > 597 && y < 678) {
+                        xpos = 6;
+                    } else if (y > 678 && y < 766) {
+                        xpos = 7;
+                    }
 
-                        if (y > 86 && y < 166) {
-                            xpos = 0;
-                        } else if (y > 166 && y < 255) {
-                            xpos = 1;
-                        } else if (y > 255 && y < 341) {
-                            xpos = 2;
-                        } else if (y > 341 && y < 423) {
-                            xpos = 3;
-                        } else if (y > 423 && y < 506) {
-                            xpos = 4;
-                        } else if (y > 506 && y < 597) {
-                            xpos = 5;
-                        } else if (y > 597 && y < 678) {
-                            xpos = 6;
-                        } else if (y > 678 && y < 766) {
-                            xpos = 7;
-                        }
-
+                    if (!blocked(xpos, ypos)) {
                         if (isEmpty(xpos, ypos)) {
                             if (player.getNumberofStoneWall() == 3) {
                                 player.getStoneWall().setWallPos(new int[]{xpos, ypos});
@@ -692,12 +784,13 @@ public class Panneau extends JPanel implements ActionListener {
                                 player.getStoneWall3().setWallPos(new int[]{xpos, ypos});
                             }
                             repaint();
-                            plateau[xpos][ypos]='S';
+                            plateau[xpos][ypos] = 'S';
                             player.reduceNumberofStoneWall();
                             System.out.println(player.getNumberofStoneWall());
                             removeMouseListener(this);
                         }
                     }
+                }
 
 
 
@@ -767,18 +860,20 @@ public class Panneau extends JPanel implements ActionListener {
                         } else if (y > 678 && y < 766) {
                             xpos = 7;
                         }
-                        if (!blocked(xpos, ypos) && isEmpty(xpos, ypos)) {
-                            if (player.getNumberofIceWall() == 2) {
-                                player.getIceWall().setWallPos(new int[]{xpos, ypos});
-                                walls.add(player.getIceWall());
-                            } else if (player.getNumberofIceWall() == 1) {
-                                player.getIceWall2().setWallPos(new int[]{xpos, ypos});
-                                walls.add(player.getIceWall2());
+                        if (!blocked(xpos, ypos)) {
+                            if (isEmpty(xpos, ypos)) {
+                                if (player.getNumberofIceWall() == 2) {
+                                    player.getIceWall().setWallPos(new int[]{xpos, ypos});
+                                    walls.add(player.getIceWall());
+                                } else if (player.getNumberofIceWall() == 1) {
+                                    player.getIceWall2().setWallPos(new int[]{xpos, ypos});
+                                    walls.add(player.getIceWall2());
+                                }
+                                repaint();
+                                plateau[xpos][ypos] = 'I';
+                                player.reduceNumberofIceWall();
+                                removeMouseListener(this);
                             }
-                            repaint();
-                            plateau[xpos][ypos]='I';
-                            player.reduceNumberofIceWall();
-                            removeMouseListener(this);
                         }
 
                     }
