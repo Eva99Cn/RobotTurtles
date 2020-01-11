@@ -285,16 +285,95 @@ public class Panneau extends JPanel implements ActionListener {
         else if (numberOfPlayers==3){
             int z = 1;
             if(z==1){
-                if(!player2.isWin()){
-                    playerLabel.setText("J2");
+                if(!player1.isWin()&&!player2.isWin()){
+                    playerLabel.setText("J3");
                     this.revalidate();
                     this.repaint();
-                    ans = player1;}
+                    ans = player3;
+                }
+             else{
+                 endGame=true;
+                 repaint();
                 }
             }
+         else if(z==2) {
+             if(!player1.isWin()&&!player3.isWin()) {
+                 playerLabel.setText("J2");
+                 this.revalidate();
+                 this.repaint();
+                 ans = player2;
+             }
+             else{
+                 endGame=true;
+                 repaint();
+             }
+            }
 
+         else if(z==3) {
+             if(!player2.isWin()&&!player3.isWin()) {
+                 playerLabel.setText("J1");
+                 this.revalidate();
+                 this.repaint();
+                 ans = player1;
+             }
+             else {
+                 endGame=true;
+                 repaint();
+             }
+            }
+        }
 
-
+        else if (numberOfPlayers==4) {
+            int n = 1;
+            if (n==1) {
+                if(!player1.isWin()&&!player2.isWin()&&!player3.isWin()){
+                    playerLabel.setText("J4");
+                    this.revalidate();
+                    this.repaint();
+                    ans = player4;
+                }
+             else {
+                 endGame=true;
+                 repaint();
+                }
+            }
+         else if (n==2) {
+             if(!player1.isWin()&&!player2.isWin()&&!player4.isWin()){
+                 playerLabel.setText("J3");
+                 this.revalidate();
+                 this.repaint();
+                 ans = player3;
+             }
+             else {
+                 endGame=true;
+                 repaint();
+             }
+            }
+         else if (n==3) {
+             if(!player1.isWin()&&!player3.isWin()&&!player4.isWin()){
+                 playerLabel.setText("J2");
+                 this.revalidate();
+                 this.repaint();
+                 ans = player2;
+             }
+             else {
+                 endGame=true;
+                 repaint();
+             }
+            }
+         else if (n==4) {
+             if(!player2.isWin()&&!player3.isWin()&&!player4.isWin()){
+                 playerLabel.setText("J1");
+                 this.revalidate();
+                 this.repaint();
+                 ans = player1;
+             }
+             else {
+                 endGame=true;
+                 repaint();
+             }
+            }
+        }
 
         return ans;
     }
