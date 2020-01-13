@@ -2,7 +2,7 @@ package com.company;
 
 import javax.swing.*;
 
-public class Gem extends Player {
+public class Gem {
     public char gemcolor;
     public int[] gemPosition;
     public ImageIcon imggem;
@@ -13,8 +13,7 @@ public class Gem extends Player {
         this.imggem = new ImageIcon(getClass().getResource("/images/jewels/"+gemcolor+".png"));
     }
 
-    public Gem() {
-    }
+
 
     public char getGemcolor() {
         return gemcolor;

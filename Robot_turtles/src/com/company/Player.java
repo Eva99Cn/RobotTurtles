@@ -86,6 +86,32 @@ public class Player extends Game {
         plateau[position[0]][position[1]]=getTurtleName();
         this.position = position;
     }
+//Fonction qui permet à la tortue de revenir à sa position de départ
+    public void returnToStartingPoint(){
+        this.position = startingPoint;
+        this.direction = 'S';
+    }
+    //Fonction qui permet à la tortue de faire un demi-tour
+    public  void uTurn(){
+
+        if (direction=='E'){
+          this.direction='O';
+        }
+        else if (direction=='N'){
+
+            this.direction='S';
+        }
+        else if (direction=='O'){
+
+           this.direction='E';
+        }
+        else if (direction=='S'){
+           this.direction='N';
+        }
+        this.imgPlayer= new ImageIcon(getClass().getResource("/images/characters/"+getTurtleName()+"-"+direction+".png"));
+
+
+    }
 
 
 
@@ -93,11 +119,6 @@ public class Player extends Game {
         return deck;
     }
 
-
-    public int[] getStartingPoint() {
-
-        return startingPoint;
-    }
 
     public boolean isWin() {
         return win;

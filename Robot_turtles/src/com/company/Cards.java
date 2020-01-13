@@ -12,20 +12,18 @@ public class Cards extends Game {
     private int deckshuffleLength= 37;
     private ArrayList<Character> deckshuffle = new ArrayList<Character>();
     protected ArrayDeque<Character> deck = new ArrayDeque<>();
-    private static int numberBlueCard= 18;
+    private static int numberBlueCard= 18,numberYellowCard = 8,numberOfPurpleCard = 8,numberOfLaserCard= 3;
 
 
+    //Liste pour pouvoir stocker ce que le joueur à dans sa main
     private ArrayList<Character> playerHand = new ArrayList<>();
 
 
-
+    //Liste pour pouvoir stocker ce que le joueur à mis dans sa file d'instruction
     private ArrayDeque<Character> hiddenCards = new ArrayDeque<>();
-
-
-    private static int numberYellowCard = 8;
-    private static int numberOfPurpleCard = 8,numberOfLaserCard= 3;
     public  Cards(){
 
+        //On ajoute les cartes dans un deck
         for (int i =0;i<=numberBlueCard;i++){
             deckshuffle.add(blueCard);
         }
@@ -38,7 +36,7 @@ public class Cards extends Game {
         for (int i =0;i<=numberOfLaserCard;i++){
             deckshuffle.add(laserCard);
         }
-
+        //On mélange puis on ajoute les cartes dans un deck
         Collections.shuffle(deckshuffle);
         for (int i=0;i<deckshuffleLength;i++){
             deck.push(deckshuffle.get(i));
@@ -50,6 +48,13 @@ public class Cards extends Game {
     }
 
 
+
+    /*
+    * Fonction pour la carte bleu
+    * On crée une liste pour voir si la tortue peut y aller
+    * Si la case est inexistante ou indiponible on regarde le type de l'objet
+    * On execute une action en fonction de l'objet
+    * */
 
     public static void blueEffect(Player player){
         if(numberBlueCard>0){
@@ -102,10 +107,12 @@ public class Cards extends Game {
 
     private static boolean isValidPosition(int[] newPosition) {
         boolean ans=true;
+        //Regarde si la tortue ne dépasse pas les limites
         if(newPosition[0] < 0 || newPosition[0] > 7||newPosition[1] < 0||newPosition[1] > 7){
             ans=false;
 
         }
+        //regarde si la position est vide
         else if ((plateau[newPosition[0]][newPosition[1]])!=' '){
             ans = false;
         }
@@ -115,36 +122,52 @@ public class Cards extends Game {
     }
     //Fonction qui regarde ce qui ce trouve sur le chemin
     private static void getObject(int[] newPosition,Player player){
-        //On regarde si la tortue heurte un mur
+        //S'il dépasse on le renvoi à sa position de départ
+        if(numberOfPlayers<4){
+                if(newPosition[0] < 0 || newPosition[0] > 7||newPosition[1] < 0||newPosition[1] > 6){
+                   player.returnToStartingPoint();
+                }}
+        else {
+            if(newPosition[0] < 0 || newPosition[0] > 7||newPosition[1] < 0||newPosition[1] > 7){
+                player.returnToStartingPoint();
+            }
+        }
+        //On regarde si la tortue heurte un mur, si oui elle fait demi tour
+        if (plateau[newPosition[0]][newPosition[1]]=='S'||plateau[newPosition[0]][newPosition[1]]=='I'){
+            player.uTurn();
+        }
 
-    if (newPosition[0] == gem1.getGemPosition()[0] || newPosition[1] == gem1.getGemPosition()[1]) {
-        player.setWin(true);
-    }
-    else{
-        uTurn(player);
-    }
-    if (newPosition[0] == gem2.getGemPosition()[0] || newPosition[1] == gem2.getGemPosition()[1]) {
+        //si la tortue touche un joyau on met son boolean win en vrai
+        if (newPosition[0] == gem1.getGemPosition()[0] && newPosition[1] == gem1.getGemPosition()[1]) {
             player.setWin(true);
         }
     else{
-        uTurn(player);
+        player.uTurn();
+    }
+    if (newPosition[0] == gem2.getGemPosition()[0] && newPosition[1] == gem2.getGemPosition()[1]) {
+            player.setWin(true);
+        }
+    else{
+       player.uTurn();
     }
     if (numberOfPlayers ==3 ) {
-            if (newPosition[0] == gem3.getGemPosition()[0] || newPosition[1] == gem3.getGemPosition()[1]) {
+            if (newPosition[0] == gem3.getGemPosition()[0] && newPosition[1] == gem3.getGemPosition()[1]) {
                 player.setWin(true);
             }
             else {
-                uTurn(player);
+              player.uTurn();
             }
             }
+
+
 
 
     // On regarde si la tortue en heurte une autre
     for (int i = 0; i < players.size(); i++) {
         if (plateau[newPosition[0]][newPosition[1]] == players.get(i).getTurtleName()) {
-            players.get(i).setPosition(players.get(i).getStartingPoint());
+            players.get(i).returnToStartingPoint();
             players.get(i).setDirection('S');
-            player.setPosition(player.getStartingPoint());
+            player.returnToStartingPoint();
             player.setDirection('S');
             break;
         }
@@ -193,29 +216,10 @@ public class Cards extends Game {
 
             }
         }
-        //Fonction qui permet à la tortue de faire un demi-tour
-    private static void uTurn(Player player){
 
-        if (player.getDirection()=='E'){
-            player.setDirection('O');
-        }
-        else if (player.getDirection()=='N'){
-
-            player.setDirection('S');
-        }
-        else if (player.getDirection()=='O'){
-
-            player.setDirection('E');
-        }
-        else if (player.getDirection()=='S'){
-            player.setDirection('N');
-        }
-
-
-    }
     //Carte laser A revoir
     public void laserEffect(Player player) {
-        // Pour �viter de l'initialiser dans toute les boucles for
+        // Pour éviter de l'initialiser dans toute les boucles for
         if (player.getDirection() == 'S') {
             for (int i = player.getPosition()[0]; i <= 7; i++) { // On regarde chaque case en dessous
 
@@ -232,7 +236,7 @@ public class Cards extends Game {
                     plateau[i][player.getPosition()[1]] = ' '; // La glace fond
                     break;
                 }else if (plateau[i][player.getPosition()[1]] == 'b' || plateau[i][player.getPosition()[1]] == 'p' || plateau[i][player.getPosition()[1]] == 'r') {
-                     uTurn(player); // Si �a touche un joyau
+                    player.uTurn(); // Si �a touche un joyau
                      break;
                  }
                  else {
@@ -240,10 +244,10 @@ public class Cards extends Game {
                     for (int j = 0; j < players.size(); j++) {
                         if (plateau[i+1][player.getPosition()[1]] == players.get(j).getTurtleName()) {
                             if (numberOfPlayers == 2) {
-                                uTurn(players.get(j));
+                                players.get(j).uTurn();
                                 break;
                             } else {
-                                players.get(j).setPosition(players.get(j).getStartingPoint());
+                                players.get(j).returnToStartingPoint();
                                 break;
                             }
                         }
@@ -265,17 +269,17 @@ public class Cards extends Game {
                    plateau[i][player.getPosition()[1]] = ' '; // La glace fond
                    break;
                } else if (plateau[i][player.getPosition()[1]] == 'b' || plateau[i][player.getPosition()[1]] == 'p' || plateau[i][player.getPosition()[1]] == 'r') {
-                    uTurn(player); // Si �a touche un joyau
+                   player.uTurn(); // Si la touche un joyau
                     break;
                 } else {
 //Laser sur un Joueur
                     for (int j = 0; j < players.size(); j++) {
                         if (plateau[i-1][player.getPosition()[1]] == players.get(j).getTurtleName()) {
                             if (numberOfPlayers == 2) {
-                                uTurn(players.get(j));
+                                players.get(j).uTurn();
                                 break;
                             } else {
-                                players.get(j).setPosition(players.get(j).getStartingPoint());
+                                players.get(j).returnToStartingPoint();
                                 break;
                             }
                         }
@@ -290,24 +294,24 @@ public class Cards extends Game {
                     break;
                 } else if (plateau[player.getPosition()[0]][i] == 'I') {
                     for (int j=0;j<walls.size();j++){
-                        if (walls.get(j).getWallPos()[0]==player.getPosition()[0] &&walls.get(j).getWallPos()[1]==i) {
+                        if (walls.get(j).getWallPos()[0]==player.getPosition()[0] && walls.get(j).getWallPos()[1]==i) {
                             walls.get(j).setWallPos(new int[] {99,1});
                         }
                     }
                     plateau[i][player.getPosition()[1]] = ' '; // La glace fond
                     break;
                 } else if (plateau[player.getPosition()[0]][i] == 'b' || plateau[player.getPosition()[0]][i] == 'p' || plateau[player.getPosition()[0]][i] == 'r') {
-                    uTurn(player); // Si �a touche un joyau
+                    player.uTurn(); // Si �a touche un joyau
                     break;
                 } else {
 
                     for (int j = 0; j < players.size(); j++) {
                         if (plateau[player.getPosition()[0]][i+1] == players.get(j).getTurtleName()) {
                             if (numberOfPlayers == 2) {
-                                uTurn(players.get(j));
+                                players.get(j).uTurn();
                                 break;
                             } else {
-                                players.get(j).setPosition(players.get(j).getStartingPoint());
+                                players.get(j).returnToStartingPoint();
                                 break;
                             }
                         }
@@ -329,17 +333,17 @@ public class Cards extends Game {
                     plateau[player.getPosition()[0]][i] = ' '; // La glace fond
                     break;
                 } else if (plateau[player.getPosition()[0]][i] == 'b' || plateau[player.getPosition()[0]][i] == 'p' || plateau[player.getPosition()[0]][i] == 'r') {
-                    uTurn(player); // Si �a touche un joyau
+                   player.uTurn(); // Si �a touche un joyau
                     break;
                 } else {
 
                     for (int j = 0; j < players.size(); j++) {
                         if (plateau[player.getPosition()[0]][i-1] == players.get(j).getTurtleName()) {
                             if (numberOfPlayers == 2) {
-                                uTurn(players.get(j));
+                                players.get(j).uTurn();
                                 break;
                             } else {
-                                players.get(j).setPosition(players.get(j).getStartingPoint());
+                                players.get(j).returnToStartingPoint();
                                 break;
                             }
                         }
@@ -420,5 +424,7 @@ public class Cards extends Game {
         }
 
     }
+
+
 
 }

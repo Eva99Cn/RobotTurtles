@@ -15,9 +15,10 @@ public class Game extends JPanel implements ActionListener {
     private JButton button3 = new JButton("Construire un mur");
     private JButton button4 = new JButton("");
 
-
+    //Définition des coordonnées des murs
     private int xpos;
     private int ypos;
+
 
     private ImageIcon icoBackground;
     private Image imgbackground;
@@ -36,14 +37,17 @@ public class Game extends JPanel implements ActionListener {
 
 
 
+    //Panel pour les boutons
     private JPanel rightPan = new JPanel();
+    //Panel pour afficher les cartes
     private JPanel cards =new JPanel();
 
     public static char[][] plateau;
-    //Pile de défausse
+    //Liste qui va stocker les joueurs
     public static ArrayList<Player> players = new ArrayList<>();
+    //Liste qui va stocker les murs
     public static ArrayList<Wall> walls = new ArrayList<>();
-
+    //Liste qui va stocker les joyaux
     public static ArrayList<Gem> gems = new ArrayList<>();
     public static Player player1;
     public static Player player2;
@@ -52,6 +56,7 @@ public class Game extends JPanel implements ActionListener {
     public static Gem gem1;
     public static Gem gem2;
     public static Gem gem3;
+    //Pour savoir à qui le tour
     private static int z=0;
 
 
@@ -64,6 +69,7 @@ public class Game extends JPanel implements ActionListener {
         //Plateau de jeu
         plateau = new char[8][8];
 
+        //Fond
         icoBackground = new ImageIcon(getClass().getResource("/images/background.jpg"));
         this.imgbackground = this.icoBackground.getImage();
         this.numberOfPlayers = numberOfPlayers;
@@ -137,19 +143,24 @@ public class Game extends JPanel implements ActionListener {
 
 
 
+        //définition de la taille du panel et de la localisation
         gamePanel.setLocation(900,10);
         gamePanel.setSize(200,200);
         gamePanel.setOpaque(true);
         gamePanel.setBackground(new Color(0,0,0,0));
         rightPan.setLocation(760,250);
         rightPan.setSize(500,200);
+        //On rend le fond transparent
         rightPan.setOpaque(true);
         rightPan.setBackground(new Color(0,0,0,0));
         cards.setOpaque(true);
         cards.setBackground(new Color(0,0,0,0));
 
+        //On ajoute au panel principal
         this.add(gamePanel);
         this.add(rightPan);
+
+        //On dit que le bouton pourra subir une action
         button4.addActionListener(this);
         button3.addActionListener(this);
         button2.addActionListener(this);
@@ -185,7 +196,7 @@ public class Game extends JPanel implements ActionListener {
 
         Graphics2D g2 = (Graphics2D) g;
         g2.drawImage(this.imgbackground, 0, 0, null);
-
+//Tracage du plateau
         g2.setStroke(new BasicStroke(2));
         g2.setPaint(Color.getHSBColor(38, 44, 71));
         g2.fill(new Rectangle2D.Double(CASE_DIM, CASE_DIM, 8 * CASE_DIM, 8 * CASE_DIM));
@@ -228,9 +239,11 @@ public class Game extends JPanel implements ActionListener {
                 (player4.getImgPlayer()).paintIcon(null, g2, (player4.getPosition()[1]+1)* CASE_DIM, (player4.getPosition()[0]+1)*CASE_DIM);}
 
                     }
+                //fonction qui trace les murs
         paintPlayersWalls(CASE_DIM,g2);
         Font policeGame= new Font("Arial",Font.BOLD,20);
         g2.setFont(policeGame);
+        //fonction affiche le nom de la tortue quand c'est son tour
                 if(player.getTurtleName()=='B'){
                     g2.drawString("Au tour de Beep",200,50);
                 }
@@ -253,43 +266,11 @@ public class Game extends JPanel implements ActionListener {
         }
         }
 
-    /* TODO : A revoir turn */
+
     private Player turn(){
         printBoard();
         Player ans = null;
 
-/*
-        if(numberOfPlayers==2){
-            if(turn%2==0){
-                if(!player1.isWin()){
-                    playerLabel.setText("J2");
-                    this.revalidate();
-                    this.repaint();
-                    ans = player2;}
-                else{
-
-                    endGame=true;
-                    repaint();
-
-                }
-            }
-            else {
-                if(!player2.isWin()) {
-                    playerLabel.setText("J1");
-                    this.revalidate();
-                    this.repaint();
-                    ans = player1;
-                }
-                else{
-                    endGame=true;
-                    repaint();
-
-
-                }
-            }
-
-        }
-        else if (numberOfPlayers==3||numberOfPlayers==4){*/
             if(z>playersInGame-1){
                 z=0;
             }
@@ -331,11 +312,16 @@ public class Game extends JPanel implements ActionListener {
 
 
     private void addToProgram(){
+        //On regarde si le joueur à moins de 5 cartes
         if(player.getDeck().deck.size()>0) {
             if ((player.getDeck().getPlayerHand()).size() < 5) {
                 (player.getDeck()).fiveCardToPlayerHand();
             }
         }
+        /*Pour chaque carte on crée un Jlabel
+        * On associe une action au Jlabel
+        * Si on clique dessus on ajoute la carte dans la file d'instruction
+        * */
         for (int i=0;i<player.getDeck().getPlayerHand().size();i++) {
             if (player.getDeck().getPlayerHand().get(i) == 'b') {
                 JLabel blueCard = new JLabel(imgBlueCard);
@@ -397,6 +383,7 @@ public class Game extends JPanel implements ActionListener {
                 });
             }
         }
+        //Pour changer le nom de boutons on utilise setText
         button3.setText("");
         button1.setText("Défausser");
         button2.setText("Finir le tour");
@@ -409,6 +396,7 @@ public class Game extends JPanel implements ActionListener {
     }
 
     private void executeProgram(){
+        //On ajoute 5 cartes dans sa main s'il n'en à pas 5 pour qu'il puisse les défausser
         if(player.getDeck().deck.size()>0) {
             if ((player.getDeck().getPlayerHand()).size() < 5) {
                 (player.getDeck()).fiveCardToPlayerHand();
@@ -446,10 +434,8 @@ public class Game extends JPanel implements ActionListener {
         gamePanel.repaint();
 
     }
-/*TODO :A REVOIR
 
 
-* */
     private void buildWall() {
         if(player.getDeck().deck.size()>0) {
             if ((player.getDeck().getPlayerHand()).size() < 5) {
@@ -471,6 +457,10 @@ public class Game extends JPanel implements ActionListener {
 
 
     }
+    /*
+     *Fonction pour voir si la case est vide
+     *
+     */
 
     private static boolean isEmpty(int posX, int posY) {
         boolean ans=true;
@@ -480,6 +470,15 @@ public class Game extends JPanel implements ActionListener {
         return ans;
     }
 
+    /*
+     *Fonction pour voir si la tortue est bloquée
+     * On fait un try catch pour voir s'il y a un objet si oui
+     *On regarde si c'est un joyau ou un joueur
+     * si non on lui laisse placer son mur
+     * Si c'est un joueur ou un joyau
+     * Un refait un try catch si la case n'existe pas
+     * On ajoute 1 au compteur car les bordures du plateau comptent comme un obstacle indestructible
+     */
 
     private static boolean blocked(int posX, int posY) {
 
@@ -524,7 +523,7 @@ public class Game extends JPanel implements ActionListener {
     int counter=0;
 
         try{
-            if(plateau[posX-1][posY]=='S'||plateau[posX-1][posY]=='I') {
+            if(plateau[posX-1][posY]=='S') {
                counter++;
             }
         }
@@ -532,7 +531,7 @@ public class Game extends JPanel implements ActionListener {
             counter++;
         }
         try{
-            if(plateau[posX+1][posY]=='S'||plateau[posX+1][posY]=='I') {
+            if(plateau[posX+1][posY]=='S') {
                 counter++;
             }
         }
@@ -540,7 +539,7 @@ public class Game extends JPanel implements ActionListener {
             counter++;
         }
         try{
-            if(plateau[posX][posY+1]=='S'||plateau[posX][posY+1]=='I') {
+            if(plateau[posX][posY+1]=='S') {
                 counter++;
             }
         }
@@ -548,7 +547,7 @@ public class Game extends JPanel implements ActionListener {
                 counter++;
         }
         try{
-            if(plateau[posX][posY-1]=='S'||plateau[posX][posY-1]=='I') {
+            if(plateau[posX][posY-1]=='S') {
                 counter++;
             }
         }
@@ -584,8 +583,9 @@ public class Game extends JPanel implements ActionListener {
 
 
 
+//Revalidate et repaint() , servent à repeindre la fenetre
 
-
+//Ici on regarde sur quel bouton à cliqué l'utilisateur
     @Override
     public void actionPerformed(ActionEvent e) {
 
