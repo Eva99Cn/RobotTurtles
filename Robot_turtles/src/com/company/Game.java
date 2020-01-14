@@ -84,6 +84,8 @@ public class Game extends JPanel implements ActionListener {
             gem2 = new Gem('p', new int[]{7, 5});
             players.add(player1);
             players.add(player2);
+            gems.add(gem1);
+            gems.add(gem2);
             initializeBoard();
             updateBoard(player1.getPosition(),player1.getTurtleName());
             updateBoard(player2.getPosition(),player2.getTurtleName());
@@ -105,6 +107,9 @@ public class Game extends JPanel implements ActionListener {
             players.add(player1);
             players.add(player2);
             players.add(player3);
+            gems.add(gem1);
+            gems.add(gem2);
+            gems.add(gem3);
             updateBoard(player1.getPosition(),player1.getTurtleName());
             updateBoard(player2.getPosition(),player2.getTurtleName());
             updateBoard(player3.getPosition(),player3.getTurtleName());
@@ -485,7 +490,7 @@ public class Game extends JPanel implements ActionListener {
 
         try{
             if(plateau[posX-1][posY]!=' ') {
-                if (isPlayerOrGem(posX - 1, posY)) {
+                if (isPlayer(posX - 1, posY)||isGem(posX-1,posY)) {
                     return checkElement(posX + 1, posY);
                 }
             }
@@ -494,28 +499,26 @@ public class Game extends JPanel implements ActionListener {
         catch(IndexOutOfBoundsException e){ }
         try{
             if(plateau[posX+1][posY]!=' ') {
-                if(isPlayerOrGem(posX+1,posY)){
+                if(isPlayer(posX+1,posY)||isGem(posX+1,posY)){
                 return checkElement(posX+1,posY);}
             }
         }
         catch(IndexOutOfBoundsException e){ }
         try{
             if(plateau[posX][posY+1]!=' ') {
-                if(isPlayerOrGem(posX,posY+1)){
+                if(isPlayer(posX,posY+1)||isGem(posX,posY+1)){
                 return checkElement(posX,posY+1);}
             }
         }
         catch(IndexOutOfBoundsException e){ }
         try{
             if(plateau[posX][posY-1]!=' ') {
-                if(isPlayerOrGem(posX,posY-1)){
+                if(isPlayer(posX,posY-1)||isGem(posX,posY-1)){
                     return checkElement(posX,posY-1);
                 }
             }
         }
-        catch(IndexOutOfBoundsException e){
-
-        }
+        catch(IndexOutOfBoundsException e){ }
 
         return false;
     }
@@ -556,27 +559,29 @@ public class Game extends JPanel implements ActionListener {
         }
     if(counter==3){
     return true;}
-    else{
-        return false;
-    }
+
+    return false;
+
     }
 
-    private static boolean isPlayerOrGem(int x, int y){
+    private static boolean isPlayer(int x, int y){
     for (int i=0;i<players.size();i++){
     if (plateau[x][y]==players.get(i).getTurtleName()){
         return true;
     }
     }
-    for (int j=0;j<gems.size();j++){
-        if (plateau[x][y]==gems.get(j).getGemcolor()){
-            return true;
-
-        }
-    }
     return false;
 
         }
+    private static boolean isGem(int x, int y) {
+        for (int j = 0; j < gems.size(); j++) {
+            if (plateau[x][y] == gems.get(j).getGemcolor()) {
+                return true;
 
+            }
+        }
+        return false;
+    }
 
 
 
@@ -851,7 +856,6 @@ public class Game extends JPanel implements ActionListener {
                         } else if (y > 678 && y < 766) {
                             xpos = 7;
                         }
-                        if (!blocked(xpos, ypos)) {
                             if (isEmpty(xpos, ypos)) {
                                 if (player.getNumberofIceWall() == 2) {
                                     player.getIceWall().setWallPos(new int[]{xpos, ypos});
@@ -867,7 +871,7 @@ public class Game extends JPanel implements ActionListener {
                             }
                         }
 
-                    }
+
 
 
             });

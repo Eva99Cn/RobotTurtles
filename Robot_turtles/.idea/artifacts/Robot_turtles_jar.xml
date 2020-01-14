@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Robot_turtles:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Robot_turtles_jar</output-path>
+    <root id="archive" name="Robot_turtles.jar">
+      <element id="module-output" name="Robot_turtles" />
+    </root>
+  </artifact>
+</component>

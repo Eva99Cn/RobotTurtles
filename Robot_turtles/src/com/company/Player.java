@@ -49,17 +49,10 @@ public class Player extends Game {
     public Player() {
     }
 
-    public void moveTurtle(){
-
-    }
     public ImageIcon getImgPlayer() {
 
 
         return imgPlayer;
-    }
-
-    public void setImgPlayer(ImageIcon imgPlayer) {
-        this.imgPlayer = imgPlayer;
     }
 
     public char getTurtleName() {
