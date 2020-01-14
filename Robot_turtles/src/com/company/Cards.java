@@ -10,7 +10,7 @@ public class Cards extends Game {
     private char purpleCard = 'p';
     private char laserCard = 'l';
     private int deckshuffleLength= 37;
-    private ArrayList<Character> deckshuffle = new ArrayList<Character>();
+    private ArrayList<Character> deckshuffle = new ArrayList<>();
     protected ArrayDeque<Character> deck = new ArrayDeque<>();
     private static int numberBlueCard= 18,numberYellowCard = 8,numberOfPurpleCard = 8,numberOfLaserCard= 3;
 

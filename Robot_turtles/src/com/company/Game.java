@@ -24,7 +24,7 @@ public class Game extends JPanel implements ActionListener {
     private Image imgbackground;
 
     private ImageIcon stoneWall= new ImageIcon(getClass().getResource("/images/tiles/S.png"));
-    public static int numberOfPlayers;
+    public  static int numberOfPlayers;
     private static int playersInGame;
 
     private  ImageIcon imgYellowCard= new ImageIcon(getClass().getResource("/images/cards/y.png"));
@@ -269,7 +269,7 @@ public class Game extends JPanel implements ActionListener {
 
     private Player turn(){
         printBoard();
-        Player ans = null;
+        Player ans;
 
             if(z>playersInGame-1){
                 z=0;

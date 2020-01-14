@@ -6,9 +6,9 @@ import java.util.ArrayList;
 public class Player extends Game {
     private char turtleName;
     private char direction;
-    private int position[];
+    private int[] position;
     private Cards deck;
-    private int startingPoint[];
+    private int[] startingPoint;
     private boolean win;
     private ArrayList<Wall> Walls = new ArrayList<>();
 
@@ -26,7 +26,7 @@ public class Player extends Game {
 
 
 
-    public Player(char turtleName, char direction, int position[], int startingPoint[], Cards deck){
+    public Player(char turtleName, char direction, int[] position, int[] startingPoint, Cards deck){
 
         this.turtleName = turtleName;
         this.direction = direction;
