@@ -167,6 +167,8 @@ public class Cards extends Game {
         if (plateau[newPosition[0]][newPosition[1]] == players.get(i).getTurtleName()) {
             if(numberOfPlayers==2){
                 players.get(i).uTurn();
+                player.uTurn();
+                break;
             }
             else{
             players.get(i).returnToStartingPoint();

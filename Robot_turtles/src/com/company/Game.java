@@ -97,7 +97,7 @@ public class Game extends JPanel implements ActionListener {
             Cards deckP2 = new Cards();
             Cards deckP3 = new Cards();
             player1 = new Player('B', 'S', new int[]{0, 0}, new int[]{0, 0}, deckP1);
-            player2 = new Player('P', 'S', new int[]{6, 3}, new int[]{0, 3}, deckP2);
+            player2 = new Player('P', 'S', new int[]{0, 3}, new int[]{0, 3}, deckP2);
             player3 = new Player('R', 'S', new int[]{0, 6}, new int[]{0, 6}, deckP3);
             gem1 = new Gem('b', new int[]{7, 0});
             gem2 = new Gem('p', new int[]{7, 3});
@@ -265,9 +265,22 @@ public class Game extends JPanel implements ActionListener {
 
 
         if(playersInGame==1){
-            Font policeEnd = new Font("Arial",Font.BOLD,100);
+            Font policeEnd = new Font("Arial",Font.BOLD,50);
             g2.setFont(policeEnd);
-            g2.drawString("Fin de la partie",300,400);
+            if(players.get(0).getTurtleName()=='B'){
+                g2.drawString("Fin de la partie! Beep a perdu",300,400);
+            }
+            else if(players.get(0).getTurtleName()=='P'){
+                g2.drawString("Fin de la partie! Pangle a perdu",300,400);
+            }
+            else  if(players.get(0).getTurtleName()=='D'){
+                g2.drawString("Fin de la partie! Dot a perdu",300,400);
+            }
+
+            else  if(players.get(0).getTurtleName()=='R'){
+                g2.drawString("Fin de la partie! Pi à perdu",300,400);
+            }
+
         }
         }
 
@@ -412,20 +425,36 @@ public class Game extends JPanel implements ActionListener {
             char playerCard = player.getDeck().getHiddenCards().pop();
             if (playerCard=='b'){
                 player.getDeck().blueEffect(player);
+                JLabel blueCard = new JLabel(imgBlueCard);
+                cards.add(blueCard);
+                cards.revalidate();
+                cards.repaint();
                 repaint();
             }
             else if(playerCard=='p'){
                 player.getDeck().purpleEffect(player);
+                JLabel purpleCard = new JLabel(imgPurpleCard);
+                cards.add(purpleCard,BorderLayout.EAST);
+                cards.revalidate();
+                cards.repaint();
                 repaint();
 
             }
             else if(playerCard=='y'){
                 player.getDeck().yellowEffect(player);
+                JLabel yellowCard = new JLabel(imgYellowCard);
+                cards.add(yellowCard,BorderLayout.EAST);
+                cards.revalidate();
+                cards.repaint();
                 repaint();
 
             }
             else if(playerCard=='l'){
                 player.getDeck().laserEffect(player);
+                JLabel laserCard = new JLabel(imgLaserCard);
+                cards.add(laserCard,BorderLayout.EAST);
+                cards.revalidate();
+                cards.repaint();
 
             }
 
