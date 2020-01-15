@@ -106,6 +106,35 @@ public class Player extends Game {
 
     }
 
+    public void turnCounterClockWise(){
+        if (direction == 'E') {
+            this.direction='N';
+
+        } else if (direction == 'N') {
+            this.direction='O';
+        } else if (direction == 'O') {
+            this.direction='S';
+        } else if (direction == 'S') {
+            this.direction='E';
+        }
+        this.imgPlayer= new ImageIcon(getClass().getResource("/images/characters/"+getTurtleName()+"-"+direction+".png"));
+
+    }
+    public void turnClockWise(){
+        if (direction == 'E') {
+            this.direction='S';
+
+        } else if (direction == 'N') {
+            this.direction='E';
+        } else if (direction == 'O') {
+            this.direction='N';
+        } else if (direction == 'S') {
+            this.direction='O';
+        }
+        this.imgPlayer= new ImageIcon(getClass().getResource("/images/characters/"+getTurtleName()+"-"+direction+".png"));
+
+    }
+
 
 
     public Cards getDeck() {

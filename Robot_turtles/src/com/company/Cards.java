@@ -122,7 +122,7 @@ public class Cards extends Game {
     }
     //Fonction qui regarde ce qui ce trouve sur le chemin
     private static void getObject(int[] newPosition,Player player){
-        //S'il dépasse on le renvoi à sa position de départ
+        //S'il dépasse du plateau on le renvoi à sa position de départ
         if(numberOfPlayers<4){
                 if(newPosition[0] < 0 || newPosition[0] > 7||newPosition[1] < 0||newPosition[1] > 6){
                    player.returnToStartingPoint();
@@ -136,31 +136,10 @@ public class Cards extends Game {
         if (plateau[newPosition[0]][newPosition[1]]=='S'||plateau[newPosition[0]][newPosition[1]]=='I'){
             player.uTurn();
         }
-
         //si la tortue touche un joyau on met son boolean win en vrai
-        if (newPosition[0] == gem1.getGemPosition()[0] && newPosition[1] == gem1.getGemPosition()[1]) {
+        else if (isGem(newPosition[0],newPosition[1])) {
             player.setWin(true);
         }
-    else{
-        player.uTurn();
-    }
-    if (newPosition[0] == gem2.getGemPosition()[0] && newPosition[1] == gem2.getGemPosition()[1]) {
-            player.setWin(true);
-        }
-    else{
-       player.uTurn();
-    }
-    if (numberOfPlayers ==3 ) {
-            if (newPosition[0] == gem3.getGemPosition()[0] && newPosition[1] == gem3.getGemPosition()[1]) {
-                player.setWin(true);
-            }
-            else {
-              player.uTurn();
-            }
-            }
-
-
-
 
     // On regarde si la tortue en heurte une autre
     for (int i = 0; i < players.size(); i++) {
@@ -183,55 +162,29 @@ public class Cards extends Game {
 
    public static void yellowEffect(Player player){
        if(numberYellowCard>0) {
-           if (player.getDirection() == 'E') {
-               player.setDirection('N');
-
-           } else if (player.getDirection() == 'N') {
-               player.setDirection('O');
-           } else if (player.getDirection() == 'O') {
-               player.setDirection('S');
-           } else if (player.getDirection() == 'S') {
-               player.setDirection('E');
-           }
+           player.turnCounterClockWise();
            numberYellowCard--;
        }
         }
         public static void purpleEffect(Player player) {
             if (numberOfPurpleCard > 0) {
-
-                if (player.getDirection() == 'E') {
-                    player.setDirection('S');
-
-
-
-                } else if (player.getDirection() == 'N') {
-                    player.setDirection('E');
-
-                } else if (player.getDirection() == 'O') {
-                    player.setDirection('N');
-
-                } else if (player.getDirection() == 'S') {
-                    player.setDirection('O');
-
-                }
-                System.out.println(player.getDirection());
+                player.turnClockWise();
 
                 numberOfPurpleCard--;
 
             }
         }
 
-    //Carte laser A revoir
+
     public void laserEffect(Player player) {
-        // Pour éviter de l'initialiser dans toute les boucles for
         if (player.getDirection() == 'S') {
             for (int i = player.getPosition()[0]; i <= 7; i++) { // On regarde chaque case en dessous
 
                 if(laserToWall(i,player.getPosition()[1])){
                     break;
                 }
-               else if (plateau[i][player.getPosition()[1]] == 'b' || plateau[i][player.getPosition()[1]] == 'p' || plateau[i][player.getPosition()[1]] == 'r') {
-                    player.uTurn(); // Si �a touche un joyau
+               else if (isGem(i,player.getPosition()[1])) {
+                    player.uTurn(); // Si le laser touche un joyau
                      break;
                  }
                  else {
@@ -253,7 +206,7 @@ public class Cards extends Game {
             for (int i = player.getPosition()[0]; i >= 0; i--) { // On regarde chaque case au dessus
                 if(laserToWall(i,player.getPosition()[1])){
                     break;
-                } else if (plateau[i][player.getPosition()[1]] == 'b' || plateau[i][player.getPosition()[1]] == 'p' || plateau[i][player.getPosition()[1]] == 'r') {
+                } else if (isGem(i,player.getPosition()[1])) {
                    player.uTurn(); // Si la touche un joyau
                     break;
                 } else {
@@ -275,7 +228,7 @@ public class Cards extends Game {
             for (int i = player.getPosition()[1]; i <= 7; i++) { // On regarde chaque case � droite
                 if(laserToWall(player.getPosition()[0],i)){
                     break;
-                }  else if (plateau[player.getPosition()[0]][i] == 'b' || plateau[player.getPosition()[0]][i] == 'p' || plateau[player.getPosition()[0]][i] == 'r') {
+                }  else if (isGem(player.getPosition()[0],i)) {
                     player.uTurn(); // Si �a touche un joyau
                     break;
                 } else {
@@ -297,7 +250,7 @@ public class Cards extends Game {
             for (int i = player.getPosition()[0]; i >= 0; i--) { // On regarde chaque case � gauche
                 if(laserToWall(player.getPosition()[1],i)){
                     break;
-                } else if (plateau[player.getPosition()[0]][i] == 'b' || plateau[player.getPosition()[0]][i] == 'p' || plateau[player.getPosition()[0]][i] == 'r') {
+                } else if (isGem(player.getPosition()[1],i)) {
                    player.uTurn(); // Si �a touche un joyau
                     break;
                 } else {
@@ -317,6 +270,15 @@ public class Cards extends Game {
 
             }
         }
+    }
+
+    public static boolean isGem(int x, int y){
+        for (int i=0;i<gems.size();i++){
+            if(plateau[x][y]==gems.get(i).getGemcolor()){
+                return true;
+            }
+        }
+        return false;
     }
 
 
