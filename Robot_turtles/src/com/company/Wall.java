@@ -28,17 +28,7 @@ public class Wall extends Game {
 
             return ans;
         }
-        public boolean movableWall(char wall){
-            boolean ans=false;
-            if(wall=='W'){
-                ans= true;
-            }
-            else{
-                ans = false;
-            }
 
-            return ans;
-        }
 
     public char getWallType() {
         return wallType;

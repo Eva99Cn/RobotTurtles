@@ -4,7 +4,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class Fenetre extends JFrame implements ActionListener {
+public class Window extends JFrame implements ActionListener {
     public static int numberOfPlayers;
     public   JFrame window= new JFrame("Robot Turtles");
     private JButton buttons2p = new JButton("2 Joueurs");
@@ -13,7 +13,7 @@ public class Fenetre extends JFrame implements ActionListener {
     public static Game scene;
     private JPanel bannerPanel;
     private JLabel bannerLabel;
-    public Fenetre() {
+    public Window() {
 
         //Création d'une fenêtre avec des boutons
         window.setSize(1300, 800);

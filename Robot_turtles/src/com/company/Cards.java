@@ -227,19 +227,10 @@ public class Cards extends Game {
         if (player.getDirection() == 'S') {
             for (int i = player.getPosition()[0]; i <= 7; i++) { // On regarde chaque case en dessous
 
-                 if (plateau[i][player.getPosition()[1]] == 'S') { // Quand le laser tire sur une pierre
+                if(laserToWall(i,player.getPosition()[1])){
                     break;
-                } else if (plateau[i][player.getPosition()[1]] == 'W') { // Quand le laser tire sur le carton
-                    break;
-                } else if (plateau[i][player.getPosition()[1]] == 'I') {
-                    for (int j=0;j<walls.size();j++){
-                        if (walls.get(j).getWallPos()[0]==i &&walls.get(j).getWallPos()[1]==player.getPosition()[1]) {
-                            walls.get(j).setWallPos(new int[] {99,1});
-                        }
-                    }
-                    plateau[i][player.getPosition()[1]] = ' '; // La glace fond
-                    break;
-                }else if (plateau[i][player.getPosition()[1]] == 'b' || plateau[i][player.getPosition()[1]] == 'p' || plateau[i][player.getPosition()[1]] == 'r') {
+                }
+               else if (plateau[i][player.getPosition()[1]] == 'b' || plateau[i][player.getPosition()[1]] == 'p' || plateau[i][player.getPosition()[1]] == 'r') {
                     player.uTurn(); // Si �a touche un joyau
                      break;
                  }
@@ -260,19 +251,9 @@ public class Cards extends Game {
             }
         } else if (player.getDirection() == 'N') {
             for (int i = player.getPosition()[0]; i >= 0; i--) { // On regarde chaque case au dessus
-               if (plateau[i][player.getPosition()[1]] == 'S') { // Quand le laser tire sur une pierre
+                if(laserToWall(i,player.getPosition()[1])){
                     break;
-                } else if (plateau[i][player.getPosition()[1]] == 'W') { // Quand le laser tire sur le carton
-                    break;
-                } else if (plateau[i][player.getPosition()[1]] == 'I') {
-                   for (int j=0;j<walls.size();j++){
-                       if (walls.get(j).getWallPos()[0]==i &&walls.get(j).getWallPos()[1]==player.getPosition()[1]) {
-                           walls.get(j).setWallPos(new int[] {99,1});
-                       }
-                   }
-                   plateau[i][player.getPosition()[1]] = ' '; // La glace fond
-                   break;
-               } else if (plateau[i][player.getPosition()[1]] == 'b' || plateau[i][player.getPosition()[1]] == 'p' || plateau[i][player.getPosition()[1]] == 'r') {
+                } else if (plateau[i][player.getPosition()[1]] == 'b' || plateau[i][player.getPosition()[1]] == 'p' || plateau[i][player.getPosition()[1]] == 'r') {
                    player.uTurn(); // Si la touche un joyau
                     break;
                 } else {
@@ -292,19 +273,9 @@ public class Cards extends Game {
             }
         } else if (player.getDirection() == 'E') {
             for (int i = player.getPosition()[1]; i <= 7; i++) { // On regarde chaque case � droite
-                if (plateau[player.getPosition()[0]][i] == 'S') { // Quand le laser tire sur une pierre
+                if(laserToWall(player.getPosition()[0],i)){
                     break;
-                } else if (plateau[player.getPosition()[0]][i] == 'W') { // Quand le laser tire sur le carton
-                    break;
-                } else if (plateau[player.getPosition()[0]][i] == 'I') {
-                    for (int j=0;j<walls.size();j++){
-                        if (walls.get(j).getWallPos()[0]==player.getPosition()[0] && walls.get(j).getWallPos()[1]==i) {
-                            walls.get(j).setWallPos(new int[] {99,1});
-                        }
-                    }
-                    plateau[i][player.getPosition()[1]] = ' '; // La glace fond
-                    break;
-                } else if (plateau[player.getPosition()[0]][i] == 'b' || plateau[player.getPosition()[0]][i] == 'p' || plateau[player.getPosition()[0]][i] == 'r') {
+                }  else if (plateau[player.getPosition()[0]][i] == 'b' || plateau[player.getPosition()[0]][i] == 'p' || plateau[player.getPosition()[0]][i] == 'r') {
                     player.uTurn(); // Si �a touche un joyau
                     break;
                 } else {
@@ -323,18 +294,8 @@ public class Cards extends Game {
                 }
             }
         } else if (player.getDirection() == 'O') {
-            for (int i = player.getPosition()[1]; i >= 0; i--) { // On regarde chaque case � gauche
-                if (plateau[player.getPosition()[0]][i] == 'S') { // Quand le laser tire sur une pierre
-                    break;
-                } else if (plateau[player.getPosition()[0]][i] == 'W') { // Quand le laser tire sur le carton
-                    break;
-                } else if (plateau[player.getPosition()[0]][i] == 'I') {
-                    for (int j=0;j<walls.size();j++){
-                        if (walls.get(j).getWallPos()[0]==player.getPosition()[0] &&walls.get(j).getWallPos()[1]==i) {
-                            walls.get(j).setWallPos(new int[] {99,1});
-                        }
-                    }
-                    plateau[player.getPosition()[0]][i] = ' '; // La glace fond
+            for (int i = player.getPosition()[0]; i >= 0; i--) { // On regarde chaque case � gauche
+                if(laserToWall(player.getPosition()[1],i)){
                     break;
                 } else if (plateau[player.getPosition()[0]][i] == 'b' || plateau[player.getPosition()[0]][i] == 'p' || plateau[player.getPosition()[0]][i] == 'r') {
                    player.uTurn(); // Si �a touche un joyau
@@ -360,7 +321,19 @@ public class Cards extends Game {
 
 
 
-
+public boolean laserToWall(int x, int y){
+        for (int i=0;i<walls.size();i++){
+            if(walls.get(i).getWallPos()[0]==x && walls.get(i).getWallPos()[1]==y){
+                if (walls.get(i).destroyable()){
+                    walls.get(i).setWallPos(new int[] {99,1});
+                    plateau[x][y] = ' ';
+                    return true;
+                }
+                return true;
+            }
+        }
+        return false;
+}
 
 
 
