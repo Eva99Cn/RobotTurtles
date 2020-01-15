@@ -165,10 +165,12 @@ public class Cards extends Game {
     // On regarde si la tortue en heurte une autre
     for (int i = 0; i < players.size(); i++) {
         if (plateau[newPosition[0]][newPosition[1]] == players.get(i).getTurtleName()) {
+            if(numberOfPlayers==2){
+                players.get(i).uTurn();
+            }
+            else{
             players.get(i).returnToStartingPoint();
-            players.get(i).setDirection('S');
-            player.returnToStartingPoint();
-            player.setDirection('S');
+            player.returnToStartingPoint(); }
             break;
         }
     }
