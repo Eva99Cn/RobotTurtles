@@ -83,6 +83,8 @@ public class Player extends Game {
     public void returnToStartingPoint(){
         this.position = startingPoint;
         this.direction = 'S';
+        this.imgPlayer= new ImageIcon(getClass().getResource("/images/characters/"+getTurtleName()+"-"+direction+".png"));
+
     }
     //Fonction qui permet à la tortue de faire un demi-tour
     public  void uTurn(){

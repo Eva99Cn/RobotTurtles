@@ -16,7 +16,7 @@ public class Window extends JFrame implements ActionListener {
     public Window() {
 
         //Création d'une fenêtre avec des boutons
-        window.setSize(1300, 800);
+        window.setSize(1250, 800);
         window.setLocationRelativeTo(null);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setResizable(false);

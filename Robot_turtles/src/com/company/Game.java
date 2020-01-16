@@ -78,7 +78,7 @@ public class Game extends JPanel implements ActionListener {
 
             Cards deckP1 = new Cards();
             Cards deckP2 = new Cards();
-            player1 = new Player('B', 'S', new int[]{6, 2}, new int[]{0, 2}, deckP1);
+            player1 = new Player('B', 'S', new int[]{0, 2}, new int[]{0, 2}, deckP1);
             player2 = new Player('P', 'S', new int[]{0, 5}, new int[]{0, 5}, deckP2);
             gem1 = new Gem('b', new int[]{7, 2});
             gem2 = new Gem('p', new int[]{7, 5});
@@ -345,6 +345,7 @@ public class Game extends JPanel implements ActionListener {
                 JLabel blueCard = new JLabel(imgBlueCard);
                 cards.add(blueCard);
                 cards.revalidate();
+
                 cards.repaint();
 
                 blueCard.addMouseListener(new MouseAdapter() {
@@ -811,7 +812,6 @@ public class Game extends JPanel implements ActionListener {
                             repaint();
                             plateau[xpos][ypos] = 'S';
                             player.reduceNumberofStoneWall();
-                            System.out.println(player.getNumberofStoneWall());
                             removeMouseListener(this);
                         }
                     }
