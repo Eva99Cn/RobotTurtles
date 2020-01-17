@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
+import java.util.Random;
 import javax.swing.*;
 
 public class Game extends JPanel implements ActionListener {
@@ -41,14 +42,15 @@ public class Game extends JPanel implements ActionListener {
     private JPanel rightPan = new JPanel();
     //Panel pour afficher les cartes
     private JPanel cards =new JPanel();
+    private JPanel instructionCard = new JPanel();
 
     public static char[][] plateau;
     //Liste qui va stocker les joueurs
-    public static ArrayList<Player> players = new ArrayList<>();
+    protected static ArrayList<Player> players = new ArrayList<>();
     //Liste qui va stocker les murs
-    public static ArrayList<Wall> walls = new ArrayList<>();
+    protected static ArrayList<Wall> walls = new ArrayList<>();
     //Liste qui va stocker les joyaux
-    public static ArrayList<Gem> gems = new ArrayList<>();
+    protected static ArrayList<Gem> gems = new ArrayList<>();
     public static Player player1;
     public static Player player2;
     public static Player player3;
@@ -150,16 +152,17 @@ public class Game extends JPanel implements ActionListener {
 
         //définition de la taille du panel et de la localisation
         gamePanel.setLocation(900,10);
-        gamePanel.setSize(200,200);
+        gamePanel.setSize(200,150);
         gamePanel.setOpaque(true);
         gamePanel.setBackground(new Color(0,0,0,0));
-        rightPan.setLocation(760,250);
-        rightPan.setSize(500,200);
+        rightPan.setLocation(770,220);
+        rightPan.setSize(480,143);
         //On rend le fond transparent
-        rightPan.setOpaque(true);
-        rightPan.setBackground(new Color(0,0,0,0));
-        cards.setOpaque(true);
+        rightPan.setBackground(new Color(0,0,0,50));
         cards.setBackground(new Color(0,0,0,0));
+        instructionCard.setLocation(770,390);
+        instructionCard.setSize(480,420);
+        instructionCard.setBackground(new Color(0,0,0,50));
 
         //On ajoute au panel principal
         this.add(gamePanel);
@@ -173,6 +176,7 @@ public class Game extends JPanel implements ActionListener {
         gamePanel.add(button1);
         gamePanel.add(button2);
         gamePanel.add(button3);
+        this.add(instructionCard);
 
 
 
@@ -196,7 +200,6 @@ public class Game extends JPanel implements ActionListener {
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-
         int CASE_DIM = 85;
 
         Graphics2D g2 = (Graphics2D) g;
@@ -263,6 +266,8 @@ public class Game extends JPanel implements ActionListener {
                     g2.drawString("Au tour de Pi",200,50);
                 }
 
+                g2.drawString("File d'instruction",900,380);
+                g2.drawString("Cartes en main",900,200);
 
         if(playersInGame==1){
             Font policeEnd = new Font("Arial",Font.BOLD,50);
@@ -336,18 +341,19 @@ public class Game extends JPanel implements ActionListener {
                 (player.getDeck()).fiveCardToPlayerHand();
             }
         }
+
+        notPrintCard(cards);
         /*Pour chaque carte on crée un Jlabel
         * On associe une action au Jlabel
         * Si on clique dessus on ajoute la carte dans la file d'instruction
         * */
+
         for (int i=0;i<player.getDeck().getPlayerHand().size();i++) {
             if (player.getDeck().getPlayerHand().get(i) == 'b') {
                 JLabel blueCard = new JLabel(imgBlueCard);
                 cards.add(blueCard);
                 cards.revalidate();
-
                 cards.repaint();
-
                 blueCard.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
@@ -355,6 +361,9 @@ public class Game extends JPanel implements ActionListener {
                         cards.remove(blueCard);
                         cards.revalidate();
                         cards.repaint();
+                        notPrintCard(instructionCard);
+                        printExecuteCard();
+
 
                     }
                 });
@@ -363,6 +372,7 @@ public class Game extends JPanel implements ActionListener {
                 cards.add(yellowCard,BorderLayout.EAST);
                 cards.revalidate();
                 cards.repaint();
+
                 yellowCard.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
@@ -370,6 +380,9 @@ public class Game extends JPanel implements ActionListener {
                         cards.remove(yellowCard);
                         cards.revalidate();
                         cards.repaint();
+                        notPrintCard(instructionCard);
+                        printExecuteCard();
+
                     }
                 });
             } else if (player.getDeck().getPlayerHand().get(i) == 'p') {
@@ -377,6 +390,7 @@ public class Game extends JPanel implements ActionListener {
                 cards.add(purpleCard,BorderLayout.EAST);
                 cards.revalidate();
                 cards.repaint();
+
                 purpleCard.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
@@ -384,6 +398,9 @@ public class Game extends JPanel implements ActionListener {
                         cards.remove(purpleCard);
                         cards.revalidate();
                         cards.repaint();
+                        notPrintCard(instructionCard);
+                        printExecuteCard();
+
                     }
                 });
             } else if (player.getDeck().getPlayerHand().get(i) == 'l') {
@@ -391,6 +408,7 @@ public class Game extends JPanel implements ActionListener {
                 cards.add(laserCard,BorderLayout.EAST);
                 cards.revalidate();
                 cards.repaint();
+
                 laserCard.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
@@ -398,10 +416,14 @@ public class Game extends JPanel implements ActionListener {
                         cards.remove(laserCard);
                         cards.revalidate();
                         cards.repaint();
+                        notPrintCard(instructionCard);
+                        printExecuteCard();
+
                     }
                 });
             }
         }
+
         //Pour changer le nom de boutons on utilise setText
         button3.setText("");
         button1.setText("Défausser");
@@ -415,49 +437,50 @@ public class Game extends JPanel implements ActionListener {
     }
 
     private void executeProgram(){
-        //On ajoute 5 cartes dans sa main s'il n'en à pas 5 pour qu'il puisse les défausser
-        if(player.getDeck().deck.size()>0) {
-            if ((player.getDeck().getPlayerHand()).size() < 5) {
-                (player.getDeck()).fiveCardToPlayerHand();
-            }
-        }
         int departSize = player.getDeck().getHiddenCards().size();
+
+
         for (int i=0;i<departSize;i++){
+
             char playerCard = player.getDeck().getHiddenCards().pop();
             if (playerCard=='b'){
                 player.getDeck().blueEffect(player);
                 JLabel blueCard = new JLabel(imgBlueCard);
-                cards.add(blueCard);
-                cards.revalidate();
-                cards.repaint();
-                repaint();
+
+                instructionCard.add(blueCard);
+                instructionCard.revalidate();
+                instructionCard.repaint();
+
+
+
             }
             else if(playerCard=='p'){
                 player.getDeck().purpleEffect(player);
                 JLabel purpleCard = new JLabel(imgPurpleCard);
-                cards.add(purpleCard,BorderLayout.EAST);
-                cards.revalidate();
-                cards.repaint();
-                repaint();
+               instructionCard.add(purpleCard,BorderLayout.EAST);
+                instructionCard.revalidate();
+                instructionCard.repaint();
 
             }
             else if(playerCard=='y'){
                 player.getDeck().yellowEffect(player);
                 JLabel yellowCard = new JLabel(imgYellowCard);
-                cards.add(yellowCard,BorderLayout.EAST);
-                cards.revalidate();
-                cards.repaint();
-                repaint();
+                instructionCard.add(yellowCard,BorderLayout.EAST);
+                instructionCard.revalidate();
+                instructionCard.repaint();
+
 
             }
             else if(playerCard=='l'){
                 player.getDeck().laserEffect(player);
                 JLabel laserCard = new JLabel(imgLaserCard);
-                cards.add(laserCard,BorderLayout.EAST);
-                cards.revalidate();
-                cards.repaint();
+                instructionCard.add(laserCard,BorderLayout.EAST);
+                instructionCard.revalidate();
+                instructionCard.repaint();
 
             }
+
+            repaint();
 
 
         }
@@ -477,6 +500,8 @@ public class Game extends JPanel implements ActionListener {
                 (player.getDeck()).fiveCardToPlayerHand();
             }
         }
+        printExecuteCard();
+        printHandCard();
         if(player.getNumberofStoneWall()>0){
         button1.setText("Mur de pierre");}
         else{
@@ -487,8 +512,11 @@ public class Game extends JPanel implements ActionListener {
         else{
             button2.setText("");
         }
-        button3.setText("Finir le tour");
+        gamePanel.add(button4);
+        button4.setText("Finir le tour");
+        button3.setText("Défausser");
         gamePanel.repaint();
+
 
 
     }
@@ -645,12 +673,14 @@ public class Game extends JPanel implements ActionListener {
 
             cards.revalidate();
             cards.repaint();
+
             for (int i=0;i<player.getDeck().getPlayerHand().size();i++) {
                 if (player.getDeck().getPlayerHand().get(i) == 'b') {
                     JLabel blueCard = new JLabel(imgBlueCard);
                     cards.add(blueCard);
                     cards.revalidate();
                     cards.repaint();
+
 
                     blueCard.addMouseListener(new MouseAdapter() {
                         @Override
@@ -664,9 +694,10 @@ public class Game extends JPanel implements ActionListener {
                     });
                 } else if (player.getDeck().getPlayerHand().get(i) == 'y') {
                     JLabel yellowCard = new JLabel(imgYellowCard);
-                    cards.add(yellowCard,BorderLayout.EAST);
+                    cards.add(yellowCard);
                     cards.revalidate();
                     cards.repaint();
+
                     yellowCard.addMouseListener(new MouseAdapter() {
                         @Override
                         public void mouseClicked(MouseEvent e) {
@@ -678,9 +709,10 @@ public class Game extends JPanel implements ActionListener {
                     });
                 } else if (player.getDeck().getPlayerHand().get(i) == 'p') {
                     JLabel purpleCard = new JLabel(imgPurpleCard);
-                    cards.add(purpleCard,BorderLayout.EAST);
+                    cards.add(purpleCard);
                     cards.revalidate();
                     cards.repaint();
+
                     purpleCard.addMouseListener(new MouseAdapter() {
                         @Override
                         public void mouseClicked(MouseEvent e) {
@@ -692,9 +724,10 @@ public class Game extends JPanel implements ActionListener {
                     });
                 } else if (player.getDeck().getPlayerHand().get(i) == 'l') {
                     JLabel laserCard = new JLabel(imgLaserCard);
-                    cards.add(laserCard,BorderLayout.EAST);
+                    cards.add(laserCard);
                     cards.revalidate();
                     cards.repaint();
+
                     laserCard.addMouseListener(new MouseAdapter() {
                         @Override
                         public void mouseClicked(MouseEvent e) {
@@ -718,23 +751,23 @@ public class Game extends JPanel implements ActionListener {
            button2.setText("Ajouter au programme");
            button3.setText("Construire un mur");
            gamePanel.remove(button4);
+            instructionCard.setBackground(new Color(0,0,0,0));
 
+            instructionCard.setOpaque(true);
             gamePanel.revalidate();
             gamePanel.repaint();
             repaint();
 
-            Component[] components = cards.getComponents();
+           notPrintCard(cards);
+           notPrintCard(instructionCard);
 
-            for (Component component : components) {
-                cards.remove(component);
-            }
 
-            cards.revalidate();
-            cards.repaint();
 
             z++;
             repaint();
             player=turn();
+            printExecuteCard();
+            printHandCard();
         }
 
         if(e.getActionCommand().equals("Mur de pierre")){
@@ -964,6 +997,59 @@ public class Game extends JPanel implements ActionListener {
             }
             System.out.println('\n');
         }
+        }
+
+        private void printHandCard(){
+            for (int i=0;i<player.getDeck().getPlayerHand().size();i++) {
+                if (player.getDeck().getPlayerHand().get(i) == 'b') {
+                    JLabel blueCard = new JLabel(imgBlueCard);
+                    cards.add(blueCard);
+                    cards.revalidate();
+
+                    cards.repaint();
+
+                } else if (player.getDeck().getPlayerHand().get(i) == 'y') {
+                    JLabel yellowCard = new JLabel(imgYellowCard);
+                    cards.add(yellowCard,BorderLayout.EAST);
+                    cards.revalidate();
+                    cards.repaint();
+
+                } else if (player.getDeck().getPlayerHand().get(i) == 'p') {
+                    JLabel purpleCard = new JLabel(imgPurpleCard);
+                    cards.add(purpleCard,BorderLayout.EAST);
+                    cards.revalidate();
+                    cards.repaint();
+
+                } else if (player.getDeck().getPlayerHand().get(i) == 'l') {
+                    JLabel laserCard = new JLabel(imgLaserCard);
+                    cards.add(laserCard,BorderLayout.EAST);
+                    cards.revalidate();
+                    cards.repaint();
+                }
+            }
+        }
+    private void printExecuteCard(){
+        for (int i=0;i<player.getDeck().getHiddenCards().size();i++) {
+                JLabel backCard = new JLabel(imgBackCard);
+                instructionCard.add(backCard);
+                instructionCard.revalidate();
+
+                instructionCard.repaint();
+        }
+    }
+
+
+
+        private void notPrintCard(JPanel pan){
+            Component[] components = pan.getComponents();
+
+            for (Component component : components) {
+                pan.remove(component);
+            }
+
+            pan.revalidate();
+            pan.repaint();
+
         }
 
 

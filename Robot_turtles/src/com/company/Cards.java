@@ -248,9 +248,9 @@ public class Cards extends Game {
             }
         } else if (player.getDirection() == 'O') {
             for (int i = player.getPosition()[1]; i >= 0; i--) { // On regarde chaque case � gauche
-                if(laserToWall(player.getPosition()[0],i)){
+                if(laserToWall(player.getPosition()[1],i)){
                     break;
-                } else if (isGem(player.getPosition()[0],i)) {
+                } else if (isGem(player.getPosition()[1],i)) {
                    player.uTurn(); // Si �a touche un joyau
                     break;
                 } else {
