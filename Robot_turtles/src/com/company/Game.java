@@ -184,6 +184,8 @@ public class Game extends JPanel implements ActionListener {
 
         playersInGame=numberOfPlayers;
         player=turn();
+        printExecuteCard();
+        printHandCard();
         this.setVisible(true);
 
 
