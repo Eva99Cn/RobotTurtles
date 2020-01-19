@@ -335,13 +335,6 @@ public class Game extends JPanel implements ActionListener {
 
 
     private void addToProgram(){
-        //On regarde si le joueur à moins de 5 cartes
-        if(player.getDeck().deck.size()>0) {
-            if ((player.getDeck().getPlayerHand()).size() < 5) {
-                (player.getDeck()).fiveCardToPlayerHand();
-            }
-        }
-
         notPrintCard(cards);
         /*Pour chaque carte on crée un Jlabel
         * On associe une action au Jlabel
@@ -440,6 +433,7 @@ public class Game extends JPanel implements ActionListener {
         int departSize = player.getDeck().getHiddenCards().size();
 
 
+        notPrintCard(instructionCard);
         for (int i=0;i<departSize;i++){
 
             char playerCard = player.getDeck().getHiddenCards().pop();
@@ -495,13 +489,6 @@ public class Game extends JPanel implements ActionListener {
 
 
     private void buildWall() {
-        if(player.getDeck().deck.size()>0) {
-            if ((player.getDeck().getPlayerHand()).size() < 5) {
-                (player.getDeck()).fiveCardToPlayerHand();
-            }
-        }
-        printExecuteCard();
-        printHandCard();
         if(player.getNumberofStoneWall()>0){
         button1.setText("Mur de pierre");}
         else{
@@ -516,8 +503,6 @@ public class Game extends JPanel implements ActionListener {
         button4.setText("Finir le tour");
         button3.setText("Défausser");
         gamePanel.repaint();
-
-
 
     }
     /*
@@ -658,6 +643,7 @@ public class Game extends JPanel implements ActionListener {
            buildWall();
         }
 
+
         else if(e.getActionCommand().equals("Ajouter au programme")){
          addToProgram();
         }
@@ -762,6 +748,11 @@ public class Game extends JPanel implements ActionListener {
            notPrintCard(instructionCard);
 
 
+            if(player.getDeck().deck.size()>0) {
+                if ((player.getDeck().getPlayerHand()).size() < 5) {
+                    (player.getDeck()).fiveCardToPlayerHand();
+                }
+            }
 
             z++;
             repaint();
