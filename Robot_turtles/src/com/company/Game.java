@@ -347,6 +347,7 @@ public class Game extends JPanel implements ActionListener {
                 cards.add(blueCard);
                 cards.revalidate();
                 cards.repaint();
+                repaint();
                 blueCard.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
@@ -354,6 +355,7 @@ public class Game extends JPanel implements ActionListener {
                         cards.remove(blueCard);
                         cards.revalidate();
                         cards.repaint();
+                        repaint();
                         notPrintCard(instructionCard);
                         printExecuteCard();
 
@@ -365,6 +367,7 @@ public class Game extends JPanel implements ActionListener {
                 cards.add(yellowCard,BorderLayout.EAST);
                 cards.revalidate();
                 cards.repaint();
+                repaint();
 
                 yellowCard.addMouseListener(new MouseAdapter() {
                     @Override
@@ -383,6 +386,7 @@ public class Game extends JPanel implements ActionListener {
                 cards.add(purpleCard,BorderLayout.EAST);
                 cards.revalidate();
                 cards.repaint();
+                repaint();
 
                 purpleCard.addMouseListener(new MouseAdapter() {
                     @Override
@@ -393,6 +397,7 @@ public class Game extends JPanel implements ActionListener {
                         cards.repaint();
                         notPrintCard(instructionCard);
                         printExecuteCard();
+                        repaint();
 
                     }
                 });
@@ -401,6 +406,7 @@ public class Game extends JPanel implements ActionListener {
                 cards.add(laserCard,BorderLayout.EAST);
                 cards.revalidate();
                 cards.repaint();
+                repaint();
 
                 laserCard.addMouseListener(new MouseAdapter() {
                     @Override
@@ -409,6 +415,8 @@ public class Game extends JPanel implements ActionListener {
                         cards.remove(laserCard);
                         cards.revalidate();
                         cards.repaint();
+                        repaint();
+
                         notPrintCard(instructionCard);
                         printExecuteCard();
 
@@ -445,7 +453,7 @@ public class Game extends JPanel implements ActionListener {
                 instructionCard.add(blueCard);
                 instructionCard.revalidate();
                 instructionCard.repaint();
-
+                repaint();
 
 
             }
@@ -455,6 +463,7 @@ public class Game extends JPanel implements ActionListener {
                 instructionCard.add(purpleCard,BorderLayout.EAST);
                 instructionCard.revalidate();
                 instructionCard.repaint();
+                repaint();
 
             }
             else if(playerCard=='y'){
@@ -463,6 +472,7 @@ public class Game extends JPanel implements ActionListener {
                 instructionCard.add(yellowCard,BorderLayout.EAST);
                 instructionCard.revalidate();
                 instructionCard.repaint();
+                repaint();
 
 
             }
@@ -472,6 +482,7 @@ public class Game extends JPanel implements ActionListener {
                 instructionCard.add(laserCard,BorderLayout.EAST);
                 instructionCard.revalidate();
                 instructionCard.repaint();
+                repaint();
 
             }
 
