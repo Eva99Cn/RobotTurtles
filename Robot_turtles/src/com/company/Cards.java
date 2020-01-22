@@ -122,37 +122,42 @@ public class Cards extends Game {
     }
     //Fonction qui regarde ce qui ce trouve sur le chemin
     private static void getObject(int[] newPosition,Player player){
-        //S'il dépasse du plateau on le renvoi à sa position de départ
-        if(numberOfPlayers<4){
-            if(newPosition[0] < 0 || newPosition[0] > 7||newPosition[1] < 0||newPosition[1] > 6){
-                player.returnToStartingPoint();
-            }}
-        else {
-            if(newPosition[0] < 0 || newPosition[0] > 7||newPosition[1] < 0||newPosition[1] > 7){
-                player.returnToStartingPoint();
-            }
-        }
-        //On regarde si la tortue heurte un mur, si oui elle fait demi tour
-        if (plateau[newPosition[0]][newPosition[1]]=='S'||plateau[newPosition[0]][newPosition[1]]=='I'){
-            player.uTurn();
-        }
-        //si la tortue touche un joyau on met son boolean win en vrai
-        else if (isGem(newPosition[0],newPosition[1])) {
-            player.setWin(true);
-        }
 
-        // On regarde si la tortue en heurte une autre
-        for (int i = 0; i < players.size(); i++) {
-            if (plateau[newPosition[0]][newPosition[1]] == players.get(i).getTurtleName()) {
-                if(numberOfPlayers==2){
-                    players.get(i).uTurn();
-                    player.uTurn();
+        try {
+            //On regarde si la tortue heurte un mur, si oui elle fait demi tour
+            if (plateau[newPosition[0]][newPosition[1]] == 'S' || plateau[newPosition[0]][newPosition[1]] == 'I') {
+                player.uTurn();
+            }
+            //si la tortue touche un joyau on met son boolean win en vrai
+            else if (isGem(newPosition[0], newPosition[1])) {
+                player.setWin(true);
+            }
+
+            // On regarde si la tortue en heurte une autre
+            for (int i = 0; i < players.size(); i++) {
+                if (plateau[newPosition[0]][newPosition[1]] == players.get(i).getTurtleName()) {
+                    if (numberOfPlayers == 2) {
+                        players.get(i).uTurn();
+                        player.uTurn();
+                        break;
+                    } else {
+                        players.get(i).returnToStartingPoint();
+                        player.returnToStartingPoint();
+                    }
                     break;
                 }
-                else{
-                    players.get(i).returnToStartingPoint();
-                    player.returnToStartingPoint(); }
-                break;
+            }
+        }
+        catch (IndexOutOfBoundsException e){
+            //S'il dépasse du plateau on le renvoi à sa position de départ
+            if(numberOfPlayers<4){
+                if(newPosition[0] < 0 || newPosition[0] > 7||newPosition[1] < 0||newPosition[1] > 6){
+                    player.returnToStartingPoint();
+                }}
+            else {
+                if(newPosition[0] < 0 || newPosition[0] > 7||newPosition[1] < 0||newPosition[1] > 7){
+                    player.returnToStartingPoint();
+                }
             }
         }
 
