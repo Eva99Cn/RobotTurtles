@@ -57,7 +57,6 @@ public class Cards extends Game {
      * */
 
     public static void blueEffect(Player player){
-        if(numberBlueCard>0){
             int x = player.getPosition()[0];
             int y =player.getPosition()[1];
             if (player.getDirection()=='E') {
@@ -100,7 +99,7 @@ public class Cards extends Game {
                 else {
                     getObject(position,player);
                 }
-            }
+
             numberBlueCard--;}
 
     }
@@ -166,18 +165,17 @@ public class Cards extends Game {
 
 
     public static void yellowEffect(Player player){
-        if(numberYellowCard>0) {
+
             player.turnCounterClockWise();
             numberYellowCard--;
-        }
+
     }
     public static void purpleEffect(Player player) {
-        if (numberOfPurpleCard > 0) {
+
             player.turnClockWise();
 
             numberOfPurpleCard--;
 
-        }
     }
 
 
