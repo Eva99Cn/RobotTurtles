@@ -275,6 +275,7 @@ public class Cards extends Game {
 
             }
         }
+        numberOfLaserCard--;
     }
 
     public static boolean isGem(int x, int y){
