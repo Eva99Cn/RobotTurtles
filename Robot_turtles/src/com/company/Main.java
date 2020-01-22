@@ -11,6 +11,4 @@ public class Main {
         Window fenetre = new Window();
     }
 
-    }
-
-
+}

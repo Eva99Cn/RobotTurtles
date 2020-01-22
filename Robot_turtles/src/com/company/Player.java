@@ -65,7 +65,7 @@ public class Player extends Game {
 
     public void setDirection(char direction) {
 
-        this.imgPlayer= new ImageIcon(getClass().getResource("/images/characters/"+getTurtleName()+"-"+direction+".png"));
+        this.imgPlayer= new ImageIcon(getClass().getResource("/images/characters/" +getTurtleName()+"-"+direction+".png"));
         this.direction = direction;
 
     }
@@ -79,18 +79,18 @@ public class Player extends Game {
         plateau[position[0]][position[1]]=getTurtleName();
         this.position = position;
     }
-//Fonction qui permet à la tortue de revenir à sa position de départ
+    //Fonction qui permet à la tortue de revenir à sa position de départ
     public void returnToStartingPoint(){
         this.position = startingPoint;
         this.direction = 'S';
-        this.imgPlayer= new ImageIcon(getClass().getResource("/images/characters/"+getTurtleName()+"-"+direction+".png"));
+        this.imgPlayer= new ImageIcon(getClass().getResource("/images/characters/" +getTurtleName()+"-"+direction+".png"));
 
     }
     //Fonction qui permet à la tortue de faire un demi-tour
     public  void uTurn(){
 
         if (direction=='E'){
-          this.direction='O';
+            this.direction='O';
         }
         else if (direction=='N'){
 
@@ -98,12 +98,12 @@ public class Player extends Game {
         }
         else if (direction=='O'){
 
-           this.direction='E';
+            this.direction='E';
         }
         else if (direction=='S'){
-           this.direction='N';
+            this.direction='N';
         }
-        this.imgPlayer= new ImageIcon(getClass().getResource("/images/characters/"+getTurtleName()+"-"+direction+".png"));
+        this.imgPlayer= new ImageIcon(getClass().getResource("/images/characters/" +getTurtleName()+"-"+direction+".png"));
 
 
     }
@@ -133,7 +133,7 @@ public class Player extends Game {
         } else if (direction == 'S') {
             this.direction='O';
         }
-        this.imgPlayer= new ImageIcon(getClass().getResource("/images/characters/"+getTurtleName()+"-"+direction+".png"));
+        this.imgPlayer= new ImageIcon(getClass().getResource("/images/characters/" +getTurtleName()+"-"+direction+".png"));
 
     }
 

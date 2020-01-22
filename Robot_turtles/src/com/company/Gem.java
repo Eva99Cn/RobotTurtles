@@ -10,7 +10,7 @@ public class Gem {
     public Gem(char gemcolor,int[] gemPosition){
         this.gemcolor=gemcolor;
         this.gemPosition=gemPosition;
-        this.imggem = new ImageIcon(getClass().getResource("/images/jewels/"+gemcolor+".png"));
+        this.imggem = new ImageIcon(getClass().getResource("/images/jewels/" +gemcolor+".png"));
     }
 
 

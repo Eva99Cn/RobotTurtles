@@ -35,11 +35,11 @@ public class Window extends JFrame implements ActionListener {
         twopPanel.setBorder(BorderFactory.createEmptyBorder(40, 50, 40, 25));
         twopPanel.add(buttons2p);
 
-         JPanel threepPanel = new JPanel(new GridLayout(1, 1));
+        JPanel threepPanel = new JPanel(new GridLayout(1, 1));
         threepPanel.setBorder(BorderFactory.createEmptyBorder(40, 25, 40, 50));
         threepPanel.add(buttons3p);
 
-       JPanel fourpPanel = new JPanel(new GridLayout(1, 1));
+        JPanel fourpPanel = new JPanel(new GridLayout(1, 1));
         fourpPanel.setBorder(BorderFactory.createEmptyBorder(40, 25, 40, 50));
         fourpPanel.add(buttons4p);
 
@@ -55,36 +55,36 @@ public class Window extends JFrame implements ActionListener {
 
 
 
-    window.setVisible(true);
+        window.setVisible(true);
 
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-       if(e.getActionCommand().equals("2 Joueurs")) {
-           numberOfPlayers=2;
-           scene = new Game(numberOfPlayers);
-           scene.setLayout(null);
-           window.setContentPane(scene);
+        if(e.getActionCommand().equals("2 Joueurs")) {
+            numberOfPlayers=2;
+            scene = new Game(numberOfPlayers);
+            scene.setLayout(null);
+            window.setContentPane(scene);
 
-           window.setVisible(true);}
+            window.setVisible(true);}
 
 
-       else if(e.getActionCommand().equals("3 Joueurs")){
-           numberOfPlayers=3;
-           scene = new Game(numberOfPlayers);
-           scene.setLayout(null);
-           window.setContentPane(scene);
+        else if(e.getActionCommand().equals("3 Joueurs")){
+            numberOfPlayers=3;
+            scene = new Game(numberOfPlayers);
+            scene.setLayout(null);
+            window.setContentPane(scene);
             window.setVisible(true);
-       }
-       else if(e.getActionCommand().equals("4 Joueurs")){
-           numberOfPlayers=4;
-           scene = new Game(numberOfPlayers);
-           scene.setLayout(null);
-           window.setContentPane(scene);
+        }
+        else if(e.getActionCommand().equals("4 Joueurs")){
+            numberOfPlayers=4;
+            scene = new Game(numberOfPlayers);
+            scene.setLayout(null);
+            window.setContentPane(scene);
             window.setVisible(true);
-       }
-       }
+        }
+    }
 
 
 
